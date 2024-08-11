@@ -5,32 +5,50 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='access_token']" position="before">
-                <field name="api_key" required="delivery_type == 'ghtk'" widget="CopyClipboardChar" invisible="delivery_type != 'ghtk'"/>
-            </xpath>
-            <xpath expr="//field[@name='token_type']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='default_promo_code']" position='attributes'>
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='access_token']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//button[@name='get_access_token']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='base_weight_unit']" position="after">
-                <field name="default_ghtk_payer_type" invisible="delivery_type != 'ghtk'"/>
-                <field name="default_ghtk_transport_type" invisible="delivery_type != 'ghtk'"/>
-                <field name="default_ghtk_service_type" invisible="delivery_type != 'ghtk'"/>
-                <field name="default_ghtk_special_service_type_ids"
-                       widget="many2many_tags"
-                       options="{'no_create': True}"
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_ghtk_token"
                        invisible="delivery_type != 'ghtk'"
-                />
-                <field name="default_ghtk_print_layout" invisible="delivery_type != 'ghtk'"/>
-                <field name="default_ghtk_paper_size" invisible="delivery_type != 'ghtk'"/>
+                       string="Security Key"
+                >
+                    <field name="api_key" required="delivery_type == 'ghtk'" widget="CopyClipboardChar"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_ghtk_webhook"
+                       invisible="delivery_type != 'ghtk'"
+                       string="Webhook"
+                >
+                    <field name="is_webhook_registered" invisible="1"/>
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                    </div>
+                    <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_default_shipment']" position='before'>
+                <group name="delivery_ghtk_default_shipment"
+                       invisible="delivery_type != 'ghtk'"
+                       string="Default Shipment Parameter"
+                >
+                    <field name="base_weight_unit" readonly="1"/>
+                    <field name="default_ghtk_payer_type"/>
+                    <field name="default_ghtk_transport_type"/>
+                    <field name="default_ghtk_service_type"/>
+                    <field name="default_ghtk_special_service_type_ids"
+                           widget="many2many_tags"
+                           options="{'no_create': True}"
+                    />
+                    <field name="default_ghtk_print_layout"/>
+                    <field name="default_ghtk_paper_size"/>
+                </group>
             </xpath>
         </field>
     </record>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from requests import Response
 from dataclasses import dataclass
 from odoo import _
 from odoo.tools.safe_eval import safe_eval
@@ -20,11 +21,11 @@ class Client:
         return headers
 
     def _validate_response(self, result):
-        if not result.get('success'):
-            if self.conn.endpoint.code == settings.ghtk_check_xfast_service_route_code.value:
-                raise UserError(_('The service XFast of GHTK unavailable. Please change service type to standard'))
-            raise UserError(_(result.get('message', f'[GHTK]: Request {self.conn.endpoint.name} error')))
-        return result
+        if isinstance(result, Response) or result.get('success'):
+            return result
+        if self.conn.endpoint.code == settings.ghtk_check_xfast_service_route_code.value:
+            raise UserError(_('The service XFast of GHTK unavailable. Please change service type to standard'))
+        raise UserError(_(result.get('message', f'[GHTK]: Request {self.conn.endpoint.name} error')))
 
     def _execute(self, path_params=None, query_params=None, payload=None, is_unquote=True):
         return self._validate_response(

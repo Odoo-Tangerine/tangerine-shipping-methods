@@ -5,23 +5,46 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='promo_code']" position="before">
-                <field name="ahamove_service_request_domain" invisible="1"/>
-                <field name="ahamove_service_id"
-                       required="delivery_type == 'ahamove'"
-                       options="{'no_create_edit': True}"
-                       invisible="delivery_type != 'ahamove'"
-                />
-                <field name="ahamove_service_request_ids"
-                       widget="many2many_tags"
-                       domain="ahamove_service_request_domain"
-                       options="{'no_create_edit': True}"
-                       invisible="delivery_type != 'ahamove'"
-                />
-                <field name="ahamove_payment_method"
-                       invisible="delivery_type != 'ahamove'"
-                       required="delivery_type == 'ahamove'"
-                />
+            <xpath expr="//group[@name='delivery_driver_data']" position="before">
+                <group name='delivery_ahamove_data'
+                       invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'ahamove'"
+                       string="Ahamove Shipping Information"
+                >
+                    <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
+                    <div class="o_row" name="o_div_cash_on_delivery">
+                        <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
+                    </div>
+                    <field name="ahamove_service_request_domain" invisible="1"/>
+                    <field name="ahamove_service_id"
+                           required="delivery_type == 'ahamove'"
+                           options="{'no_create_edit': True}"
+                    />
+                    <field name="ahamove_service_request_ids"
+                           widget="many2many_tags"
+                           domain="ahamove_service_request_domain"
+                           options="{'no_create_edit': True}"
+                    />
+                    <field name="ahamove_payment_method" required="delivery_type == 'ahamove'"/>
+                    <field name="promo_code" readonly="carrier_tracking_ref"/>
+                    <label for="schedule_order" name="o_label_schedule_order"/>
+                    <div class="o_row" name="o_schedule_order">
+                        <field name="schedule_order" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <strong name="o_strong_schedule_pickup_time_from" invisible="not schedule_order">From:</strong>
+                        <field name="schedule_pickup_time_from"
+                               invisible="not schedule_order"
+                               required="schedule_order"
+                               readonly="carrier_tracking_ref"
+                        />
+                        <strong name="o_strong_schedule_pickup_time_to" invisible="not schedule_order">To:</strong>
+                        <field name="schedule_pickup_time_to"
+                               invisible="not schedule_order"
+                               required="schedule_order"
+                               readonly="carrier_tracking_ref"
+                        />
+                    </div>
+                    <field name="remarks"/>
+                </group>
             </xpath>
         </field>
     </record>

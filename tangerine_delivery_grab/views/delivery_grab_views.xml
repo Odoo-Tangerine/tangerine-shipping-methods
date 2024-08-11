@@ -5,20 +5,72 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('api_config_group')]" position='after'>
-                <field name="client_id" widget="CopyClipboardChar" required="delivery_type == 'grab'" invisible="delivery_type != 'grab'"/>
-                <field name="client_secret" widget="CopyClipboardChar" required="delivery_type == 'grab'" invisible="delivery_type != 'grab'"/>
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
+                       invisible="delivery_type != 'grab'"
+                       name="delivery_grab_api_connect_information"
+                >
+                    <label for="domain"/>
+                    <div class="o_row">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                        <button name="get_access_token"
+                                string="Get Access Token"
+                                icon="fa-refresh"
+                                type="object"
+                        />
+                    </div>
+                    <field name="client_id" widget="CopyClipboardChar" required="delivery_type == 'grab'"/>
+                    <field name="client_secret" widget="CopyClipboardChar" required="delivery_type == 'grab'"/>
+                </group>
             </xpath>
-            <xpath expr="//field[@name='access_token']" position="before">
-                <field name="grant_type" required="delivery_type == 'grab'" invisible="delivery_type != 'grab'"/>
-                <field name="scope" required="delivery_type == 'grab'" invisible="delivery_type != 'grab'"/>
-                <field name="expire_token_date" invisible="delivery_type != 'grab'"/>
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_grab_token"
+                       invisible="delivery_type != 'grab'"
+                       string="Security Key"
+                >
+                    <field name="grant_type" required="delivery_type == 'grab'"/>
+                    <field name="scope" required="delivery_type == 'grab'"/>
+                    <field name="access_token" widget="CopyClipboardChar"/>
+                    <field name="expire_token_date"/>
+                </group>
             </xpath>
-            <xpath expr="//field[@name='default_promo_code']" position='after'>
-                <field name="default_grab_payer" invisible="delivery_type != 'grab'"/>
-                <field name="default_grab_service_type" invisible="delivery_type != 'grab'"/>
-                <field name="default_grab_vehicle_type" invisible="delivery_type != 'grab'"/>
-                <field name="default_grab_payment_method" invisible="delivery_type != 'grab'"/>
+            <xpath expr="//group[@name='delivery_default_shipment']" position='before'>
+                <group name="delivery_grab_default_shipment"
+                       invisible="delivery_type != 'grab'"
+                       string="Default Shipment Parameter"
+                >
+                    <field name="base_weight_unit" readonly="1"/>
+                    <field name="default_promo_code"/>
+                    <field name="default_grab_payer"/>
+                    <field name="default_grab_service_type"/>
+                    <field name="default_grab_vehicle_type"/>
+                    <field name="default_grab_payment_method"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_webhook']" position="before">
+                <group name="delivery_grab_webhook"
+                       invisible="delivery_type != 'grab'"
+                       string="Webhook"
+                >
+                    <field name="is_webhook_registered" invisible="1"/>
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                    </div>
+                    <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
+                </group>
             </xpath>
         </field>
     </record>

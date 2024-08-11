@@ -167,6 +167,16 @@ class DeliveryBase(models.Model):
         web_base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         self.write({'webhook_url': f'{web_base_url}/webhook/v1/delivery/{self.delivery_type}'})
 
+    def create_pdf_delivery_label(self, picking, content):
+        return self.env['ir.attachment'].sudo().create({
+            'name': f'[{self.name}] - Delivery Label: {picking.carrier_tracking_ref}.pdf',
+            'datas': content,
+            'type': 'binary',
+            'res_model': picking._name,
+            'res_id': picking.id,
+            'mimetype': 'application/pdf'
+        })
+
 
 class DeliveryRouteAPI(models.Model):
     _name = 'delivery.route.api'

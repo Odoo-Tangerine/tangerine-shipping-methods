@@ -1,6 +1,7 @@
 # -*- coding: utf-8
 import time
 import math
+import base64
 from odoo import fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.tangerine_delivery_base.settings.utils import standardization_e164, get_route_api, notification
@@ -9,7 +10,7 @@ from ..settings.constants import settings
 from ..api.client import Client
 
 
-class ProviderAhamove(models.Model):
+class ProviderGHTK(models.Model):
     _inherit = 'delivery.carrier'
 
     delivery_type = fields.Selection(selection_add=[
@@ -140,10 +141,11 @@ class ProviderAhamove(models.Model):
         picking.write({'carrier_tracking_ref': False, 'carrier_price': 0.0, 'delivery_status_id': False})
         return notification('success', f'Cancel tracking reference {picking.carrier_tracking_ref} successfully')
 
-    def ghtk_print_order(self, carrier_tracking_ref, layout, size):
+    def ghtk_print_order(self, picking, layout, size):
         client = Client(Connection(self, get_route_api(self, settings.ghtk_print_order_route_code.value)))
-        client.print_order(carrier_tracking_ref, {'original': layout, 'page_size': size})
-        return notification('success', f'Cancel tracking reference successfully')
+        response = client.print_order(picking.carrier_tracking_ref, {'original': layout, 'page_size': size})
+        attachment = self.create_pdf_delivery_label(picking, base64.b64encode(response.content))
+        return f'/web/content/{attachment.id}'
 
     def ghtk_toggle_prod_environment(self):
         self.ensure_one()
@@ -151,3 +153,8 @@ class ProviderAhamove(models.Model):
             self.domain = settings.domain_production.value
         else:
             self.domain = settings.domain_staging.value
+
+    def ghtk_get_tracking_link(self, picking):
+        if self.prod_environment:
+            return settings.tracking_link_production.value.format(picking.carrier_tracking_ref)
+        return settings.tracking_link_staging.value.format(picking.carrier_tracking_ref)

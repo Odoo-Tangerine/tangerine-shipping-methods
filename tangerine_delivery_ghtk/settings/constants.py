@@ -6,6 +6,8 @@ from typing import Final
 class settings(Enum):
     domain_staging = 'https://services-staging.ghtklab.com'
     domain_production = 'https://services.giaohangtietkiem.vn'
+    tracking_link_staging = 'https://khachhang-staging.ghtklab.com/web/don-hang?customer_info={}'
+    tracking_link_production = 'https://khachhang.giaohangtietkiem.vn/web/don-hang?customer_info={}'
     ghtk_code = 'ghtk'
 
     ghtk_estimate_order_route_code = 'ghtk_estimate_order'

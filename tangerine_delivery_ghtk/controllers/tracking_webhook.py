@@ -30,16 +30,16 @@ class DeliveriesController(Controller):
                 ('provider_id', '=', picking_id.carrier_id.id)
             ])
             if not status_id:
-                _logger.error(f'WEBHOOK GHTK ERROR: The status {body.get("status")} invalid.')
+                _logger.error(f'WEBHOOK GHTK ERROR: The status {body.get("status_id")} invalid.')
                 return response(
                     status=status.HTTP_400_BAD_REQUEST.value,
-                    message=f'The status {body.get("status")} invalid.'
+                    message=f'The status {body.get("status_id")} invalid.'
                 )
             picking_id.sudo().write({'delivery_status_id': status_id.id})
-            _logger.info(f'WEBHOOK GHTK SUCCESS: Receive order callback {body.get("_id")} successfully.')
+            _logger.info(f'WEBHOOK GHTK SUCCESS: Receive order callback {body.get("label_id")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,
-                message=f'Receive order callback {body.get("_id")} successfully.'
+                message=f'Receive order callback {body.get("label_id")} successfully.'
             )
         except Exception as e:
             _logger.exception(f'WEBHOOK GHTK EXCEPTION: {ustr(e)}')

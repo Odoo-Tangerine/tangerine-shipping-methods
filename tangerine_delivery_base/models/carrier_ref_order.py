@@ -32,3 +32,4 @@ class CarrierRefOrder(models.Model):
     driver_license_plate = fields.Char(related='picking_id.driver_license_plate')
     promo_code = fields.Char(related='picking_id.promo_code', string='Promo Code')
     delivery_status_id = fields.Many2one(related='picking_id.delivery_status_id', string='Delivery Status')
+    real_delivery_charge = fields.Monetary(currency_field='currency_id', string='Real Shipping Cost', readonly=True)

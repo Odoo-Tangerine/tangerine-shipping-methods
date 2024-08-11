@@ -5,35 +5,27 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='promo_code']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//label[@name='o_label_schedule_order']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//div[@name='o_schedule_order']" position="attributes">
-                <attribute name="invisible">delivery_type == 'ghtk'</attribute>
-            </xpath>
-            <xpath expr="//div[@name='o_div_cash_on_delivery']" position="after">
-                <field name="ghtk_transport_type"
-                       required="delivery_type == 'ghtk'"
-                       invisible="delivery_type != 'ghtk'"
-                />
-                <field name="ghtk_service_type"
-                       required="delivery_type == 'ghtk'"
-                       invisible="delivery_type != 'ghtk'"
-                />
-                <field name="ghtk_payer_type"
-                       required="delivery_type == 'ghtk'"
-                       invisible="delivery_type != 'ghtk'"
-                />
-                <field name="ghtk_special_service_type_ids"
-                       widget="many2many_tags"
-                       options="{'no_create_edit': True}"
-                       invisible="delivery_type != 'ghtk'"
-                />
-                <field name="ghtk_pick_shift" invisible="delivery_type != 'ghtk'"/>
-                <field name="ghtk_deliver_shift" invisible="delivery_type != 'ghtk'"/>
+            <xpath expr="//group[@name='delivery_driver_data']" position="before">
+                <group name='delivery_ghtk_data'
+                       invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'ghtk'"
+                       string="GHTK Shipping Information"
+                >
+                    <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
+                    <div class="o_row" name="o_div_cash_on_delivery">
+                        <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
+                    </div>
+                    <field name="ghtk_transport_type" required="delivery_type == 'ghtk'"/>
+                    <field name="ghtk_service_type" required="delivery_type == 'ghtk'"/>
+                    <field name="ghtk_payer_type" required="delivery_type == 'ghtk'"/>
+                    <field name="ghtk_special_service_type_ids"
+                           widget="many2many_tags"
+                           options="{'no_create_edit': True}"
+                    />
+                    <field name="ghtk_pick_shift"/>
+                    <field name="ghtk_deliver_shift"/>
+                    <field name="remarks"/>
+                </group>
             </xpath>
         </field>
     </record>

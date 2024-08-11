@@ -5,24 +5,72 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('api_config_group')]" position='after'>
-                <field name="username" required="delivery_type == 'viettelpost'" invisible="delivery_type != 'viettelpost'"/>
-                <field name="password" required="delivery_type == 'viettelpost'" password="1" invisible="delivery_type != 'viettelpost'"/>
-            </xpath>
-            <xpath expr="//field[@name='token_type']" position="attributes">
-                <attribute name="invisible">delivery_type == 'viettelpost'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='default_promo_code']" position='after'>
-                <field name="default_viettelpost_order_payment" invisible="delivery_type != 'viettelpost'"/>
-                <field name="default_viettelpost_product_type" invisible="delivery_type != 'viettelpost'"/>
-                <field name="default_viettelpost_service_id"
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
                        invisible="delivery_type != 'viettelpost'"
-                       domain="viettelpost_service_request_domain"
-                />
-                <field name="default_viettelpost_service_extend_id" invisible="delivery_type != 'viettelpost'"/>
-                <field name="viettelpost_service_request_domain" invisible="1"/>
-                <field name="default_viettelpost_national_type" invisible="delivery_type != 'viettelpost'"/>
-                <field name="default_viettelpost_paper_size" invisible="delivery_type != 'viettelpost'"/>
+                       name="delivery_viettelpost_api_connect_information"
+                >
+                    <label for="domain"/>
+                    <div class="o_row api_config_group">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                        <button name="get_access_token"
+                                string="Get Access Token"
+                                icon="fa-refresh"
+                                type="object"
+                        />
+                    </div>
+                    <field name="username" required="delivery_type == 'viettelpost'"/>
+                    <field name="password" required="delivery_type == 'viettelpost'" password="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_viettelpost_token"
+                       invisible="delivery_type != 'viettelpost'"
+                       string="Security Key"
+                >
+                    <field name="access_token" widget="CopyClipboardChar"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_default_shipment']" position='before'>
+                <group name="delivery_viettelpost_default_shipment"
+                       invisible="delivery_type != 'viettelpost'"
+                       string="Default Shipment Parameter"
+                >
+                    <field name="base_weight_unit" readonly="1"/>
+                    <field name="default_promo_code"/>
+                    <field name="default_viettelpost_order_payment"/>
+                    <field name="default_viettelpost_product_type"/>
+                    <field name="default_viettelpost_service_id" domain="viettelpost_service_request_domain"/>
+                    <field name="default_viettelpost_service_extend_id"/>
+                    <field name="viettelpost_service_request_domain" invisible="1"/>
+                    <field name="default_viettelpost_national_type"/>
+                    <field name="default_viettelpost_paper_size"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_webhook']" position="before">
+                <group name="delivery_viettelpost_webhook"
+                       invisible="delivery_type != 'viettelpost'"
+                       string="Webhook"
+                >
+                    <field name="is_webhook_registered" invisible="1"/>
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                    </div>
+                    <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
+                </group>
             </xpath>
         </field>
     </record>

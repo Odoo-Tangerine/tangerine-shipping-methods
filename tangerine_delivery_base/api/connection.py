@@ -35,6 +35,8 @@ class Connection:
                 raise UserError(response.text)
             if response.status_code == status.HTTP_204_NO_CONTENT.value:
                 return True
+            elif not response.encoding:
+                return response
             result = response.json()
             _logger.info(f'RESULT EXECUTE API: {result}')
             return result

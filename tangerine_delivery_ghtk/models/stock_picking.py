@@ -40,7 +40,7 @@ class StockPicking(models.Model):
             return {
                 'type': 'ir.actions.act_url',
                 'url': self.carrier_id.ghtk_print_order(
-                    self.carrier_tracking_ref,
+                    self,
                     self.carrier_id.default_ghtk_print_layout,
                     self.carrier_id.default_ghtk_paper_size
                 ),

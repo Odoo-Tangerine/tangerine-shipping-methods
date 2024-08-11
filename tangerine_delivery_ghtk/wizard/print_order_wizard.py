@@ -18,7 +18,7 @@ class PrintOrderWizard(models.TransientModel):
 
     def ghtk_print_order(self):
         return self.picking_id.carrier_id.ghtk_print_order(
-            self.carrier_tracking_ref,
+            self.picking_id,
             self.ghtk_print_layout,
             self.ghtk_paper_size,
         )
