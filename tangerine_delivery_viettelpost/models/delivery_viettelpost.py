@@ -30,9 +30,9 @@ class ProviderViettelpost(models.Model):
     viettelpost_service_request_domain = fields.Binary(default=[], store=False)
     default_viettelpost_service_id = fields.Many2one('viettelpost.service', string='Service')
     default_viettelpost_service_extend_id = fields.Many2one('viettelpost.service.extend', string='Service Extend')
-    default_print_order_paper = fields.Selection(settings.paper_print.value, string='Print Order Paper')
+    default_viettelpost_paper_size = fields.Selection(settings.paper_size.value, string='Print Paper Size')
 
-    def _payload_get_token(self):
+    def _viettelpost_payload_get_token(self):
         return {
             'USERNAME': self.username,
             'PASSWORD': self.password
@@ -46,9 +46,9 @@ class ProviderViettelpost(models.Model):
             elif not self.password:
                 raise UserError(_('The field Password is required'))
             client = Client(Connection(self, get_route_api(self, settings.get_short_term_token_route.value)))
-            result = client.get_short_term_access_token(self._payload_get_token())
+            result = client.get_short_term_access_token(self._viettelpost_payload_get_token())
             client = Client(Connection(self, get_route_api(self, settings.get_long_term_token_route.value)))
-            result = client.get_long_term_access_token(self._payload_get_token(), result.get('token'))
+            result = client.get_long_term_access_token(self._viettelpost_payload_get_token(), result.get('token'))
             self.write({'access_token': result.get('token')})
             return notification('success', 'Get access token successfully')
         except Exception as e:
@@ -56,10 +56,7 @@ class ProviderViettelpost(models.Model):
 
     def _viettelpost_payload_estimate_cost(self, order):
         return {
-            'PRODUCT_WEIGHT': math.ceil(order.carrier_id.convert_weight(
-                order._get_estimated_weight(),
-                self.base_weight_unit
-            )),
+            'PRODUCT_WEIGHT': math.ceil(self.convert_weight(order._get_estimated_weight(), self.base_weight_unit)),
             'PRODUCT_PRICE': order.amount_total,
             'ORDER_SERVICE_ADD': order.env.context.get('viettelpost_service_extend_code'),
             'ORDER_SERVICE': order.env.context.get('viettelpost_service_code'),
@@ -96,10 +93,7 @@ class ProviderViettelpost(models.Model):
             'RECEIVER_FULLNAME': recipient_id.name,
             'RECEIVER_PHONE': standardization_e164(recipient_id.mobile or recipient_id.phone),
             'RECEIVER_ADDRESS': f'{recipient_id.shipping_address}',
-            'PRODUCT_WEIGHT': math.ceil(self.convert_weight(
-                picking._get_estimated_weight(),
-                self.base_weight_unit
-            )),
+            'PRODUCT_WEIGHT': math.ceil(self.convert_weight(picking._get_estimated_weight(), self.base_weight_unit)),
             'PRODUCT_QUANTITY': self._compute_quantity(picking.move_ids_without_package),
             'PRODUCT_PRICE': picking.sale_id.amount_total,
             'PRODUCT_TYPE': picking.viettelpost_product_type,
@@ -108,10 +102,7 @@ class ProviderViettelpost(models.Model):
             'LIST_ITEM': [{
                 'PRODUCT_NAME': line.product_id.name,
                 'PRODUCT_PRICE': line.product_id.list_price,
-                'PRODUCT_WEIGHT': math.ceil(self.convert_weight(
-                    line.product_id.weight,
-                    self.base_weight_unit
-                )),
+                'PRODUCT_WEIGHT': math.ceil(self.convert_weight(line.product_id.weight, self.base_weight_unit)),
                 'PRODUCT_QUANTITY': line.quantity
             } for line in picking.move_ids_without_package]
         }

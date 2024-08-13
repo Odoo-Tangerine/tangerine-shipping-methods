@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_choose_delivery_carrier_form_with_provider_ghtk" model="ir.ui.view">
+        <field name="name">view.choose.delivery.carrier.form.with.provider.ghtk</field>
+        <field name="model">choose.delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form" />
+        <field name="arch" type="xml">
+            <field name="carrier_id" position="after">
+                <field name="ghtk_transport_type" invisible="delivery_type != 'ghtk'"/>
+                <field name="ghtk_service_type" invisible="delivery_type != 'ghtk'"/>
+                <field name="ghtk_special_service_type_ids"
+                       widget="many2many_tags"
+                       options="{'no_create': True}"
+                       invisible="delivery_type != 'ghtk'"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

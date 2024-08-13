@@ -1,39 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="print_order_wizard_form_view" model="ir.ui.view">
-        <field name="name">print.order.wizard.form.view</field>
-        <field name="model">viettelpost.print.order.wizard</field>
+    <record id="print_order_wizard_form_view_viettelpost" model="ir.ui.view">
+        <field name="name">print.order.wizard.form.view.viettelpost</field>
+        <field name="model">print.order.wizard</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.print_order_wizard_form_view"/>
         <field name="arch" type="xml">
-            <form>
-                <field name="picking_id" invisible="1"/>
-                <field name="delivery_type" invisible="1"/>
-                <div class="oe_title">
-                    <label for="carrier_tracking_ref" string="Carrier Tracking Ref"/>
-                    <h1>
-                        <field name="carrier_tracking_ref"/>
-                    </h1>
-                </div>
-                <group>
-                    <group>
-                        <field name="paper_type" widget="radio"/>
-                    </group>
-                </group>
-                <footer>
-                    <button string="Print"
-                            type="object"
-                            name="print_order_viettelpost"
-                            class="btn btn-primary"
-                    />
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
-                </footer>
-            </form>
+            <xpath expr="//group[@name='carrier_form']" position="inside">
+                <field name="viettelpost_paper_size"
+                       widget="radio"
+                       invisible="delivery_type != 'viettelpost'"
+                       required="delivery_type == 'viettelpost'"
+                />
+            </xpath>
         </field>
-    </record>
-
-    <record id="print_order_wizard_action" model="ir.actions.act_window">
-        <field name="name">Print Order Viettelpost Wizard</field>
-        <field name="res_model">viettelpost.print.order.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
     </record>
 </odoo>

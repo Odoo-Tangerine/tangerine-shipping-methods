@@ -5,43 +5,34 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[hasclass('btn_view_detail_order')]" position="after">
-                <button type="object"
-                        name="action_print_order_viettelpost"
-                        string="Print"
-                        class="fa fa-print oe_link"
-                        invisible="delivery_type != 'viettelpost' or not carrier_tracking_ref"
-                />
-            </xpath>
-            <xpath expr="//field[@name='promo_code']" position="before">
-                <field name="viettelpost_order_payment"
-                       required="delivery_type == 'viettelpost'"
-                       invisible="delivery_type != 'viettelpost'"
-                />
-                <field name="viettelpost_product_type"
-                       required="delivery_type == 'viettelpost'"
-                       invisible="delivery_type != 'viettelpost'"
-                />
-                <field name="viettelpost_national_type"
-                       required="delivery_type == 'viettelpost'"
-                       invisible="delivery_type != 'viettelpost'"
-                />
-                <field name="viettelpost_service_id"
-                       required="delivery_type == 'viettelpost'"
-                       invisible="delivery_type != 'viettelpost'"
-                       domain="viettelpost_service_request_domain"
-                />
-                <field name="viettelpost_service_extend_id" invisible="delivery_type != 'viettelpost'"/>
-                <field name="viettelpost_service_request_domain" invisible="1"/>
-            </xpath>
-            <xpath expr="//label[@name='o_label_schedule_order']" position="attributes">
-                <attribute name="invisible">delivery_type == 'viettelpost'</attribute>
-            </xpath>
-            <xpath expr="//div[@name='o_schedule_order']" position="attributes">
-                <attribute name="invisible">delivery_type == 'viettelpost'</attribute>
-            </xpath>
-            <xpath expr="//group[@name='delivery_driver_data']" position="attributes">
-                <attribute name="invisible">delivery_type == 'viettelpost'</attribute>
+            <xpath expr="//group[@name='delivery_driver_data']" position="before">
+                <group name='delivery_viettelpost_data'
+                       invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'viettelpost'"
+                       string="Viettel Post Shipping Information"
+                >
+                    <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
+                    <div class="o_row" name="o_div_cash_on_delivery">
+                        <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
+                    </div>
+                    <field name="viettelpost_order_payment"
+                           required="delivery_type == 'viettelpost'"
+                    />
+                    <field name="viettelpost_product_type"
+                           required="delivery_type == 'viettelpost'"
+                    />
+                    <field name="viettelpost_national_type"
+                           required="delivery_type == 'viettelpost'"
+                    />
+                    <field name="viettelpost_service_id"
+                           required="delivery_type == 'viettelpost'"
+                           domain="viettelpost_service_request_domain"
+                    />
+                    <field name="viettelpost_service_extend_id" invisible="delivery_type != 'viettelpost'"/>
+                    <field name="viettelpost_service_request_domain" invisible="1"/>
+                    <field name="promo_code" readonly="carrier_tracking_ref"/>
+                    <field name="remarks"/>
+                </group>
             </xpath>
         </field>
     </record>

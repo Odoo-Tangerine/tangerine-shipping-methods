@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ghtk_status_navigate_1" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Hủy đơn hàng</field>
+            <field name="code">-1</field>
+        </record>
+
+        <record id="ghtk_status_1" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Chưa tiếp nhận</field>
+            <field name="code">1</field>
+        </record>
+
+        <record id="ghtk_status_2" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã tiếp nhận</field>
+            <field name="code">2</field>
+        </record>
+
+        <record id="ghtk_status_3" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã lấy hàng/Đã nhập kho</field>
+            <field name="code">3</field>
+        </record>
+
+        <record id="ghtk_status_4" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đang giao hàng</field>
+            <field name="code">4</field>
+        </record>
+
+        <record id="ghtk_status_5" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã giao hàng</field>
+            <field name="code">5</field>
+        </record>
+
+        <record id="ghtk_status_6" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã đối soát</field>
+            <field name="code">6</field>
+        </record>
+
+        <record id="ghtk_status_7" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Không lấy được hàng</field>
+            <field name="code">7</field>
+        </record>
+
+        <record id="ghtk_status_8" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Hoãn lấy hàng</field>
+            <field name="code">8</field>
+        </record>
+
+        <record id="ghtk_status_9" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Không giao được hàng</field>
+            <field name="code">9</field>
+        </record>
+
+        <record id="ghtk_status_10" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Delay giao hàng</field>
+            <field name="code">10</field>
+        </record>
+
+        <record id="ghtk_status_11" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã đối soát công nợ trả hàng</field>
+            <field name="code">11</field>
+        </record>
+
+        <record id="ghtk_status_12" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đang lấy hàng</field>
+            <field name="code">12</field>
+        </record>
+
+        <record id="ghtk_status_13" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đơn hàng bồi hoàn</field>
+            <field name="code">13</field>
+        </record>
+
+        <record id="ghtk_status_20" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đang trả hàng (COD cầm hàng đi trả)</field>
+            <field name="code">20</field>
+        </record>
+
+        <record id="ghtk_status_21" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Đã trả hàng (COD đã trả xong hàng)</field>
+            <field name="code">21</field>
+        </record>
+
+        <record id="ghtk_status_123" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo đã lấy hàng</field>
+            <field name="code">123</field>
+        </record>
+
+        <record id="ghtk_status_127" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo không lấy được hàng</field>
+            <field name="code">127</field>
+        </record>
+
+        <record id="ghtk_status_128" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo delay lấy hàng</field>
+            <field name="code">128</field>
+        </record>
+
+        <record id="ghtk_status_45" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo đã giao hàng</field>
+            <field name="code">45</field>
+        </record>
+
+        <record id="ghtk_status_49" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo không giao được hàng</field>
+            <field name="code">49</field>
+        </record>
+
+        <record id="ghtk_status_410" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Shipper báo delay giao hàng</field>
+            <field name="code">410</field>
+        </record>
+    </data>
+</odoo>

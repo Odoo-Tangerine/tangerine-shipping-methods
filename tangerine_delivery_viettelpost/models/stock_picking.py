@@ -39,28 +39,26 @@ class StockPicking(models.Model):
             if rec.viettelpost_service_id:
                 rec.viettelpost_service_request_domain = [('service_id', '=', rec.viettelpost_service_id.id)]
 
-    def action_print_order_viettelpost(self):
+    def viettelpost_print_order(self):
         self.ensure_one()
         if self.delivery_type == settings.code.value:
-            if not self.carrier_id.default_print_order_paper:
+            if not self.carrier_id.default_viettelpost_paper_size:
                 return {
-                    'name': _('Print Order Viettelpost Wizard'),
+                    'name': _('Print Order Wizard'),
                     'view_mode': 'form',
-                    'res_model': 'viettelpost.print.order.wizard',
-                    'view_id': self.env.ref('tangerine_delivery_viettelpost.print_order_wizard_form_view').id,
+                    'res_model': 'print.order.wizard',
+                    'view_id': self.env.ref('tangerine_delivery_base.print_order_wizard_form_view').id,
                     'type': 'ir.actions.act_window',
                     'context': {
                         'default_picking_id': self.id
                     },
                     'target': 'new'
                 }
-            else:
-                url = self.carrier_id.viettelpost_print_order(
+            return {
+                'type': 'ir.actions.act_url',
+                'url': self.carrier_id.viettelpost_print_order(
                     self.carrier_tracking_ref,
-                    self.carrier_id.default_print_order_paper
-                )
-                return {
-                    'type': 'ir.actions.act_url',
-                    'url': url,
-                    'close': True
-                }
+                    self.carrier_id.default_viettelpost_paper_size
+                ),
+                'close': True
+            }

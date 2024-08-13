@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="ghtk_estimate_order_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Estimate Order</field>
+            <field name="code">ghtk_estimate_order</field>
+            <field name="route">/services/shipment/fee</field>
+            <field name="method">GET</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="headers">'{"Cache-Control": "no-cache"}'</field>
+        </record>
+
+        <record id="ghtk_check_available_xfast_service_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Check Available XFast Service</field>
+            <field name="code">ghtk_check_available_xfast_service</field>
+            <field name="route">/services/shipment/x-team</field>
+            <field name="method">GET</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="headers">'{"Cache-Control": "no-cache"}'</field>
+        </record>
+
+        <record id="ghtk_create_order_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Create Order</field>
+            <field name="code">ghtk_create_order</field>
+            <field name="route">/services/shipment/order</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="headers">'{"Cache-Control": "no-cache","Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="ghtk_cancel_request_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Cancel Order</field>
+            <field name="code">ghtk_cancel_request</field>
+            <field name="route">/services/shipment/cancel</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="headers">'{"Cache-Control": "no-cache"}'</field>
+        </record>
+
+        <record id="ghtk_print_order_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Print Order</field>
+            <field name="code">ghtk_print_order</field>
+            <field name="route">/services/label</field>
+            <field name="method">GET</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="headers">'{"Cache-Control": "no-cache"}'</field>
+        </record>
+    </data>
+</odoo>

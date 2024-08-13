@@ -60,17 +60,12 @@ class Client:
             **payload or {}
         )
 
-    def get_cities(self):
-        return self._execute()
+    def get_cities(self): return self._execute()
 
-    def get_quotation(self, payload):
-        return self._execute(payload=payload)
+    def get_quotation(self, payload): return self._execute(payload=payload)
 
-    def place_order(self, payload):
-        return self._execute(payload=payload)
+    def place_order(self, payload): return self._execute(payload=payload)
 
-    def cancel_order(self, order):
-        return self._execute(path_parameter=order)
+    def cancel_order(self, order): return self._execute(path_parameter=order)
 
-    def register_webhook(self, payload):
-        return self._execute(payload=payload)
+    def register_webhook(self, payload): return self._execute(payload=payload)

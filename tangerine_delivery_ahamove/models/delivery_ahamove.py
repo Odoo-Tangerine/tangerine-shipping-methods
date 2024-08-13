@@ -16,7 +16,6 @@ class ProviderAhamove(models.Model):
         ('ahamove', 'Ahamove')
     ], ondelete={'ahamove': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
-    ahamove_partner_name = fields.Char(string='Name')
     ahamove_partner_phone = fields.Char(string='Phone')
     ahamove_service_request_domain = fields.Binary(default=[], store=False)
     default_ahamove_service_id = fields.Many2one('ahamove.service', string='Service Type')

@@ -11,6 +11,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/res_partner_data.xml',
+        'wizard/print_order_wizard_views.xml',
         'views/delivery_base_views.xml',
         'views/delivery_route_api_views.xml',
         'views/delivery_status_views.xml',

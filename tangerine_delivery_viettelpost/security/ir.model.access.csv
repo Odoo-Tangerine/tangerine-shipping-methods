@@ -1,4 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_viettelpost_service,access_viettelpost_service,model_viettelpost_service,,1,1,1,1
 access_viettelpost_service_extend,access_viettelpost_service_extend,model_viettelpost_service_extend,,1,1,1,1
-access_viettelpost_print_order_wizard,access_viettelpost_print_order_wizard,model_viettelpost_print_order_wizard,,1,1,1,1

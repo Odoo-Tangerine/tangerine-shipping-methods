@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_product_delivery_ghtk" model="product.product">
+            <field name="name">Delivery charges</field>
+            <field name="default_code">GHTK</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="delivery.product_category_deliveries"/>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="list_price">0.0</field>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <record id="tangerine_delivery_ghtk_provider" model="delivery.carrier">
+            <field name="name">GHTK</field>
+            <field name="fixed_price">0.0</field>
+            <field name="free_over" eval="False"/>
+            <field name="invoice_policy">real</field>
+            <field name="sequence">2</field>
+            <field name="delivery_type">ghtk</field>
+            <field name="domain">https://services-staging.ghtklab.com</field>
+            <field name="product_id" ref="tangerine_delivery_ghtk.product_product_delivery_ghtk"/>
+            <field name="is_locally_delivery" eval="True"/>
+            <field name="is_support_feature_print_order" eval="True"/>
+            <field name="base_weight_unit">G</field>
+            <field name="default_ghtk_payer_type">SENDER</field>
+            <field name="default_ghtk_transport_type">road</field>
+            <field name="default_ghtk_service_type">standard</field>
+            <field name="default_ghtk_print_layout">landscape</field>
+            <field name="default_ghtk_paper_size">A5</field>
+            <field name="carrier_description">GHTK APIs will allow shipper to easily place, cancel, get quotes and track the order via simple integration</field>
+        </record>
+
+        <function model="delivery.carrier" name="set_webhook_url">
+            <value eval="[ref('tangerine_delivery_ghtk_provider')]"/>
+        </function>
+    </data>
+</odoo>

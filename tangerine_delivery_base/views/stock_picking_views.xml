@@ -5,9 +5,13 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock_delivery.view_picking_withcarrier_out_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="is_support_feature_print_order" invisible="1"/>
+                <field name="is_locally_delivery" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+            </xpath>
             <xpath expr="//div[@name='tracking']" position="after">
-                <field name="delivery_status_id"/>
-                <field name="delivery_status_code" invisible="True"/>
+                <field name="delivery_status_id" invisible="not is_locally_delivery"/>
             </xpath>
             <field name="carrier_tracking_ref" position="after">
                 <button name="%(carrier_ref_order_action)d"
@@ -17,35 +21,15 @@
                         string="View"
                         invisible="not carrier_tracking_ref"
                 />
+                <button type="object"
+                        name="action_print_order"
+                        string="Print"
+                        class="fa fa-print oe_link"
+                        invisible="not carrier_tracking_ref or not is_support_feature_print_order"
+                />
             </field>
             <xpath expr="//group[@name='carrier_data']" position="after">
-                <group name='delivery_carrier_data' invisible="carrier_tracking_ref" string="Provider Shipping Information">
-                    <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
-                    <div class="o_row" name="o_div_cash_on_delivery">
-                        <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
-                        <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
-                    </div>
-                    <field name="promo_code" readonly="carrier_tracking_ref"/>
-                    <label for="schedule_order" name="o_label_schedule_order"/>
-                    <div class="o_row" name="o_schedule_order">
-                        <field name="schedule_order" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
-                        <strong name="o_strong_schedule_pickup_time_from" invisible="not schedule_order">From:</strong>
-                        <field name="schedule_pickup_time_from"
-                               invisible="not schedule_order"
-                               required="schedule_order"
-                               readonly="carrier_tracking_ref"
-                        />
-                        <strong name="o_strong_schedule_pickup_time_to" invisible="not schedule_order">To:</strong>
-                        <field name="schedule_pickup_time_to"
-                               invisible="not schedule_order"
-                               required="schedule_order"
-                               readonly="carrier_tracking_ref"
-                        />
-                    </div>
-                    <field name="remarks"/>
-                    <field name="currency_id" invisible="1"/>
-                </group>
-                <group name="delivery_driver_data" string="Driver Information">
+                <group name="delivery_driver_data" invisible="not is_locally_delivery" string="Driver Information">
                     <field name="driver_name" string="Name"/>
                     <field name="driver_phone" string="Phone" widget="phone"/>
                     <field name="driver_license_plate" string="License Plate"/>

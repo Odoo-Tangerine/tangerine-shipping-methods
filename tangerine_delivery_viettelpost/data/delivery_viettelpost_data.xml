@@ -22,11 +22,12 @@
             <field name="domain">https://partnerdev.viettelpost.vn</field>
             <field name="product_id" ref="tangerine_delivery_viettelpost.product_product_delivery_viettelpost"/>
             <field name="is_locally_delivery" eval="True"/>
+            <field name="is_support_feature_print_order" eval="True"/>
             <field name="base_weight_unit">G</field>
             <field name="default_viettelpost_order_payment">1</field>
             <field name="default_viettelpost_product_type">HH</field>
             <field name="default_viettelpost_national_type">1</field>
-            <field name="default_print_order_paper">a5</field>
+            <field name="default_viettelpost_paper_size">a5</field>
             <field name="carrier_description">Viettel Post APIs will allow shipper to easily place, cancel, get quotes and track the order via simple integration</field>
         </record>
 

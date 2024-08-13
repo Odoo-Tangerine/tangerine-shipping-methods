@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ghtk_service_1" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Dễ vỡ</field>
+            <field name="code">1</field>
+            <field name="description">Những mặt hàng bằng chất liệu dễ bị hư hỏng, đổ vỡ trong quá trình vận chuyển. Phụ phí hàng dễ vỡ bằng 20% tổng phí dịch vụ (phí ship + phí bảo hiểm nếu có). Nếu có hư hại, GHTK sẽ chịu toàn bộ trách nhiệm với đơn hàng được tích Dễ vỡ.</field>
+        </record>
+        
+        <record id="ghtk_service_2" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Giá trị cao/Đặc biệt</field>
+            <field name="code">2</field>
+            <field name="description">Những mặt hàng có giá trị hàng hoá > 3,000,000đ (với shop B2C) và > 1,000,000đ (với shop C2C). Các hàng hoá giá trị cao sẽ tính thêm phí bảo hiểm là khoản bảo hiểm cho các rủi ro trong quá trình vận chuyển hoặc lưu kho. Phí bảo hiểm bằng 0.5% giá trị hàng hoá. GHTK sẽ bồi hoàn 100% giá trị bảo hiểm khi mất hàng (tối đa 20,000,000 VNĐ) nếu có giấy tờ chứng minh nguồn gốc và giá trị hàng hoá (hoá đơn nhập hàng, hoá đơn mua hàng hợp lệ và khớp với thông tin sản phẩm trên hệ thống GHTK,...). Trong trường hợp shop không thể chứng minh nguồn gốc và giá trị hàng hoá, bồi thường tối đa 04 lần cước phí vận chuyển.</field>
+        </record>
+        
+        <record id="ghtk_service_7" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Nông sản/thực phẩm khô</field>
+            <field name="code">7</field>
+            <field name="description">Mặt hàng thực phẩm khô (không yêu cầu điều kiện bảo quản đặc biệt), phụ phí 10% tổng phí dịch vụ (phí ship + bảo hiểm nếu có). Đối với hàng thực phẩm khô có hạn sử dụng ngắn (&lt;30 ngày), thời gian hẹn giao không quá 7 ngày kể từ thời điểm lấy hàng thành công. Quá thời hạn trên, đơn hàng sẽ không được tự động lưu kho, GHTK sẽ trả lại hàng về shop.</field>
+        </record>
+        
+        <record id="ghtk_service_10" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Cho xem hàng</field>
+            <field name="code">10</field>
+            <field name="description">Khách hàng được xem sản phẩm trước khi nhận hàng.</field>
+        </record>
+        
+        <record id="ghtk_service_11" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Cho thử hàng/ đồng kiểm</field>
+            <field name="code">11</field>
+            <field name="description">Hỗ trợ người nhận kiểm đếm số lượng hoặc kiểm tra tình trạng của từng sản phẩm (không bao gồm mở niêm phong của sản phẩm), phụ phí 2,000đ/ đơn hàng.</field>
+        </record>
+        
+        <record id="ghtk_service_13" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Gọi shop khi khách không nhận hàng, không liên lạc được, sai thông tin</field>
+            <field name="code">13</field>
+            <field name="description">Nhân viên GHTK sẽ liên hệ với shop nếu gặp vấn đề như: sai thông tin người nhận, không liên lạc được, KH từ chối nhận hàng.</field>
+        </record>
+        
+        <record id="ghtk_service_17" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Giao hàng 1 phần chọn sản phẩm</field>
+            <field name="code">17</field>
+            <field name="description">Hỗ trợ khách chỉ nhận và trả tiền 1 phần hàng. Phần còn lại sẽ được trả về shop với mức phí nội tỉnh = 5.000đ/đơn, liên tỉnh = 50% phí ship.</field>
+        </record>
+        
+        <record id="ghtk_service_18" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Giao hàng 1 phần đổi trả hàng</field>
+            <field name="code">18</field>
+            <field name="description">Hỗ trợ giao 1 sản phẩm đến cho KH và mang phần hàng còn lại về cho shop. Phần hàng mang về được xem như đơn hàng trả với mức phí nội tỉnh = 5.000đ/đơn, liên tỉnh = 50% phí ship.</field>
+        </record>
+        
+        <record id="ghtk_service_19" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Không giao được thu</field>
+            <field name="code">19</field>
+            <field name="description">Hỗ trợ KH không nhận sản phẩm nhưng thu một phần phí cho shop. Phí cần thu mặc định bằng phí ship, shop có thể sửa giá trị tiền cần thu theo mong muốn của mình. Phần hàng mang về cho shop được xem như đơn hàng trả với mức phí nội tỉnh = 5.000đ/đơn, liên tỉnh = 50% phí ship. Lưu ý: Đối tác cần truyền thêm trường not_delivered_fee với giá trị 0 &lt; not_delivered_fee &lt;= 20,000,000đ.</field>
+        </record>
+        
+        <record id="ghtk_service_20" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Hàng nguyên hộp</field>
+            <field name="code">20</field>
+            <field name="description">Mặt hàng được đóng hộp của nhà sản xuất, yêu cầu được bảo quản nguyên vẹn trong quá trình vận chuyển, phụ phí 1,000đ/ đơn hàng.</field>
+        </record>
+        
+        <record id="ghtk_service_22" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Thư tín, tài liệu</field>
+            <field name="code">22</field>
+            <field name="description">Hồ sơ, tài liệu, thư từ được đóng gói cẩn thận để không làm hư hại sản phẩm.</field>
+        </record>
+        
+        <record id="ghtk_service_39" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Thực phẩm tươi</field>
+            <field name="code">39</field>
+            <field name="description">Những mặt hàng thực phẩm tươi và đông lạnh có hạn sử dụng trong ngày. Đối với những sản phẩm này nếu không giao thành công cho khách, GHTK sẽ hoàn hàng ngay trong ngày.</field>
+        </record>
+        
+        <record id="ghtk_service_40" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Hàng nhỏ</field>
+            <field name="code">40</field>
+            <field name="description">Hàng hóa có khối lượng ≤ 300gr và tổng kích thước 3 chiều ≤ 20cm. Đơn hàng nhỏ cần được đóng gói tối thiểu trong phong bì có kích thước 110x120mm.</field>
+        </record>
+        
+        <record id="ghtk_service_41" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">Hàng không xếp chồng</field>
+            <field name="code">41</field>
+            <field name="description">Hàng hóa có đặc tính dễ hư hỏng, móp méo, yêu cầu không cho phép hàng hóa khác đặt chồng lên.</field>
+        </record>
+
+        <record id="ghtk_service_42" model="ghtk.special.service">
+            <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
+            <field name="name">	Hàng yêu cầu xếp đúng chiều</field>
+            <field name="code">41</field>
+            <field name="description">Hàng hoá khi vận chuyển phải sắp đặt theo đúng phương/ chiều của sản phẩm nếu không sẽ ảnh hưởng đến tính an toàn, chất lượng của hàng hóa.</field>
+        </record>
+    </data>
+</odoo>

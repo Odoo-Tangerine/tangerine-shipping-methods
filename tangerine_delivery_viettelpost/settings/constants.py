@@ -46,7 +46,7 @@ class settings(Enum):
     order_payment_collect_money_for_goods_and_delivery = '2'
     order_payment_collect_money_for_goods = '3'
     order_payment_collect_money_for_delivery = '4'
-    paper_print = [
+    paper_size = [
         ('a5', 'A5 Paper'),
         ('a6', 'A6 Paper'),
         ('a7', 'A7 Paper')

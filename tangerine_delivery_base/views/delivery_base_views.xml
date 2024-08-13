@@ -88,50 +88,15 @@
                 >
                     <group>
                         <field name="is_locally_delivery" invisible="1"/>
-                        <group string="API Connect Information" name="delivery_api_connect_information">
-                            <label for="domain"/>
-                            <div class="o_row api_config_group">
-                                <field name="domain" widget="url"/>
-                                <button name="action_test_connection"
-                                        string="Test Connection"
-                                        icon="fa-plug"
-                                        type="object"
-                                />
-                                <button name="get_access_token"
-                                        string="Get Access Token"
-                                        icon="fa-refresh"
-                                        type="object"
-                                />
-                            </div>
-                        </group>
-                        <group name="delivery_token" string="Security Key">
-                            <field name="token_type"/>
-                            <field name="access_token" widget="CopyClipboardChar"/>
-                        </group>
-                        <group name="delivery_default_shipment" string="Default Shipment Parameter">
-                            <field name="base_weight_unit" readonly="1"/>
-                            <field name="default_promo_code"/>
-                        </group>
-                        <group name="delivery_webhook" string="Webhook">
-                            <field name="is_webhook_registered" invisible="1"/>
-                            <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
-                            <label for="is_use_authentication"/>
-                            <div class="o_row">
-                                <field name="is_use_authentication" widget="boolean_toggle"/>
-                                <button name="action_generate_access_token"
-                                        string="Generate Access Token"
-                                        icon="oi-arrow-right"
-                                        type="object"
-                                        invisible="not is_use_authentication"
-                                />
-                            </div>
-                            <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
-                        </group>
+                        <group name="delivery_api_connect_information" invisible="1"/>
+                        <group name="delivery_token" invisible="1"/>
+                        <group name="delivery_default_shipment" invisible="1"/>
+                        <group name="delivery_webhook"/>
                     </group>
                 </page>
                 <page name="route_api"
                       string="Routes"
-                      invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
+                      invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule' or not is_locally_delivery"
                 >
                     <field name="route_api_ids" mode="tree">
                         <tree editable="bottom">
@@ -168,7 +133,7 @@
                 </page>
                 <page name="delivery_status"
                       string="Status"
-                      invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
+                      invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule' or not is_locally_delivery"
                 >
                     <field name="status_ids" mode="tree">
                         <tree editable="bottom">

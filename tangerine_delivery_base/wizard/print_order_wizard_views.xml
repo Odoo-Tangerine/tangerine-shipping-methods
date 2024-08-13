@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="print_order_wizard_form_view" model="ir.ui.view">
+        <field name="name">print.order.wizard.form.view</field>
+        <field name="model">print.order.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="picking_id" invisible="1"/>
+                <field name="delivery_type" invisible="1"/>
+                <div class="oe_title">
+                    <label for="carrier_tracking_ref" string="Carrier Tracking Ref"/>
+                    <h1>
+                        <field name="carrier_tracking_ref"/>
+                    </h1>
+                </div>
+                <group><group name="carrier_form"/></group>
+                <footer>
+                    <button string="Print"
+                            type="object"
+                            name="print_order"
+                            class="btn btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="print_order_wizard_action" model="ir.actions.act_window">
+        <field name="name">Print Order Wizard</field>
+        <field name="res_model">print.order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -125,14 +125,14 @@ class URLBuilder(NamedTuple):
     @classmethod
     def to_url(cls, instance, is_unquote=None):
         url = f'{instance.host}{instance.routes}'
+        if instance.path_params:
+            url = f'{url}/{instance.path_params}'
         if instance.query_params:
             if is_unquote:
                 params = re.sub(r"'", '"', unquote_plus(instance.query_params))
             else:
                 params = re.sub(r"'", '"', instance.query_params)
-            return f'{url}?{params}'
-        if instance.path_params:
-            return f'{url}/{instance.path_params}'
+            url = f'{url}?{params}'
         return url
 
     @classmethod
@@ -141,6 +141,6 @@ class URLBuilder(NamedTuple):
             cls._define_host('host', host),
             cls._add_routes('routes', routes),
             cls._add_query_params('query_params', query_params),
-            cls._add_path_params('path_params', path_params)
+            cls._add_path_params('path_params', path_params),
         )
         return cls.to_url(instance, is_unquote)

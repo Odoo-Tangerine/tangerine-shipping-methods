@@ -5,39 +5,85 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('api_config_group')]" position='after'>
-                <field name="api_key" required="delivery_type == 'lalamove'" widget="CopyClipboardChar" invisible="delivery_type != 'lalamove'"/>
-                <field name="client_secret" required="delivery_type == 'lalamove'" widget="CopyClipboardChar" string="API Secret" invisible="delivery_type != 'lalamove'"/>
-            </xpath>
-            <xpath expr="//button[@name='get_access_token']" position="attributes">
-                <attribute name="invisible">delivery_type == 'lalamove'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='default_promo_code']" position="attributes">
-                <attribute name="invisible">delivery_type == 'lalamove'</attribute>
-            </xpath>
-            <xpath expr="//group[@name='delivery_token']" position="attributes">
-                <attribute name="invisible">delivery_type == 'lalamove'</attribute>
-            </xpath>
-            <xpath expr="//field[@name='default_promo_code']" position='after'>
-                <field name="default_lalamove_regional_id"
-                       required="delivery_type == 'lalamove'"
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
                        invisible="delivery_type != 'lalamove'"
-                />
-                <label for="default_lalamove_service_id" invisible="delivery_type != 'lalamove'"/>
-                <div class="o_row" invisible="delivery_type != 'lalamove'">
-                    <field name="default_lalamove_service_id"/>
-                    <button name="action_lalamove_sync_cities"
-                            string="Cities Synchronous"
-                            icon="fa-arrow-right"
-                            type="object"
+                       name="delivery_lalamove_api_connect_information"
+                >
+                    <label for="domain"/>
+                    <div class="o_row">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                    </div>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_lalamove_token"
+                       invisible="delivery_type != 'lalamove'"
+                       string="Security Key"
+                >
+                    <field name="api_key" required="delivery_type == 'lalamove'" widget="CopyClipboardChar"/>
+                    <field name="client_secret" required="delivery_type == 'lalamove'" widget="CopyClipboardChar" string="API Secret"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_default_shipment']" position='before'>
+                <group name="delivery_lalamove_default_shipment"
+                       invisible="delivery_type != 'lalamove'"
+                       string="Default Shipment Parameter"
+                >
+                    <field name="base_weight_unit" readonly="1"/>
+                    <field name="default_lalamove_regional_id" required="delivery_type == 'lalamove'"/>
+                    <label for="default_lalamove_service_id"/>
+                    <div class="o_row">
+                        <field name="default_lalamove_service_id"/>
+                        <button name="action_lalamove_sync_cities"
+                                string="Cities Synchronous"
+                                icon="fa-arrow-right"
+                                type="object"
+                        />
+                    </div>
+                    <field name="default_lalamove_special_service_ids"
+                           domain="lalamove_special_service_domain"
+                           widget="many2many_tags"
                     />
-                </div>
-                <field name="default_lalamove_special_service_ids"
+                    <field name="lalamove_special_service_domain" invisible="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_webhook']" position="before">
+                <group name="delivery_lalamove_webhook"
                        invisible="delivery_type != 'lalamove'"
-                       domain="lalamove_special_service_domain"
-                       widget="many2many_tags"
-                />
-                <field name="lalamove_special_service_domain" invisible="1"/>
+                       string="Webhook"
+                >
+                    <field name="is_webhook_registered" invisible="1"/>
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                        <button name="action_lalamove_update_webhook"
+                                string="Register Webhook"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="is_webhook_registered or delivery_type != 'lalamove'"
+                        />
+                        <button name="action_lalamove_update_webhook"
+                                string="Update Webhook"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_webhook_registered or delivery_type != 'lalamove'"
+                        />
+                    </div>
+                    <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
+                </group>
             </xpath>
             <xpath expr="//page[@name='delivery_status']" position='before'>
                 <page string="Services" name="lalamove_service" invisible="delivery_type != 'lalamove'">
@@ -59,20 +105,6 @@
                         </tree>
                     </field>
                 </page>
-            </xpath>
-            <xpath expr="//button[@name='action_generate_access_token']" position="after">
-                <button name="action_lalamove_update_webhook"
-                        string="Register Webhook"
-                        icon="oi-arrow-right"
-                        type="object"
-                        invisible="is_webhook_registered or delivery_type != 'lalamove'"
-                />
-                <button name="action_lalamove_update_webhook"
-                        string="Update Webhook"
-                        icon="oi-arrow-right"
-                        type="object"
-                        invisible="not is_webhook_registered or delivery_type != 'lalamove'"
-                />
             </xpath>
         </field>
     </record>

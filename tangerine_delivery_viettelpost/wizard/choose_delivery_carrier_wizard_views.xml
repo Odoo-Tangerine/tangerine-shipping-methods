@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_choose_delivery_carrier_form_with_provider_viettelpost_express" model="ir.ui.view">
-        <field name="name">view.choose.delivery.carrier.form.with.provider.viettelpost.express</field>
+    <record id="view_choose_delivery_carrier_form_with_provider_viettelpost" model="ir.ui.view">
+        <field name="name">view.choose.delivery.carrier.form.with.provider.viettelpost</field>
         <field name="model">choose.delivery.carrier</field>
         <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form" />
         <field name="arch" type="xml">

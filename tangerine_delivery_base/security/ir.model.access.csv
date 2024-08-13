@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_delivery_route_api,access_delivery_route_api,model_delivery_route_api,,1,1,1,1
 access_delivery_status,access_delivery_status,model_delivery_status,,1,1,1,1
 access_carrier_ref_order,access_carrier_ref_order,model_carrier_ref_order,,1,1,1,1
+access_print_order_wizard,access_print_order_wizard,model_print_order_wizard,,1,1,1,1
