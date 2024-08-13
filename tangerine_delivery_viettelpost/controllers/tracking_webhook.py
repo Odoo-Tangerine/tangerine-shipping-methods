@@ -17,10 +17,10 @@ class DeliveriesController(Controller):
         try:
             body = request.dispatcher.jsonrequest
             _logger.info(f'WEBHOOK VIETTELPOST START - BODY: {body}')
-            picking_id = request.env['stock.picking'].sudo().search([
+            shipment_id = request.env['carrier.ref.order'].sudo().search([
                 ('carrier_tracking_ref', '=', body.get('ORDER_NUMBER'))
             ])
-            if not picking_id:
+            if not shipment_id:
                 _logger.error(f'WEBHOOK VIETTELPOST ERROR: The delivery id {body.get("ORDER_NUMBER")} not found.')
                 return response(
                     status=status.HTTP_400_BAD_REQUEST.value,
@@ -28,7 +28,7 @@ class DeliveriesController(Controller):
                 )
             status_id = request.env['delivery.status'].sudo().search([
                 ('code', '=', body.get('ORDER_STATUS')),
-                ('provider_id', '=', picking_id.carrier_id.id)
+                ('provider_id', '=', shipment_id.picking_id.carrier_id.id)
             ])
             if not status_id:
                 _logger.error(f'WEBHOOK VIETTELPOST ERROR: The status {body.get("ORDER_STATUS")} invalid.')
@@ -36,7 +36,8 @@ class DeliveriesController(Controller):
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The status {body.get("ORDER_STATUS")} invalid.'
                 )
-            picking_id.sudo().write({'delivery_status_id': status_id.id})
+            shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
+            shipment_id.sudo().write({'real_delivery_charge': body.get('MONEY_TOTAL')})
             _logger.info(f'WEBHOOK VIETTELPOST SUCCESS: Receive order callback {body.get("deliveryID")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,
