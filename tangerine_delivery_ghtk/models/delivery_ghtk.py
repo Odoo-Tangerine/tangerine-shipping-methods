@@ -2,6 +2,7 @@
 import time
 import math
 import base64
+from datetime import datetime
 from odoo import fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.tangerine_delivery_base.settings.utils import standardization_e164, get_route_api, notification
@@ -17,7 +18,6 @@ class ProviderGHTK(models.Model):
         ('ghtk', 'GHTK')
     ], ondelete={'ghtk': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
-    default_ghtk_pick_shift = fields.Selection(settings.pick_shift.value, string='Pick Shift')
     default_ghtk_payer_type = fields.Selection(settings.payer_type.value, string='Payer')
     default_ghtk_transport_type = fields.Selection(settings.transport_type.value, string='Transport Type')
     default_ghtk_service_type = fields.Selection(settings.service_type.value, string='Service Type')
@@ -48,6 +48,15 @@ class ProviderGHTK(models.Model):
         if order.env.context.get('ghtk_service_type', 'standard') == 'standard':
             del payload['deliver_option']
         return payload
+
+    @staticmethod
+    def _ghtk_get_work_shift(hour):
+        shift = 1  # morning
+        if 12 <= hour < 18:
+            shift = 2  # afternoon
+        elif 18 <= hour < 22:
+            shift = 3  # evening
+        return shift
 
     def ghtk_rate_shipment(self, order):
         client = Client(Connection(self, get_route_api(self, settings.ghtk_estimate_order_route_code.value)))
@@ -99,10 +108,12 @@ class ProviderGHTK(models.Model):
         if picking.ghtk_service_type and picking.ghtk_service_type == 'xfast':
             payload['order']['deliver_option'] = 'xteam'
             payload['order']['pick_session'] = list(data.get('data', {}).keys())[0]
-        if picking.ghtk_pick_shift:
-            payload['pick_work_shift'] = int(picking.ghtk_pick_shift)
-        if picking.ghtk_deliver_shift:
-            payload['deliver_work_shift'] = int(picking.ghtk_deliver_shift)
+        if picking.schedule_order and picking.schedule_pickup_time_to:
+            payload['pick_date'] = picking.schedule_pickup_time_to.strftime('%Y/%m/%d')
+            payload['pick_work_shift'] = self._ghtk_get_work_shift(picking.deliver_order_date.hour)
+        if picking.deliver_order_date:
+            payload['deliver_date'] = picking.deliver_order_date.strftime('%Y/%m/%d')
+            payload['deliver_work_shift'] = self._ghtk_get_work_shift(picking.deliver_order_date.hour)
         return payload
 
     @staticmethod

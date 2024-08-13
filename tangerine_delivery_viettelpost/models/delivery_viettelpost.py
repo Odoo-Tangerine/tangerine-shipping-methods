@@ -32,7 +32,7 @@ class ProviderViettelpost(models.Model):
     default_viettelpost_service_extend_id = fields.Many2one('viettelpost.service.extend', string='Service Extend')
     default_viettelpost_paper_size = fields.Selection(settings.paper_size.value, string='Print Paper Size')
 
-    def _payload_get_token(self):
+    def _viettelpost_payload_get_token(self):
         return {
             'USERNAME': self.username,
             'PASSWORD': self.password
@@ -46,9 +46,9 @@ class ProviderViettelpost(models.Model):
             elif not self.password:
                 raise UserError(_('The field Password is required'))
             client = Client(Connection(self, get_route_api(self, settings.get_short_term_token_route.value)))
-            result = client.get_short_term_access_token(self._payload_get_token())
+            result = client.get_short_term_access_token(self._viettelpost_payload_get_token())
             client = Client(Connection(self, get_route_api(self, settings.get_long_term_token_route.value)))
-            result = client.get_long_term_access_token(self._payload_get_token(), result.get('token'))
+            result = client.get_long_term_access_token(self._viettelpost_payload_get_token(), result.get('token'))
             self.write({'access_token': result.get('token')})
             return notification('success', 'Get access token successfully')
         except Exception as e:

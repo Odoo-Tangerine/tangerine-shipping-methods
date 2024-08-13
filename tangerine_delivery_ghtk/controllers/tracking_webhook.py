@@ -11,15 +11,15 @@ _logger = logging.getLogger(__name__)
 
 class DeliveriesController(Controller):
     @authentication(settings.ghtk_code.value)
-    @route('/webhook/v1/delivery/ghtk', type='json', auth='public', methods=['POST'])
-    def ahamove_callback(self):
+    @route(['/webhook/v1/delivery/ghtk', '/webhook/v1/delivery/ghtk/<string:access_token>'], type='json', auth='public', methods=['POST'])
+    def ghtk_callback(self):
         try:
             body = request.dispatcher.jsonrequest
             _logger.info(f'WEBHOOK GHTK START - BODY: {body}')
-            picking_id = request.env['stock.picking'].sudo().search([
+            shipment_id = request.env['carrier.ref.order'].sudo().search([
                 ('carrier_tracking_ref', '=', body.get('label_id'))
             ])
-            if not picking_id:
+            if not shipment_id:
                 _logger.error(f'WEBHOOK GHTK ERROR: The delivery id {body.get("label_id")} not found.')
                 return response(
                     status=status.HTTP_400_BAD_REQUEST.value,
@@ -27,7 +27,7 @@ class DeliveriesController(Controller):
                 )
             status_id = request.env['delivery.status'].sudo().search([
                 ('code', '=', body.get('status_id')),
-                ('provider_id', '=', picking_id.carrier_id.id)
+                ('provider_id', '=', shipment_id.carrier_id.id)
             ])
             if not status_id:
                 _logger.error(f'WEBHOOK GHTK ERROR: The status {body.get("status_id")} invalid.')
@@ -35,7 +35,8 @@ class DeliveriesController(Controller):
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The status {body.get("status_id")} invalid.'
                 )
-            picking_id.sudo().write({'delivery_status_id': status_id.id})
+            shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
+            shipment_id.sudo().write({'real_delivery_charge': body.get('fee')})
             _logger.info(f'WEBHOOK GHTK SUCCESS: Receive order callback {body.get("label_id")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,

@@ -15,6 +15,8 @@ class StockPicking(models.Model):
     schedule_pickup_time_from = fields.Datetime(string='Pickup Time From', default=fields.Datetime.now)
     schedule_pickup_time_to = fields.Datetime(string='Pickup Time To')
 
+    deliver_order_date = fields.Datetime(string='Deliver Order Date', default=False)
+
     driver_name = fields.Char(string='Driver Name', readonly=True)
     driver_phone = fields.Char(string='Driver Phone', readonly=True)
     driver_license_plate = fields.Char(string='Driver License Plate', readonly=True)

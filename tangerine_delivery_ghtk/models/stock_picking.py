@@ -5,8 +5,6 @@ from ..settings.constants import settings
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    ghtk_pick_shift = fields.Selection(settings.pick_shift.value, string='Pick Shift')
-    ghtk_deliver_shift = fields.Selection(settings.deliver_shift.value, string='Deliver Shift')
     ghtk_transport_type = fields.Selection(settings.transport_type.value, string='Transport Type')
     ghtk_service_type = fields.Selection(settings.service_type.value, string='Service Type')
     ghtk_special_service_type_ids = fields.Many2many('ghtk.special.service', string='Special Service Type')
@@ -16,7 +14,6 @@ class StockPicking(models.Model):
     def _onchange_ghtk_provider(self):
         for rec in self:
             if rec.carrier_id and rec.carrier_id.delivery_type == settings.ghtk_code.value:
-                rec.ghtk_pick_shift = rec.carrier_id.default_ghtk_pick_shift
                 rec.ghtk_transport_type = rec.carrier_id.default_ghtk_transport_type
                 rec.ghtk_service_type = rec.carrier_id.default_ghtk_service_type
                 rec.ghtk_special_service_type_ids = rec.carrier_id.default_ghtk_special_service_type_ids

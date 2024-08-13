@@ -68,10 +68,11 @@
                 <field name="sale_id"/>
                 <field name="carrier_id"/>
                 <field name="carrier_tracking_ref"/>
-                <field name="delivery_charge" sum="Delivery Charge"/>
-                <field name="real_delivery_charge" sum="Real Delivery Charge"/>
+                <field name="delivery_charge" sum="Delivery Charge" widget="monetary"/>
+                <field name="real_delivery_charge" sum="Real Delivery Charge" widget="monetary"/>
                 <field name="cash_on_delivery"/>
                 <field name="delivery_status_id" widget="badge"/>
+                <field name="currency_id" invisible="1"/>
             </tree>
         </field>
     </record>
