@@ -9,10 +9,10 @@
    <div class="container">
        <div class="d-flex flex-column justify-content-center align-items-center">
            <h3 class="mb-3" style="font-size: 32px; color: #FFBD59;">
-               <span style="font-weight: 700;">Ahamove Integration</span>
+               <span style="font-weight: 700;">Giao Hang Tiet Kiem Integration</span>
            </h3>
            <p style="color: #777; font-size: 18px; letter-spacing: 1px;" class="text-center">
-                 The Ahamove Integration Module for Odoo is a powerful and seamless solution designed to streamline your logistics and delivery processes. This module connects your Odoo ERP system directly with Ahamove, enabling efficient and reliable courier services for your business operations.
+                 The Giao Hang Tiet Kiem (GHTK) Integration for Odoo is designed to connect the Odoo ERP system seamlessly with Giao Hang Tiet Kiem. This module provides features like placing orders, getting quotes, printing shipping labels, etc.
            </p>
        </div>
    </div>
@@ -62,7 +62,7 @@
             </li>
         </ul>
         <div class="tab-content mt-3">
-            <div id="features" class="tab-pane fade show active" role="tabpanel" aria-labelledby="features-tab" tabindex="0">
+            <div id="features" class="tab-pane fade show" role="tabpanel" aria-labelledby="features-tab" tabindex="0">
                 <!-- feature -->
                 <section class="mb-5">
                    <div class="container">
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Schedule Deliveries</h5>
-                                        <i>Schedule deliveries for a future date and time</i>
+                                        <i>Schedule pick and deliver for a future date and time</i>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Estimate cost delivery</h5>
-                                        <i>Retrieve delivery quotations for orders from Ahamove.</i>
+                                        <i>Retrieve delivery quotations for orders from GHTK.</i>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Cancel Order</h5>
-                                        <i>Cancel existing orders in Ahamove directly from Odoo.</i>
+                                        <i>Cancel existing orders in GHTK directly from Odoo.</i>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +123,18 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Delivery Tracking via Webhook</h5>
-                                        <i>Receive updates progress delivery of Ahamove through webhooks.</i>
+                                        <i>Receive updates progress delivery of GHTK through webhooks.</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_delivery_label.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #FFBD59; margin-bottom: 5px;">Printing Shipping Labels</h5>
+                                        <i>Print shipping labels when orders are confirmed in Odoo.</i>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +145,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Real-time Shipment Tracking</h5>
-                                        <i>Track shipments in real-time through the Ahamove Maps.</i>
+                                        <i>Track shipments in real-time through the GHTK Maps.</i>
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +156,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Dynamic APIs Configuration</h5>
-                                        <i>Configure APIs dynamically to integrate with Ahamove from UI Odoo.</i>
+                                        <i>Configure APIs dynamically to integrate with GHTK from UI Odoo.</i>
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +216,7 @@
                     </div>
                 </section>
             </div>
-            <div id="guidelines" class="tab-pane fade show" role="tabpanel" tabindex="0" aria-labelledby="guidelines-tab">
+            <div id="guidelines" class="tab-pane fade show active" role="tabpanel" tabindex="0" aria-labelledby="guidelines-tab">
                 <section class="mb-5">
                     <div class="container">
                         <div class="mb-4">
@@ -216,69 +227,66 @@
                                     <li>Download <span style="font-weight: 700;">Vietnam Address Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_address_base" title="Base Vietnam Address module" target="_blank">here</a></li>
                                     <li>Download <span style="font-weight: 700;">Shipping Methods Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_base" title="Shipping Methods Base module" target="_blank">here</a></li>
                                 </ul>
-                                <p>- Install module Ahamove Integration</p>
+                                <p>- Install module Giao Hang Tiet Kiem Integration</p>
                                 <img alt="Install module" class="rounded shadow-lg bg-body mb-3" src="./images/install_module.png" style="height: auto; width: 100%" />
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>II. Configuration Ahamove shipping method</h4>
+                            <h4>II. Configuration GHTK shipping method</h4>
                             <div class="px-3">
-                                <p>- In this section, we will proceed to set the parameters and connect to Ahamove Server to get the access token. This access token will help authenticate API connections with the Ahamove Server. </p>
-                                <p><span style="font-weight: 700;">Step 1: </span>Go to: Inventory/Configuration/Delivery/Shipping Methods/Ahamove/Integrated Configuration Tab</p>
+                                <p>- In this section, we will proceed to set the parameters and connect to GHTK Server to get the access token. This access token will help authenticate API connections with the GHTK Server. </p>
+                                <p><span style="font-weight: 700;">Step 1: </span>Go to: Inventory/Configuration/Delivery/Shipping Methods/GHTK/Integrated Configuration Tab</p>
                                 <img alt="Dashboard" class="rounded shadow-lg bg-body mb-3" src="./images/dashboard.png" style="height: auto; width: 100%" />
-                                <p><span style="font-weight: 700;">Step 2: </span> Input:</p>
-                                <ul>
-                                    <li>Partner Name</li>
-                                    <li>Partner Phone</li>
-                                    <li>API Key</li>
-                                </ul>
+                                <p><span style="font-weight: 700;">Step 2: </span> Input API Key:</p>
                                 <div class="alert alert-primary" role="alert">
                                     <h4 class="alert-heading">
                                         <i class="fa fa-lightbulb-o"></i>
                                         <span style="font-weight: 700;">Tips</span>
                                     </h4>
                                     <p>
-                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Test Connection" src="./images/button_test_connection.png" style="height: auto; width: 10%" /> to check the connection status to the Ahamove server
+                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Test Connection" src="./images/button_test_connection.png" style="height: auto; width: 10%" /> to check the connection status to the GHTK server
                                     </p>
                                     <p>
-                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Test Connection" src="./images/button_switch_env.png" style="height: auto; width: 10%" /> to switch to a production environment or vice versa (development environment)
+                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Switch Env" src="./images/button_switch_env.png" style="height: auto; width: 10%" /> to switch to a production environment or vice versa (development environment)
                                     </p>
                                 </div>
                                 <p><span style="font-weight: 700;">Step 3: </span>Click on button <img alt="Button Get Token" src="./images/button_get_token.png" style="height: auto; width: 10%" /></p>
-                                <img alt="Configuration Ahamove" class="rounded shadow-lg bg-body mb-3" src="./images/ahamove_config.png" style="height: auto; width: 100%" />
+                                <img alt="Configuration GHTK" class="rounded shadow-lg bg-body mb-3" src="./images/ghtk_config.png" style="height: auto; width: 100%" />
                                 <p><span style="font-weight: 700;">Step 4:</span> Configure default parameters for delivery orders</p>
-                                <p><span style="font-weight: 700;">- Weight Unit:</span> The unit of measure for your shipment. You don't need to change it because Ahamove does not require passing this parameter</p>
-                                <p><span style="font-weight: 700;">- Promo Code:</span> Ahamove will give you this promotion code</p>
-                                <p><span style="font-weight: 700;">- Service Type:</span> This field will determine what type of service for your delivery order</p>
-                                <p><span style="font-weight: 700;">- Request Type:</span> This field will identify the type of special request for your delivery order</p>
-                                <p><span style="font-weight: 700;">- Payment Method:</span> The payment method you want to use</p>
-                                <p><span style="font-weight: 700;">Step 5:</span> Configure a webhook to track orders called from the Ahamove system</p>
-                                <p>- Activate "Authentication Use". Then click the <img alt="Button Get Token" src="./images/button_gen_access_token.png" style="height: auto; width: 10%" /> button to get the access token code. If you do not want to use protection for your Odoo system. You can skip this step.</p>
-                                <p>- Go to <a href="https://partnerstg.ahamove.com" title="See Details" target="_blank">Ahamove portal</a></p>
-                                <p>- Navigate: Integrated accounts</p>
+                                <p><span style="font-weight: 700;">- Weight Unit:</span> The unit of measure for your shipment. You don't need to change it because GHTK does not require passing this parameter</p>
+                                <p><span style="font-weight: 700;">- Payer:</span> This field determines whether the sender or recipient will pay for the delivery</p>
+                                <p><span style="font-weight: 700;">- Transport Type:</span> The transport type of the order, there are 2 types of transport:</p>
                                 <ul>
-                                    <li>Click on button <span style="font-weight: 700;">[Update]</span></li>
-                                    <li>Copy the field <span style="font-weight: 700;">[Webhook URL]</span> from Odoo and paste it to the field <span style="font-weight: 700;">[Webhook URL]</span></li>
-                                    <li>Copy the field <span style="font-weight: 700;">[Access Token]</span> from Odoo and paste it to the field <span style="font-weight: 700;">[Auth Token]</span></li>
+                                    <li>Road</li>
+                                    <li>Fly</li>
                                 </ul>
-                                <img alt="Config webhook" class="rounded shadow-lg bg-body mb-3" src="./images/config_webhook.png" style="height: auto; width: 100%" />
-                                <p><span style="font-weight: 700;">Step 6:</span> When there is an endpoint change from Ahamove's system, rest assured, that it won't take you much time to edit it.</p>
+                                <p><span style="font-weight: 700;">- Service Type:</span> the service type of the order, there are 2 types of service:</p>
+                                <ul>
+                                    <li>Standard</li>
+                                    <li>XFast</li>
+                                </ul>
+                                <p><span style="font-weight: 700;">- Special Service Type:</span> The special service for your order may incur additional costs.</p>
+                                <p><span style="font-weight: 700;">- Print Layout:</span> It's used for functions in label delivery, there are 2 types of layout:</p>
+                                <ul>
+                                    <li>Landscape</li>
+                                    <li>Portrait</li>
+                                </ul>
+                                <p><span style="font-weight: 700;">- Paper Size:</span> It's used for functions in label delivery, there are 2 types of paper size:</p>
+                                <ul>
+                                    <li>A5</li>
+                                    <li>A6</li>
+                                </ul>
+                                <p><span style="font-weight: 700;">Step 5:</span> Configure a webhook to track orders called from the GHTK system</p>
+                                <p>- Activate "Authentication Use". Then click the <img alt="Button Get Token" src="./images/button_gen_access_token.png" style="height: auto; width: 10%" /> button to get the access token code. If you do not want to use protection for your Odoo system. You can skip this step.</p>
+                                <p>- After setting the webhook information, please contact and send information to the GHTK support team to apply.</p>
+                                <p><span style="font-weight: 700;">Step 6:</span> When there is an endpoint change from GHTK's system, rest assured, that it won't take you much time to edit it.</p>
                                 <p>- Navigate <span style="font-weight: 700;">Routes</span> Tab, Here you can edit basic information for your restful API such as methods, headers, path, etc,</p>
                                 <img alt="Route APIs" class="rounded shadow-lg bg-body mb-3" src="./images/route_apis.png" style="height: auto; width: 100%" />
-                                <p><span style="font-weight: 700;">Finally</span>, Congrats, you have successfully configured the necessary components to connect to the Ahamove system.</p>
+                                <p><span style="font-weight: 700;">Finally</span>, Congrats, you have successfully configured the necessary components to connect to the GHTK system.</p>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>III. Service synchronization and special requests</h4>
-                            <div class="px-3">
-                                <p><span style="font-weight: 700;">Step 1: </span>Go to: Inventory/Configuration/Warehouses</p>
-                                <img alt="Configuration Ahamove" class="rounded shadow-lg bg-body mb-3" src="./images/sync_service.png" style="height: auto; width: 100%" />
-                                <p>Click on Button <img alt="Button Sync Service" src="./images/button_sync_service.png" style="height: auto; width: 10%" /></p>
-                                <p><span style="font-weight: 700;">Finally, </span>Congrats, you've service synchronization and special requests.</p>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <h4>IV. Create your first customer</h4>
+                            <h4>III. Create your first customer</h4>
                             <div class="px-3">
                                 <p><span style="font-weight: 700;">Step 1: </span>Go to: Contacts/Create</p>
                                 <p>This information is required</p>
@@ -295,23 +303,24 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>V. Estimation cost delivery</h4>
+                            <h4>IV. Estimation cost delivery</h4>
                             <div class="px-3">
                                 <p>- After creating your first customer. In this section, we will estimate the shipping costs for your sales order.</p>
                                 <p><span style="font-weight: 700;">Step 1: </span>Go to: Sales, Create a new sale order</p>
                                 <p><span style="font-weight: 700;">Step 2: </span>Click on button <img alt="Button Add Shipping" src="./images/button_add_shipping.png" style="height: auto; max-width: 5%" /> to open pop up <span style="font-weight: 700;">Add a shipping method</span></p>
                                 <img alt="Sale Order" class="rounded shadow-lg bg-body mb-3" src="./images/sale_order.png" style="height: auto; width: 100%" />
-                                <p><span style="font-weight: 700;">Step 3: </span>Choose Shipping Method, Service, Request Type</p>
-                                <p><span style="font-weight: 700;">Step 4: </span>Click on button <img alt="Button Get Rate" src="./images/button_get_rate.png" style="height: auto; max-width: 5%" /> to get estimated cost from Ahamove provider</p>
-                                <p><span style="font-weight: 700;">Step 5: </span>Click on button <img alt="Button Add Rate" src="./images/button_add_rate.png" style="height: auto; max-width: 3%" /> to confirm add cost to the sale order</p>
                                 <img alt="Add Shipping Method Popup" class="rounded shadow-lg bg-body mb-3" src="./images/popup_est_cost.png" style="height: auto; width: 100%" />
+                                <p><span style="font-weight: 700;">Step 3: </span>Choose Shipping Method, Transport Type, Service Type, Special Service Type</p>
+                                <p><span style="font-weight: 700;">Step 4: </span>Click on button <img alt="Button Get Rate" src="./images/button_get_rate.png" style="height: auto; max-width: 5%" /> to get estimated cost from GHTK carrier</p>
+                                <p><span style="font-weight: 700;">Step 5: </span>Click on button <img alt="Button Add Rate" src="./images/button_add_rate.png" style="height: auto; max-width: 3%" /> to confirm add cost to the sale order</p>
+                                <img alt="Result Est Cost" class="rounded shadow-lg bg-body mb-3" src="./images/result_est_cost.png" style="height: auto; width: 100%" />
                                 <p><span style="font-weight: 700;">Finally</span>, You have successfully estimated the shipping costs for your sales order</p>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>VI. Booking delivery order</h4>
+                            <h4>V. Booking delivery order</h4>
                             <div class="px-3">
-                                <p>- Once the cost has been estimated and confirmed by your customer. We will proceed to create a delivery order with the Ahamove provider.</p>
+                                <p>- Once the cost has been estimated and confirmed by your customer. We will proceed to create a delivery order with the GHTK carrier.</p>
                                 <p><span style="font-weight: 700;">Step 1: </span>Go to: Inventory/Delivery Orders/Choose Delivery Order/Additional Info Tab</p>
                                 <p><span style="font-weight: 700;">Step 2: </span>Choose information of delivery order</p>
                                 <p><span style="font-weight: 700;">Step 3: </span>Click on button <img alt="Button Validate DO" src="./images/button_validate_do.png" style="height: auto; max-width: 5%" />.The system will validate the picking and automatically book the order</p>
@@ -331,12 +340,41 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>VII. Cancel delivery order</h4>
+                            <h4>VI. Cancel delivery order</h4>
                             <div class="px-3">
                                 <img alt="Booking Order Successfully" class="rounded shadow-lg bg-body mb-3" src="./images/booking_success.png" style="height: auto; width: 100%">
                                 <p>
                                     <span style="font-weight: 700;">Click on button</span> <img alt="Button Cancel" src="./images/button_cancel_order.png" style="height: auto; width: 10%" /> to cancel the delivery order.
                                 </p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4>VII. Printing Delivery Labels</h4>
+                            <div class="px-3">
+                                <img alt="Delivery Order" class="rounded shadow-lg bg-body mb-3" src="./images/booking_success.png" style="height: auto; width: 100%">
+                                <p>Click on button <img alt="Button Print Order" src="./images/button_print_order.png" style="height: auto; max-width: 5%" /> to print order of GHTK</p>
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-lightbulb-o"></i>
+                                        <span style="font-weight: 700;">Warning</span>
+                                    </h4>
+                                    <p>
+                                        If you do not configure default parameters for the <span style="font-weight: 700;">"Print Layout"</span> and <span style="font-weight: 700;">"Paper Size"</span> field in section <span style="font-weight: 700;">"II. Configuration GHTK shipping method".</span> Then you will have to choose the paper type for each print
+                                    </p>
+                                    <img alt="Print Order Wizard" class="rounded shadow-lg bg-body mb-3" src="./images/print_order_wizard.png" style="height: auto; width: 100%">
+                                </div>
+                                <p><span style="font-weight: 700;">There are 3 types of printing paper:</span></p>
+                                <ul>
+                                    <li><span style="font-weight: 700;">Paper size: A5 and Layout: Portrait</span></li>
+                                    <img alt="Print Paper A5" class="rounded shadow-lg bg-body mb-3" src="./images/printa5_portrait.png" style="height: auto; width: 100%">
+                                    <li><span style="font-weight: 700;">Paper size: A5 and Layout: Landscape</span></li>
+                                    <img alt="Print Paper A6" class="rounded shadow-lg bg-body mb-3" src="./images/printa5_landscape.png" style="height: auto; width: 100%">
+                                    <li><span style="font-weight: 700;">Paper size: A6 and Layout: Portrait</span></li>
+                                    <img alt="Print Paper A7" class="rounded shadow-lg bg-body mb-3" src="./images/printa6_portrait.png" style="height: auto; width: 100%">
+                                    <li><span style="font-weight: 700;">Paper size: A6 and Layout: Landscape</span></li>
+                                    <img alt="Print Paper A7" class="rounded shadow-lg bg-body mb-3" src="./images/printa6_landscape.png" style="height: auto; width: 100%">
+                                </ul>
+                                <p><span style="font-weight: 700;">Finally, </span>Congrats, you've print order successfully.</p>
                             </div>
                         </div>
                         <div class="mb-4">
@@ -361,7 +399,7 @@
                     </ul>
                 </div>
             </div>
-            <div id="contact" class="tab-pane fade show active" role="tabpanel" aria-labelledby="contact-tab">
+            <div id="contact" class="tab-pane fade show" role="tabpanel" aria-labelledby="contact-tab">
                 <section class="mb-5">
                     <div class="container">
                         <div class="d-flex flex-column justify-content-center align-items-center">
@@ -395,18 +433,6 @@
                         </div>
                     </div>
                 </section>
-
-                <div class="text-center mb-3">
-                    <a href="mailto:odoo.tangerine@gmail.com" target="_blank" style="color:#091E42; display:inline-block; padding:13px 30px; border:1px solid #0074ff; border-radius:10px" class="mx-1 mb-3 deep-1 deep_hover">
-                        <span class="fa fa-envelope-o mr-2" style="color:#0074ff; font-size:20px; vertical-align:middle"></span>
-                    </a>
-                    <a href="skype:live:.cid.219379873c9199d1?chat" target="_blank" style="color:#091E42; display:inline-block; padding:13px 30px; border:1px solid #0074ff; border-radius:10px" class="mx-1 mb-3 deep-1 deep_hover">
-                        <span class="fa fa-skype mr-2" style="color:#0074ff; font-size:20px; vertical-align:middle"></span>
-                    </a>
-                    <a href="https://linkedin.com/in/long-duong-nhat-738208249" target="_blank" style="color:#091E42; display:inline-block; padding:13px 30px; border:1px solid #0074ff; border-radius:10px" class="mx-1 mb-3 deep-1 deep_hover">
-                        <span class="fa fa-linkedin mr-2" style="color:#0074ff; font-size:20px; vertical-align:middle"></span>
-                    </a>
-                </div>
             </div>
         </div>
     </div>

@@ -22,8 +22,10 @@ class DeliveriesController(Controller):
                     status=status.HTTP_422_UNPROCESSABLE_ENTITY.value,
                     message=f'The delivery id is required.'
                 )
-            picking_id = request.env['stock.picking'].sudo().search([('carrier_tracking_ref', '=', order_id)])
-            if not picking_id:
+            shipment_id = request.env['carrier.ref.order'].sudo().search([
+                ('carrier_tracking_ref', '=', order_id)
+            ])
+            if not shipment_id:
                 _logger.error(f'WEBHOOK LALAMOVE ERROR: The delivery id {order_id} not found.')
                 return response(
                     status=status.HTTP_400_BAD_REQUEST.value,
@@ -40,7 +42,7 @@ class DeliveriesController(Controller):
                     )
                 status_id = request.env['delivery.status'].sudo().search([
                     ('code', '=', deliver_status),
-                    ('provider_id', '=', picking_id.carrier_id.id)
+                    ('provider_id', '=', shipment_id.picking_id.carrier_id.id)
                 ])
                 if not status_id:
                     _logger.error(f'WEBHOOK LALAMOVE ERROR: The status {status} invalid.')
@@ -49,7 +51,7 @@ class DeliveriesController(Controller):
                         message=f'The status {deliver_status} invalid.'
                     )
                 payload = {'delivery_status_id': status_id.id}
-                if not picking_id.lalamove_tracking_link and body.get('data').get('order').get('shareLink'):
+                if not shipment_id.picking_id.lalamove_tracking_link and body.get('data').get('order').get('shareLink'):
                     payload.update({'lalamove_tracking_link': body.get('data').get('order').get('shareLink')})
             if body.get('eventType') == settings.webhook_driver_assigned.value:
                 if body.get('data').get('driver'):
@@ -58,8 +60,10 @@ class DeliveriesController(Controller):
                         'driver_phone': body.get('data').get('driver').get('phone'),
                         'driver_license_plate': body.get('data').get('driver').get('plateNumber')
                     })
+            if body.get('eventType') == settings.webhook_order_amount_changed.value:
+                shipment_id.sudo().write({'real_delivery_charge': body.get('data').get('balance').get('amount')})
             if payload:
-                picking_id.sudo().write(payload)
+                shipment_id.picking_id.sudo().write(payload)
             _logger.info(f'WEBHOOK LALAMOVE SUCCESS: Receive order callback {order_id} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,

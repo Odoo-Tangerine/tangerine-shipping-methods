@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Giao Hang Tiet Kiem Integration',
-    'summary': """Delivering the perfect solution for all your shipping needs with groundbreaking technology — all in a single app Giao Hang Tiet Kiem Integration.""",
+    'summary': """The GHTK Integration for Odoo is designed to connect the Odoo ERP system seamlessly with Giao Hang Tiet Kiem. This module provides features like placing orders, getting quotes, printing shipping labels, etc.""",
     'author': 'Long Duong Nhat',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',
