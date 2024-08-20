@@ -1,3 +1,4 @@
+import math
 import logging
 from odoo.tools import ustr
 from odoo.http import request, Controller, route
@@ -25,6 +26,13 @@ class DeliveriesController(Controller):
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The delivery id {body.get("label_id")} not found.'
                 )
+            if shipment_id.delivery_status_id.code in settings.block_webhook_change_status.value:
+                _logger.error(
+                    f'WEBHOOK GHTK ERROR: The delivery order {shipment_id.carrier_tracking_ref} is blocked')
+                return response(
+                    status=status.HTTP_400_BAD_REQUEST.value,
+                    message=f'The delivery order {shipment_id.carrier_tracking_ref} is blocked.'
+                )
             status_id = request.env['delivery.status'].sudo().search([
                 ('code', '=', body.get('status_id')),
                 ('provider_id', '=', shipment_id.carrier_id.id)
@@ -36,7 +44,10 @@ class DeliveriesController(Controller):
                     message=f'The status {body.get("status_id")} invalid.'
                 )
             shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
-            shipment_id.sudo().write({'real_delivery_charge': body.get('fee')})
+            shipment_id.sudo().write({
+                'real_delivery_charge': body.get('fee'),
+                'real_weight': math.ceil(shipment_id.carrier_id.convert_weight(body.get('weight'), shipment_id.weight_unit))
+            })
             _logger.info(f'WEBHOOK GHTK SUCCESS: Receive order callback {body.get("label_id")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,

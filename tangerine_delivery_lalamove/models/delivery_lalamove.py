@@ -79,10 +79,10 @@ class ProviderGrab(models.Model):
     def lalamove_rate_shipment(self, order):
         client = Client(Connection(self, get_route_api(self, settings.llm_get_quotation_code.value)))
         result = client.get_quotation(self._llm_payload_get_quotation_mode_order(order))
-        if result.get('data'):
+        if result.get('priceBreakdown') and result.get('priceBreakdown').get('total'):
             return {
                 'success': True,
-                'price': result.get('data').get('priceBreakdown').get('total') if result.get('data') else 0.0,
+                'price': result.get('priceBreakdown').get('total'),
                 'error_message': False,
                 'warning_message': False,
                 'llm_quotation_data': json.dumps(result)
@@ -133,20 +133,20 @@ class ProviderGrab(models.Model):
             quotation_data = client.get_quotation(self._llm_payload_get_quotation_mode_picking(picking))
         else:
             quotation_data = json.loads(line_delivery[-1].lalamove_quotation_data)
-            if quotation_data.get('data') and rfc3339_to_datetime(quotation_data.get('data').get('expiresAt')) < datetime.now():
+            if quotation_data and rfc3339_to_datetime(quotation_data.get('expiresAt')) < datetime.now():
                 quotation_data = client.get_quotation(self._llm_payload_get_quotation_mode_picking(picking))
         sender_id = picking.picking_type_id.warehouse_id.partner_id
         return {
             'data': {
-                'quotationId': quotation_data.get('data').get('quotationId'),
+                'quotationId': quotation_data.get('quotationId'),
                 'sender': {
-                    'stopId': quotation_data.get('data').get('stops')[0].get('stopId'),
+                    'stopId': quotation_data.get('stops')[0].get('stopId'),
                     'name': sender_id.name,
                     'phone': f'+{standardization_e164(sender_id.mobile or sender_id.phone)}',
                 },
                 'recipients': [
                     {
-                        'stopId': quotation_data.get('data').get('stops')[1].get('stopId'),
+                        'stopId': quotation_data.get('stops')[1].get('stopId'),
                         'name': picking.partner_id.name,
                         'phone': f'+{standardization_e164(picking.partner_id.mobile or picking.partner_id.phone)}',
                         'remarks': picking.remarks or ''
@@ -156,19 +156,38 @@ class ProviderGrab(models.Model):
             }
         }
 
+    @staticmethod
+    def _lalamove_payload_carrier_ref_order(picking):
+        return {
+            'is_lalamove_goods_fragile': picking.is_lalamove_goods_fragile,
+            'lalamove_service_id': picking.lalamove_service_id.id,
+            'lalamove_special_service_ids': picking.lalamove_special_service_ids.ids
+        }
+
     def lalamove_send_shipping(self, pickings):
         client = Client(Connection(self, get_route_api(self, settings.llm_place_order_code.value)))
         for picking in pickings:
+            ref_id = self.env['carrier.ref.order'].search([('picking_id', '=', picking.id)])
+            if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
+                raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
             result = client.place_order(self._llm_payload_place_order(picking))
             status_id = self.env.ref('tangerine_delivery_lalamove.lalamove_status_assigning_driver')
             picking.write({
                 'delivery_status_id': status_id.id if status_id else False,
-                'lalamove_tracking_link': result.get('data').get('shareLink')
+                'lalamove_tracking_link': result.get('shareLink')
             })
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].create({
+                **self.common_payload_carrier_ref_order(
+                    picking,
+                    status_id,
+                    float(result.get('priceBreakdown').get('total')),
+                    result.get('orderId')
+                ),
+                **self._lalamove_payload_carrier_ref_order(picking)
+            })
             return [{
-                'exact_price': float(result.get('data').get('priceBreakdown').get('total')),
-                'tracking_number': result.get('data').get('orderId')
+                'exact_price': float(result.get('priceBreakdown').get('total')),
+                'tracking_number': result.get('orderId')
             }]
 
     def lalamove_cancel_shipment(self, picking):

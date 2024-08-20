@@ -31,6 +31,13 @@ class DeliveriesController(Controller):
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The delivery id {order_id} not found.'
                 )
+            if shipment_id.delivery_status_id.code in settings.block_webhook_change_status.value:
+                _logger.error(
+                    f'WEBHOOK LALAMOVE ERROR: The delivery order {shipment_id.carrier_tracking_ref} is blocked')
+                return response(
+                    status=status.HTTP_400_BAD_REQUEST.value,
+                    message=f'The delivery order {shipment_id.carrier_tracking_ref} is blocked.'
+                )
             payload = {}
             if body.get('eventType') == settings.webhook_order_status_changed.value:
                 if body.get('data') and body.get('data').get('order') and body.get('data').get('order').get('status'):
@@ -53,6 +60,7 @@ class DeliveriesController(Controller):
                 payload = {'delivery_status_id': status_id.id}
                 if not shipment_id.picking_id.lalamove_tracking_link and body.get('data').get('order').get('shareLink'):
                     payload.update({'lalamove_tracking_link': body.get('data').get('order').get('shareLink')})
+                shipment_id.picking_id.sudo().write(payload)
             if body.get('eventType') == settings.webhook_driver_assigned.value:
                 if body.get('data').get('driver'):
                     payload.update({
@@ -61,9 +69,10 @@ class DeliveriesController(Controller):
                         'driver_license_plate': body.get('data').get('driver').get('plateNumber')
                     })
             if body.get('eventType') == settings.webhook_order_amount_changed.value:
-                shipment_id.sudo().write({'real_delivery_charge': body.get('data').get('balance').get('amount')})
+                payload.update({'real_delivery_charge': body.get('data').get('balance').get('amount')})
             if payload:
-                shipment_id.picking_id.sudo().write(payload)
+                payload.pop('lalamove_tracking_link', None)
+                shipment_id.sudo().write(payload)
             _logger.info(f'WEBHOOK LALAMOVE SUCCESS: Receive order callback {order_id} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,

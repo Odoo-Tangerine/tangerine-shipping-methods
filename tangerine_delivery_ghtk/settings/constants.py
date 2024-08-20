@@ -36,6 +36,7 @@ class settings(Enum):
     ]
 
     default_service_type = 'xfast'
+    fast_server_key = 'xfast'
 
     pick_shift = [
         ('1', 'Morning'),
@@ -58,3 +59,6 @@ class settings(Enum):
         ('A5', 'A5'),
         ('A6', 'A6')
     ]
+
+    allow_booking_status = ['-1', '5', '9', '11']
+    block_webhook_change_status = ['-1', '5', '9', '11']

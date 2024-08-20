@@ -5,7 +5,7 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='delivery_driver_data']" position="before">
+            <xpath expr="//group[@name='external_delivery_data']" position="before">
                 <group name='delivery_lalamove_data'
                        invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'lalamove' or lalamove_got_quotation"
                        string="Lalamove Shipping Information"

@@ -54,5 +54,4 @@ class settings(Enum):
     default_paper_print = 'a5'
     default_service_type = 'VCN'
 
-    list_status_cancellation_allowed = ['IN_DELIVERY', 'FAILED', 'CANCELED', 'COMPLETED']
-    status_completed = 'COMPLETED'
+    allow_booking_status = ['101', '107', '501', '503', '504', '507', '515', '510']

@@ -57,5 +57,7 @@ class settings(Enum):
     default_cod_type = 'REGULAR'
 
     list_status_cancellation_allowed = ['IN_DELIVERY', 'FAILED', 'CANCELED', 'COMPLETED']
-    list_status_booking_blocked = ['IN_DELIVERY', 'QUEUEING', 'ALLOCATING', 'PENDING_PICKUP', 'PICKING_UP', 'PENDING_DROP_OFF']
+    allow_booking_status = ['COMPLETED', 'FAILED', 'CANCELED', 'RETURNED']
+    block_webhook_change_status = ['COMPLETED', 'FAILED', 'CANCELED', 'RETURNED']
     status_completed = 'COMPLETED'
+

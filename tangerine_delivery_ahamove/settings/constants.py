@@ -26,7 +26,8 @@ class settings(Enum):
     request_group_bulky = 'BULKY'
     request_group_tip = 'TIP'
     default_tier = 'TIER_1'
-    list_status_cancellation_allowed = ['ASSIGNING', 'ACCEPTED', 'CONFIRMING', 'PAYING', 'IDLE']
     status_completed = 'COMPLETED'
     cancel_reason = 'Merchant asks for order cancellation'
     cancel_reason_code = 'partner_merchant_asks_for_order_cancellation'
+    allow_booking_status = ['COMPLETED', 'CANCELLED']
+    block_webhook_change_status = ['COMPLETED', 'CANCELLED', 'RETURNED']

@@ -69,7 +69,6 @@ class ProviderAhamove(models.Model):
         elif not ahamove_service:
             ahamove_service = f'{warehouse_id.partner_id.state_id.ahamove_city_code}-BIKE'
         payload = {
-            'token': self.access_token,
             'service_id': ahamove_service,
             'items': [{
                 'name': line.product_id.name,
@@ -110,7 +109,6 @@ class ProviderAhamove(models.Model):
     def _ahamove_param_create_order(self, picking):
         sender_id = picking.picking_type_id.warehouse_id.partner_id
         payload = {
-            'token': self.access_token,
             'order_time': 0,
             'path': [
                 {
@@ -158,23 +156,42 @@ class ProviderAhamove(models.Model):
                 payload.update({'requests': requests})
         return payload
 
+    @staticmethod
+    def _ahamove_payload_carrier_ref_order(picking):
+        return {
+            'ahamove_service_id': picking.ahamove_service_id.id,
+            'ahamove_service_request_ids': picking.ahamove_service_request_ids.ids,
+            'ahamove_payment_method': picking.ahamove_payment_method,
+        }
+
     def ahamove_send_shipping(self, pickings):
         client = Client(Connection(self, get_route_api(self, settings.create_order_route_code.value)))
         for picking in pickings:
+            ref_id = self.env['carrier.ref.order'].search([('picking_id', '=', picking.id)])
+            if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
+                raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
             result = client.create_order(self._ahamove_param_create_order(picking))
             status_id = self.env.ref(
                 'tangerine_delivery_ahamove.ahamove_idle_status') if picking.schedule_order else self.env.ref(
                 'tangerine_delivery_ahamove.ahamove_assigning_status')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].sudo().create({
+                **self.common_payload_carrier_ref_order(
+                    picking,
+                    status_id,
+                    result.get('order').get('total_price'),
+                    result.get('order_id')
+                ),
+                **self._ahamove_payload_carrier_ref_order(picking)
+            })
             return [{
                 'exact_price': result.get('order').get('total_price'),
                 'tracking_number': result.get('order_id')
             }]
 
-    def _ahamove_param_cancel_shipment(self, order):
+    @staticmethod
+    def _ahamove_param_cancel_shipment(order):
         return {
-            'token': self.access_token,
             'order_id': order,
             'comment': settings.cancel_reason.value,
             'cancel_code': settings.cancel_reason_code.value

@@ -130,17 +130,37 @@ class ProviderGHTK(models.Model):
         }
         return payload
 
+    @staticmethod
+    def _ghtk_payload_carrier_ref_order(picking):
+        return {
+            'ghtk_transport_type': picking.ghtk_transport_type,
+            'ghtk_service_type': picking.ghtk_service_type,
+            'ghtk_special_service_type_ids': picking.ghtk_special_service_type_ids.ids,
+            'ghtk_payer_type': picking.ghtk_payer_type
+        }
+
     def ghtk_send_shipping(self, pickings):
         data = {}
         for picking in pickings:
-            if picking.ghtk_service_type == 'xfast':
+            ref_id = self.env['carrier.ref.order'].search([('picking_id', '=', picking.id)])
+            if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
+                raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
+            if picking.ghtk_service_type == settings.fast_server_key.value:
                 client = Client(Connection(self, get_route_api(self, settings.ghtk_check_xfast_service_route_code.value)))
                 data = client.check_available_xfast_service(self._ghtk_check_available_xfast_service(picking))
             client = Client(Connection(self, get_route_api(self, settings.ghtk_create_order_route_code.value)))
             result = client.create_order(self._ghtk_payload_create_order(picking, data))
             status_id = self.env.ref('tangerine_delivery_ghtk.ghtk_status_2')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].create({
+                **self.common_payload_carrier_ref_order(
+                    picking,
+                    status_id,
+                    result.get('order').get('fee'),
+                    result.get('order').get('label')
+                ),
+                **self._ghtk_payload_carrier_ref_order(picking)
+            })
             return [{
                 'exact_price': result.get('order').get('fee'),
                 'tracking_number': result.get('order').get('label')
