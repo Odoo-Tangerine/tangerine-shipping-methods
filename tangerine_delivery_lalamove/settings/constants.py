@@ -20,3 +20,5 @@ class settings(Enum):
     webhook_order_status_changed = 'ORDER_STATUS_CHANGED'
     webhook_driver_assigned = 'DRIVER_ASSIGNED'
     webhook_order_amount_changed = 'ORDER_AMOUNT_CHANGED'
+    allow_booking_status = ['CANCELED', 'COMPLETED', 'REJECTED', 'EXPIRED']
+    block_webhook_change_status = ['CANCELED', 'COMPLETED', 'REJECTED', 'EXPIRED']

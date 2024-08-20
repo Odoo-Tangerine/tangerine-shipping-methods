@@ -21,6 +21,7 @@
         'views/stock_picking_views.xml',
         'views/ahamove_service_views.xml',
         'views/ahamove_service_request_views.xml',
+        'views/carrier_ref_order_views.xml',
     ],
     'images': ['static/description/thumbnail.png'],
     'license': 'OPL-1',

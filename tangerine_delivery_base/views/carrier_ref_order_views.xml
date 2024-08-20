@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <form create="0" write="0" delete="0">
                 <sheet>
+                    <field name="currency_id" invisible="1"/>
                     <div class="oe_title">
                         <label for="carrier_tracking_ref" string="Carrier Tracking Ref"/>
                         <h1>
@@ -14,42 +15,10 @@
                     </div>
                     <field name="delivery_type" invisible="1"/>
                     <group string="Shipment Information">
-                        <group>
-                            <field name="picking_id"/>
-                            <field name="sale_id"/>
-                            <field name="carrier_id"/>
-                            <label for="cash_on_delivery"/>
-                            <div class="o_row">
-                                <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
-                                <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
-                            </div>
-                        </group>
-                        <group>
-                            <field name="delivery_charge"/>
-                            <field name="real_delivery_charge"/>
-                            <field name="delivery_status_id"/>
-                            <field name="promo_code"/>
-                            <label for="schedule_order" name="o_label_schedule_order"/>
-                            <div class="o_row" name="o_schedule_order">
-                                <field name="schedule_order" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
-                                <strong invisible="not schedule_order">From:</strong>
-                                <field name="schedule_pickup_time_from"
-                                       invisible="not schedule_order"
-                                       required="schedule_order"
-                                       readonly="carrier_tracking_ref"
-                                />
-                                <strong invisible="not schedule_order">To:</strong>
-                                <field name="schedule_pickup_time_to"
-                                       invisible="not schedule_order"
-                                       required="schedule_order"
-                                       readonly="carrier_tracking_ref"
-                                />
-                            </div>
-                            <field name="remarks"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
+                        <group name="delivery_information" invisible="1"/>
+                        <group name="delivery_information_service" invisible="1"/>
                     </group>
-                    <group string="Driver Information" name="delivery_driver_data">
+                    <group string="Driver Information" name="delivery_driver">
                         <field name="driver_name" string="Name"/>
                         <field name="driver_phone" string="Phone" widget="phone"/>
                         <field name="driver_license_plate" string="License Plate"/>

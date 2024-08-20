@@ -5,6 +5,7 @@ import time
 import hashlib
 import secrets
 from dataclasses import dataclass
+from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 from odoo.addons.tangerine_delivery_base.api.connection import Connection
 from odoo.addons.tangerine_delivery_base.settings.utils import URLBuilder
@@ -48,16 +49,25 @@ class Client:
             'Request-ID': self._generate_nonce()
         }
 
+    @staticmethod
+    def _validate_response(response):
+        if not isinstance(response, dict): return
+        if not response.get('data'):
+            raise UserError(response.get('message', 'Error request. Please contact administrator'))
+        return response.get('data')
+
     def _execute(self, payload=None, path_parameter=None):
-        return self.conn.execute_restful(
-            url=URLBuilder.builder(
-                host=self.conn.provider.domain,
-                routes=[self.conn.endpoint.route],
-                path_params=path_parameter
-            ),
-            headers=self._builder_headers(payload, path_parameter),
-            method=self.conn.endpoint.method,
-            **payload or {}
+        return self._validate_response(
+            self.conn.execute_restful(
+                url=URLBuilder.builder(
+                    host=self.conn.provider.domain,
+                    routes=[self.conn.endpoint.route],
+                    path_params=path_parameter
+                ),
+                headers=self._builder_headers(payload, path_parameter),
+                method=self.conn.endpoint.method,
+                **payload or {}
+            )
         )
 
     def get_cities(self): return self._execute()

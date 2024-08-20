@@ -110,13 +110,29 @@ class ProviderViettelpost(models.Model):
             payload['MONEY_COLLECTION'] = picking.cash_on_delivery_amount
         return payload
 
+    @staticmethod
+    def _viettelpost_payload_carrier_ref_order(picking, shipping_cost):
+        return {
+            'viettelpost_order_payment': picking.viettelpost_order_payment,
+            'viettelpost_product_type': picking.viettelpost_product_type,
+            'viettelpost_national_type': picking.viettelpost_national_type,
+            'viettelpost_service_id': picking.viettelpost_service_id.id,
+            'viettelpost_service_extend_id': picking.viettelpost_service_extend_id.id
+        }
+
     def viettelpost_send_shipping(self, pickings):
         client = Client(Connection(self, get_route_api(self, settings.create_order_route.value)))
         for picking in pickings:
+            ref_id = self.env['carrier.ref.order'].search([('picking_id', '=', picking.id)])
+            if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
+                raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
             result = client.create_order(self._viettelpost_payload_create_order(picking))
             status_id = self.env.ref('tangerine_delivery_viettelpost.viettelpost_status_1')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].create({
+                **self.common_payload_carrier_ref_order(picking, status_id, result.get('MONEY_TOTAL'), result.get('ORDER_NUMBER')),
+                **self._viettelpost_payload_carrier_ref_order(picking)
+            })
             return [{
                 'exact_price': result.get('MONEY_TOTAL'),
                 'tracking_number': result.get('ORDER_NUMBER')

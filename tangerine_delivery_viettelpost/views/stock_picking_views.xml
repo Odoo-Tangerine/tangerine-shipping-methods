@@ -5,7 +5,7 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='delivery_driver_data']" position="before">
+            <xpath expr="//group[@name='external_delivery_data']" position="before">
                 <group name='delivery_viettelpost_data'
                        invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'viettelpost'"
                        string="Viettel Post Shipping Information"
@@ -28,7 +28,7 @@
                            required="delivery_type == 'viettelpost'"
                            domain="viettelpost_service_request_domain"
                     />
-                    <field name="viettelpost_service_extend_id" invisible="delivery_type != 'viettelpost'"/>
+                    <field name="viettelpost_service_extend_id"/>
                     <field name="viettelpost_service_request_domain" invisible="1"/>
                     <field name="promo_code" readonly="carrier_tracking_ref"/>
                     <field name="remarks"/>

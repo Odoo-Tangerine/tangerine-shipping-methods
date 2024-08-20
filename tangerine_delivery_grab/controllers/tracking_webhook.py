@@ -16,18 +16,25 @@ class DeliveriesController(Controller):
         try:
             body = request.dispatcher.jsonrequest
             _logger.info(f'WEBHOOK GRAB START - BODY: {body}')
-            picking_id = request.env['stock.picking'].sudo().search([
+            shipment_id = request.env['carrier.ref.order'].sudo().search([
                 ('carrier_tracking_ref', '=', body.get('deliveryID'))
             ])
-            if not picking_id:
+            if not shipment_id:
                 _logger.error(f'WEBHOOK GRAB ERROR: The delivery id {body.get("deliveryID")} not found.')
                 return response(
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The delivery id {body.get("deliveryID")} not found.'
                 )
+            if shipment_id.delivery_status_id.code in settings.block_webhook_change_status.value:
+                _logger.error(
+                    f'WEBHOOK GHTK ERROR: The delivery order {shipment_id.carrier_tracking_ref} is blocked')
+                return response(
+                    status=status.HTTP_400_BAD_REQUEST.value,
+                    message=f'The delivery order {shipment_id.carrier_tracking_ref} is blocked.'
+                )
             status_id = request.env['delivery.status'].sudo().search([
                 ('code', '=', body.get('status')),
-                ('provider_id', '=', picking_id.carrier_id.id)
+                ('provider_id', '=', shipment_id.carrier_id.id)
             ])
             if not status_id:
                 _logger.error(f'WEBHOOK GRAB ERROR: The status {body.get("status")} invalid.')
@@ -36,15 +43,17 @@ class DeliveriesController(Controller):
                     message=f'The status {body.get("status")} invalid.'
                 )
             payload = {'delivery_status_id': status_id.id}
-            if not picking_id.grab_tracking_link:
+            if not shipment_id.picking_id.grab_tracking_link:
                 payload.update({'grab_tracking_link': body.get('trackURL')})
+            shipment_id.picking_id.sudo().write(payload)
             if body.get('driver'):
                 payload.update({
                     'driver_name': body.get('driver').get('name'),
                     'driver_phone': body.get('driver').get('phone'),
                     'driver_license_plate': body.get('driver').get('licensePlate'),
                 })
-            picking_id.sudo().write(payload)
+            payload.pop('grab_tracking_link', None)
+            shipment_id.sudo().write(payload)
             _logger.info(f'WEBHOOK GRAB SUCCESS: Receive order callback {body.get("deliveryID")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,
