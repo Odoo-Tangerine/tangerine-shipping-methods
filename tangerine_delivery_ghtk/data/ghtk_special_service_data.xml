@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="ghtk_service_1" model="ghtk.special.service">
             <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
             <field name="name">Dễ vỡ</field>

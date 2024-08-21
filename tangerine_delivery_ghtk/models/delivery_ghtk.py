@@ -1,8 +1,6 @@
 # -*- coding: utf-8
-import time
 import math
 import base64
-from datetime import datetime
 from odoo import fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.tangerine_delivery_base.settings.utils import standardization_e164, get_route_api, notification
@@ -72,7 +70,7 @@ class ProviderGHTK(models.Model):
         sender_id = picking.picking_type_id.warehouse_id.partner_id
         payload = {
             'order': {
-                'id': str(int(time.time() * 1e6)),
+                'id': picking.sale_id.name,
                 'pick_money': math.ceil(picking.cash_on_delivery_amount) if picking.cash_on_delivery else 0,
                 'pick_name': sender_id.name,
                 'pick_address': sender_id.street,

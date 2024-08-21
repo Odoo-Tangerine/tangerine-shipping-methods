@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record model="delivery.status" id="viettelpost_status_1">
             <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider" />
             <field name="name">Tạo đơn hàng</field>

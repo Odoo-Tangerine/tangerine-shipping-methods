@@ -103,13 +103,9 @@ class ProviderGrab(models.Model):
                     'longitude': lng
                 }
             }
-        address_list = contact.shipping_address.split(',')
         return {
-            'address': contact.shipping_address,
+            'address': contact.contact_address_complete,
             'cityCode': contact.state_id.grab_city_code,
-            'address_L3': address_list[-3],
-            'address_L2': address_list[-2],
-            'address_L1': address_list[-1],
             'coordinates': {}
         }
 
