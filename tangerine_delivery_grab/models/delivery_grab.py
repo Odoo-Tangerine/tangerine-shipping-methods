@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import time
 import math
 import threading
@@ -24,6 +25,7 @@ class ProviderGrab(models.Model):
         ('grab', 'Grab Express')
     ], ondelete={'grab': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
+    default_grab_location_mode = fields.Selection(selection=settings.location_mode.value, string='Location Mode')
     default_grab_payer = fields.Selection(selection=settings.payer.value, string='Payer')
     default_grab_service_type = fields.Selection(selection=settings.service_type.value, string='Service Type')
     default_grab_vehicle_type = fields.Selection(selection=settings.vehicle_type.value, string='Vehicle Type')
@@ -74,11 +76,37 @@ class ProviderGrab(models.Model):
             raise UserError(ustr(e))
 
     @staticmethod
-    def _grab_building_address(address, city_code):
-        address_list = address.split(',')
+    def _grab_validate_coordinates(contact):
+        lat_pattern = re.compile(r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$")
+        lng_pattern = re.compile(r"^[-+]?((1[0-7]\d(\.\d+)?|180(\.0+)?)|([1-9]?\d(\.\d+)?))$")
+        if not bool(lat_pattern.match(str(contact.partner_latitude))):
+            raise ValidationError(
+                _(f'The Latitude of contact: {contact.name} incorrect - Value: {contact.partner_latitude}'))
+        if not bool(lng_pattern.match(str(contact.partner_longitude))):
+            raise ValidationError(
+                _(f'The Longitude of contact: {contact.name} incorrect - Value: {contact.partner_latitude}'))
+        return contact.partner_latitude, contact.partner_longitude
+
+    def _grab_building_address(self, contact):
+        if self.default_grab_location_mode == settings.coordinates_mode.value:
+            base_geo_module_installed = self.env['ir.module.module'].sudo().search([
+                ('name', '=', 'base_geolocalize'),
+                ('state', '=', 'installed')
+            ])
+            if not base_geo_module_installed:
+                raise UserError(_('Please install the module Partners Geolocation'))
+            lat, lng = self._grab_validate_coordinates(contact)
+            return {
+                'address': contact.contact_address_complete,
+                'coordinates': {
+                    'latitude': lat,
+                    'longitude': lng
+                }
+            }
+        address_list = contact.shipping_address.split(',')
         return {
-            'address': address,
-            'cityCode': city_code,
+            'address': contact.shipping_address,
+            'cityCode': contact.state_id.grab_city_code,
             'address_L3': address_list[-3],
             'address_L2': address_list[-2],
             'address_L1': address_list[-1],
@@ -117,14 +145,8 @@ class ProviderGrab(models.Model):
 
     def _grab_payload_delivery_quotes(self, order):
         payload = {
-            'origin': self._grab_building_address(
-                address=order.warehouse_id.partner_id.shipping_address,
-                city_code=order.warehouse_id.partner_id.state_id.grab_city_code
-            ),
-            'destination': self._grab_building_address(
-                address=order.partner_shipping_id.shipping_address,
-                city_code=order.partner_shipping_id.state_id.grab_city_code
-            ),
+            'origin': self._grab_building_address(order.warehouse_id.partner_id),
+            'destination': self._grab_building_address(order.partner_shipping_id),
             'packages': self._grab_get_packages(order.order_line)
         }
         if order.env.context.get('grab_service_type'):
@@ -179,14 +201,8 @@ class ProviderGrab(models.Model):
                 'firstName': picking.partner_id.name,
                 'phone': standardization_e164(picking.partner_id.phone or picking.partner_id.mobile)
             },
-            'origin': self._grab_building_address(
-                address=picking.picking_type_id.warehouse_id.partner_id.shipping_address,
-                city_code=picking.picking_type_id.warehouse_id.partner_id.state_id.grab_city_code
-            ),
-            'destination': self._grab_building_address(
-                address=picking.picking_type_id.warehouse_id.partner_id.shipping_address,
-                city_code=picking.picking_type_id.warehouse_id.partner_id.state_id.grab_city_code
-            ),
+            'origin': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
+            'destination': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
         }
         if picking.cash_on_delivery:
             payload.update({'cashOnDelivery': {'amount': picking.cash_on_delivery_amount}})

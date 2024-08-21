@@ -50,6 +50,7 @@
                     <field name="default_grab_service_type"/>
                     <field name="default_grab_vehicle_type"/>
                     <field name="default_grab_payment_method"/>
+                    <field name="default_grab_location_mode" widget="radio" options="{'horizontal': True}"/>
                 </group>
             </xpath>
             <xpath expr="//group[@name='delivery_webhook']" position="before">
