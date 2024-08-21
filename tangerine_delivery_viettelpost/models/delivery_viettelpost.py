@@ -111,7 +111,7 @@ class ProviderViettelpost(models.Model):
         return payload
 
     @staticmethod
-    def _viettelpost_payload_carrier_ref_order(picking, shipping_cost):
+    def _viettelpost_payload_carrier_ref_order(picking):
         return {
             'viettelpost_order_payment': picking.viettelpost_order_payment,
             'viettelpost_product_type': picking.viettelpost_product_type,
