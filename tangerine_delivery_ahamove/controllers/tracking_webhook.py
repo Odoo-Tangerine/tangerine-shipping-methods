@@ -41,10 +41,7 @@ class DeliveriesController(Controller):
                     status=status.HTTP_400_BAD_REQUEST.value,
                     message=f'The status {body.get("status")} invalid.'
                 )
-            payload = {
-                'delivery_status_id': status_id.id,
-                'real_delivery_charge': body.get('total_price')
-            }
+            payload = {'delivery_status_id': status_id.id}
             if not shipment_id.picking_id.ahamove_shared_link:
                 payload.update({'ahamove_shared_link': body.get('shared_link')})
             shipment_id.picking_id.sudo().write(payload)
@@ -54,6 +51,7 @@ class DeliveriesController(Controller):
                     'driver_phone': body.get('supplier_id')
                 })
             payload.pop('ahamove_shared_link', None)
+            payload.update({'real_delivery_charge': body.get('total_price')})
             shipment_id.sudo().write(payload)
             _logger.info(f'WEBHOOK AHAMOVE SUCCESS: Receive order callback {body.get("_id")} successfully.')
             return response(

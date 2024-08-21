@@ -14,6 +14,13 @@ class settings(Enum):
     create_request_route_code = 'create_delivery_request'
     cancel_request_route_code = 'cancel_delivery'
 
+    location_mode = [
+        ('map', 'Address Map'),
+        ('coordinates', 'Coordinates')
+    ]
+
+    coordinates_mode = 'coordinates'
+
     service_type = [
         ('INSTANT', 'Instant'),
         ('SAME_DAY', 'Same Day'),
