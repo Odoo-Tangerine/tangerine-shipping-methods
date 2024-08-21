@@ -47,7 +47,7 @@ class LLMService(models.Model):
             raise UserError(_('The field API Secret of Lalamove not found.'))
         client = Client(Connection(carrier_id, get_route_api(carrier_id, settings.llm_get_cities_code.value)))
         result = client.get_cities()
-        for rec in result.get('data'):
+        for rec in result:
             lst_service_ids = self.search([('code', 'in', [service.get('key') for service in rec.get('services')])])
             lst_service_code = [rec.code for rec in lst_service_ids]
             lst_service_data = []
