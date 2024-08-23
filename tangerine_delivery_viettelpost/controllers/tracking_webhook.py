@@ -17,6 +17,7 @@ class DeliveriesController(Controller):
         try:
             body = request.dispatcher.jsonrequest
             _logger.info(f'WEBHOOK VIETTELPOST START - BODY: {body}')
+            body = body.get('DATA')
             shipment_id = request.env['carrier.ref.order'].sudo().search([
                 ('carrier_tracking_ref', '=', body.get('ORDER_NUMBER'))
             ])
@@ -37,7 +38,10 @@ class DeliveriesController(Controller):
                     message=f'The status {body.get("ORDER_STATUS")} invalid.'
                 )
             shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
-            shipment_id.sudo().write({'real_delivery_charge': body.get('MONEY_TOTAL')})
+            shipment_id.sudo().write({
+                'real_delivery_charge': body.get('MONEY_TOTAL'),
+                'real_weight': body.get('PRODUCT_WEIGHT', 0)
+            })
             _logger.info(f'WEBHOOK VIETTELPOST SUCCESS: Receive order callback {body.get("deliveryID")} successfully.')
             return response(
                 status=status.HTTP_200_OK.value,

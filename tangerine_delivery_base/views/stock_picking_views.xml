@@ -29,11 +29,7 @@
                 />
             </field>
             <xpath expr="//group[@name='carrier_data']" position="after">
-                <group name="delivery_driver_data" invisible="not is_locally_delivery" string="Driver Information">
-                    <field name="driver_name" string="Name"/>
-                    <field name="driver_phone" string="Phone" widget="phone"/>
-                    <field name="driver_license_plate" string="License Plate"/>
-                </group>
+                <group name="external_delivery_data"/>
             </xpath>
         </field>
     </record>

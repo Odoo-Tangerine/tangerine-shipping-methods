@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import time
 import math
 import threading
@@ -24,6 +25,7 @@ class ProviderGrab(models.Model):
         ('grab', 'Grab Express')
     ], ondelete={'grab': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
+    default_grab_location_mode = fields.Selection(selection=settings.location_mode.value, string='Location Mode')
     default_grab_payer = fields.Selection(selection=settings.payer.value, string='Payer')
     default_grab_service_type = fields.Selection(selection=settings.service_type.value, string='Service Type')
     default_grab_vehicle_type = fields.Selection(selection=settings.vehicle_type.value, string='Vehicle Type')
@@ -74,14 +76,36 @@ class ProviderGrab(models.Model):
             raise UserError(ustr(e))
 
     @staticmethod
-    def _grab_building_address(address, city_code):
-        address_list = address.split(',')
+    def _grab_validate_coordinates(contact):
+        lat_pattern = re.compile(r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$")
+        lng_pattern = re.compile(r"^[-+]?((1[0-7]\d(\.\d+)?|180(\.0+)?)|([1-9]?\d(\.\d+)?))$")
+        if not bool(lat_pattern.match(str(contact.partner_latitude))):
+            raise ValidationError(
+                _(f'The Latitude of contact: {contact.name} incorrect - Value: {contact.partner_latitude}'))
+        if not bool(lng_pattern.match(str(contact.partner_longitude))):
+            raise ValidationError(
+                _(f'The Longitude of contact: {contact.name} incorrect - Value: {contact.partner_latitude}'))
+        return contact.partner_latitude, contact.partner_longitude
+
+    def _grab_building_address(self, contact):
+        if self.default_grab_location_mode == settings.coordinates_mode.value:
+            base_geo_module_installed = self.env['ir.module.module'].sudo().search([
+                ('name', '=', 'base_geolocalize'),
+                ('state', '=', 'installed')
+            ])
+            if not base_geo_module_installed:
+                raise UserError(_('Please install the module Partners Geolocation'))
+            lat, lng = self._grab_validate_coordinates(contact)
+            return {
+                'address': contact.contact_address_complete,
+                'coordinates': {
+                    'latitude': lat,
+                    'longitude': lng
+                }
+            }
         return {
-            'address': address,
-            'cityCode': city_code,
-            'address_L3': address_list[-3],
-            'address_L2': address_list[-2],
-            'address_L1': address_list[-1],
+            'address': contact.contact_address_complete,
+            'cityCode': contact.state_id.grab_city_code,
             'coordinates': {}
         }
 
@@ -117,14 +141,8 @@ class ProviderGrab(models.Model):
 
     def _grab_payload_delivery_quotes(self, order):
         payload = {
-            'origin': self._grab_building_address(
-                address=order.warehouse_id.partner_id.shipping_address,
-                city_code=order.warehouse_id.partner_id.state_id.grab_city_code
-            ),
-            'destination': self._grab_building_address(
-                address=order.partner_shipping_id.shipping_address,
-                city_code=order.partner_shipping_id.state_id.grab_city_code
-            ),
+            'origin': self._grab_building_address(order.warehouse_id.partner_id),
+            'destination': self._grab_building_address(order.partner_shipping_id),
             'packages': self._grab_get_packages(order.order_line)
         }
         if order.env.context.get('grab_service_type'):
@@ -179,14 +197,8 @@ class ProviderGrab(models.Model):
                 'firstName': picking.partner_id.name,
                 'phone': standardization_e164(picking.partner_id.phone or picking.partner_id.mobile)
             },
-            'origin': self._grab_building_address(
-                address=picking.picking_type_id.warehouse_id.partner_id.shipping_address,
-                city_code=picking.picking_type_id.warehouse_id.partner_id.state_id.grab_city_code
-            ),
-            'destination': self._grab_building_address(
-                address=picking.picking_type_id.warehouse_id.partner_id.shipping_address,
-                city_code=picking.picking_type_id.warehouse_id.partner_id.state_id.grab_city_code
-            ),
+            'origin': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
+            'destination': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
         }
         if picking.cash_on_delivery:
             payload.update({'cashOnDelivery': {'amount': picking.cash_on_delivery_amount}})
@@ -199,16 +211,35 @@ class ProviderGrab(models.Model):
             })
         return payload
 
+    @staticmethod
+    def _grab_payload_carrier_ref_order(picking):
+        return {
+            'grab_service_type': picking.grab_service_type,
+            'grab_vehicle_type': picking.grab_vehicle_type,
+            'grab_payment_method': picking.grab_payment_method,
+            'grab_payer': picking.grab_payer,
+            'grab_cod_type': picking.grab_cod_type,
+            'grab_high_value': picking.grab_high_value
+        }
+
     def grab_send_shipping(self, pickings):
         client = Client(Connection(self, get_route_api(self, settings.create_request_route_code.value)))
         for picking in pickings:
-            if picking.delivery_status_id.code in settings.list_status_booking_blocked.value:
-                raise UserError(
-                    _(f'The sale order has been booking for delivery.\nGrab Shipment: {picking.carrier_tracking_ref} - Status: {picking.delivery_status_id.name}'))
+            ref_id = self.env['carrier.ref.order'].search([('picking_id', '=', picking.id)])
+            if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
+                raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
             result = client.create_delivery_request(self._grab_payload_create_delivery_request(picking))
             status_id = self.env.ref('tangerine_delivery_grab.grab_status_queueing') if picking.schedule_order else self.env.ref('tangerine_delivery_grab.grab_status_allocating')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].create({
+                **self.common_payload_carrier_ref_order(
+                    picking,
+                    status_id,
+                    result.get('quote').get('amount'),
+                    result.get('deliveryID')
+                ),
+                **self._grab_payload_carrier_ref_order(picking)
+            })
             return [{
                 'exact_price': result.get('quote').get('amount'),
                 'tracking_number': result.get('deliveryID')

@@ -177,6 +177,26 @@ class DeliveryBase(models.Model):
             'mimetype': 'application/pdf'
         })
 
+    @staticmethod
+    def common_payload_carrier_ref_order(picking, status, shipping_cost, carrier_tracking_ref):
+        return {
+            'picking_id': picking.id,
+            'sale_id': picking.sale_id.id,
+            'carrier_id': picking.carrier_id.id,
+            'carrier_tracking_ref': carrier_tracking_ref,
+            'remarks': picking.remarks,
+            'cash_on_delivery': picking.cash_on_delivery,
+            'cash_on_delivery_amount': picking.cash_on_delivery_amount,
+            'schedule_order': picking.schedule_order,
+            'schedule_pickup_time_from': picking.schedule_pickup_time_from,
+            'schedule_pickup_time_to': picking.schedule_pickup_time_to,
+            'promo_code': picking.promo_code,
+            'delivery_status_id': status.id,
+            'delivery_charge': shipping_cost,
+            'real_delivery_charge': shipping_cost,
+            'weight_unit': picking.carrier_id.base_weight_unit
+        }
+
 
 class DeliveryRouteAPI(models.Model):
     _name = 'delivery.route.api'

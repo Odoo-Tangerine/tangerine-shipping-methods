@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="ghtk_status_navigate_1" model="delivery.status">
             <field name="provider_id" ref="tangerine_delivery_ghtk.tangerine_delivery_ghtk_provider" />
             <field name="name">Hủy đơn hàng</field>

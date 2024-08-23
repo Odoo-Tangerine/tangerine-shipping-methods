@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="carrier_ref_order_form_view_inherit_viettelpost" model="ir.ui.view">
-        <field name="name">carrier.ref.order.form.view.viettelpost</field>
+    <record id="carrier_ref_order_form_view_inherit_grab" model="ir.ui.view">
+        <field name="name">carrier.ref.order.form.view.grab</field>
         <field name="model">carrier.ref.order</field>
         <field name="inherit_id" ref="tangerine_delivery_base.carrier_ref_order_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='delivery_information']" position="after">
-                <group name='viettelpost_information' invisible="delivery_type != 'viettelpost'">
+                <group name='grab_information' invisible="delivery_type != 'grab'">
                     <field name="picking_id"/>
                     <field name="sale_id"/>
                     <field name="carrier_id"/>
@@ -16,24 +16,29 @@
                         <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
                         <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
                     </div>
+                    <label for="schedule_order" name="o_label_schedule_order"/>
+                    <div class="o_row" name="o_schedule_order">
+                        <field name="schedule_order" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <field name="schedule_pickup_time_to"
+                               invisible="not schedule_order"
+                               required="schedule_order"
+                               readonly="carrier_tracking_ref"
+                        />
+                    </div>
                     <field name="remarks"/>
                 </group>
             </xpath>
             <xpath expr="//group[@name='delivery_information_service']" position="after">
-                <group name='delivery_viettelpost_data' invisible="delivery_type != 'viettelpost'">
+                <group name='delivery_grab_data' invisible="delivery_type != 'grab'">
                     <field name="delivery_charge"/>
                     <field name="real_delivery_charge"/>
                     <field name="delivery_status_id"/>
-                    <label for="real_weight"/>
-                    <div class="o_row">
-                        <field name="real_weight"/>
-                        <field name="weight_unit"/>
-                    </div>
-                    <field name="viettelpost_order_payment"/>
-                    <field name="viettelpost_product_type"/>
-                    <field name="viettelpost_national_type"/>
-                    <field name="viettelpost_service_id"/>
-                    <field name="viettelpost_service_extend_id"/>
+                    <field name="grab_service_type"/>
+                    <field name="grab_vehicle_type"/>
+                    <field name="grab_payment_method"/>
+                    <field name="grab_cod_type"/>
+                    <field name="grab_payer"/>
+                    <field name="grab_high_value" widget="boolean_toggle" />
                 </group>
             </xpath>
         </field>

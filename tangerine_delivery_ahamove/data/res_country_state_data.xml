@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="0">
+    <data noupdate="1">
         <record id="base.state_vn_VN-HN" model="res.country.state">
             <field name="ahamove_city_code">HAN</field>
         </record>
