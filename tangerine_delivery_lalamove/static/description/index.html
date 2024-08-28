@@ -224,7 +224,6 @@
                             <div class="px-3">
                                 <p>- Download dependency modules if they do not exist</p>
                                 <ul>
-                                    <li>Download <span style="font-weight: 700;">Vietnam Address Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_address_base" title="Base Vietnam Address module" target="_blank">here</a></li>
                                     <li>Download <span style="font-weight: 700;">Shipping Methods Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_base" title="Shipping Methods Base module" target="_blank">here</a></li>
                                 </ul>
                                 <p>- Install module Lalamove Integration</p>
@@ -257,11 +256,17 @@
                                 <p><span style="font-weight: 700;">Step 5:</span> Configure default parameters for delivery orders</p>
                                 <p><span style="font-weight: 700;">- Weight Unit:</span> The unit of measure for your shipment. You don't need to change it because Lalamove's rules are Kilograms</p>
                                 <p><span style="font-weight: 700;">- Regional:</span> The country in which you are using the service.</p>
-                                <p><span style="font-weight: 700;">- Vehicle Type:</span> The vehicle type you want to use</p>
+                                <p><span style="font-weight: 700;">- Vehicle Type:</span> The service type you want to use</p>
                                 <p><span style="font-weight: 700;">- Service Type:</span> The service type you want to use</p>
-                                <p><span style="font-weight: 700;">Step 6:</span> Configure a webhook to track orders called from the Lalamove system</p>
+                                <p><span style="font-weight: 700;">- Coordinates Use:</span> If you enable this option, all requests (Get Quote and Create Order) add the coordinates of the recipient and sender.</p>
+                                <p><span style="font-weight: 700;">Step 6:</span> Configure webhook to track orders called from Lalamove system through 2 ways</p>
+                                <p><span style="font-weight: 700;">- Way 1:</span> Register with 1 click from Odoo system</p>
                                 <p>- Activate "Authentication Use". Then click the <img alt="Button Get Token" src="./images/button_gen_access_token.png" style="height: auto; width: 10%" /> button to get the access token code. If you do not want to use protection for your Odoo system. You can skip this step.</p>
                                 <p>- Click on button <img alt="Button Register Webhook" src="./images/button_register_webhook.png" style="height: auto; width: 10%" /> to register your webhook with Lalamove</p>
+                                <p><span style="font-weight: 700;">- Way 2:</span> Configuration on Lalamove portal</p>
+                                <p>- Go to <a href="https://partnerportal.lalamove.com/developers/webhooks" title="Lalamove portal" target="_blank">Lalamove portal</a></p>
+                                <p>- Copy your webhook url on Odoo and paste to Webhook URL</p>
+                                <img alt="Configuration Webhook via Portal" class="rounded shadow-lg bg-body mb-3" src="./images/webhook_via_portal.png" style="height: auto; width: 100%" />
                                 <p><span style="font-weight: 700;">Step 7:</span> When there is an endpoint change from Lalamove's system, rest assured, that it won't take you much time to edit it.</p>
                                 <p>- Navigate <span style="font-weight: 700;">Routes</span> Tab, Here you can edit basic information for your restful API such as methods, headers, path, etc,</p>
                                 <img alt="Route APIs" class="rounded shadow-lg bg-body mb-3" src="./images/route_apis.png" style="height: auto; width: 100%" />
@@ -277,8 +282,7 @@
                                     <li>Name: The name of customer</li>
                                     <li>Street: The street name</li>
                                     <li>State: The province name</li>
-                                    <li>District: The district name</li>
-                                    <li>Ward: The ward name</li>
+                                    <li>Country: The country name</li>
                                     <li>Phone: The number phone</li>
                                 </ul>
                                 <img alt="Config Contacts" class="rounded shadow-lg bg-body mb-3" src="./images/contacts_config.png" style="height: auto; width: 100%" />

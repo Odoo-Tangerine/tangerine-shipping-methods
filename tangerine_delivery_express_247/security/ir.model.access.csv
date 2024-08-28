@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_service_type_247_express,access_service_type_247_express,model_service_type_247_express,,1,1,1,1
+access_special_service_type_247_express,access_special_service_type_247_express,model_special_service_type_247_express,,1,1,1,1

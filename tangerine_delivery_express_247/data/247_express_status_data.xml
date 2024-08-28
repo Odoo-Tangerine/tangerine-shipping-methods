@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="delivery.status" id="247_express_status_datiepnhan">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đã tạo đơn hàng</field>
+            <field name="code">DATIEPNHAN</field>
+            <field name="description">Đơn hàng vừa tạo qua API hoặc web khách hàng.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_dalayhang">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đã lấy đơn hàng</field>
+            <field name="code">DALAYHANG</field>
+            <field name="description">Đơn hàng đã được nhân viên giao nhận của 247 Express tới lấy hàng.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_dangvanchuyen">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đang vận chuyển</field>
+            <field name="code">DANGVANCHUYEN</field>
+            <field name="description">Đơn hàng đang được vận chuyển bởi 247 Express.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_dangdiphat">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đang đi phát</field>
+            <field name="code">DANGDIPHAT</field>
+            <field name="description">Đơn hàng đang phát.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_phatthanhcong">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Phát thành công</field>
+            <field name="code">PHATTHANHCONG</field>
+            <field name="description">Đơn hàng đã được phát thành công.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_choxuly">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Chờ xử lý</field>
+            <field name="code">CHOXULY</field>
+            <field name="description">Đơn hàng phát chưa thành công, đang chờ xử lý.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_chochuyenhoan">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Chờ chuyển hoàn</field>
+            <field name="code">CHOCHUYENHOAN</field>
+            <field name="description">Đơn hàng đang được chuyển hoàn lại cho khách hàng.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_dachuyenhoan">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đã chuyển hoàn</field>
+            <field name="code">DACHUYENHOAN</field>
+            <field name="description">Đơn hàng đã được chuyển hoàn lại cho khách hàng.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_thatlac">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Thất lạc</field>
+            <field name="code">THATLAC</field>
+            <field name="description">Đơn hàng bị thất lạc.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_thatlac">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Đã huỷ</field>
+            <field name="code">HUY</field>
+            <field name="description">Đơn hàng đã bị hủy.</field>
+        </record>
+
+        <record model="delivery.status" id="247_express_status_tichthu">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Bị tịch thu</field>
+            <field name="code">TICHTHU</field>
+            <field name="description">Đơn hàng đã bị tịch thu bởi cơ quan chức năng do vi phạm về loại hàng hóa...</field>
+        </record>
+    </data>
+</odoo>

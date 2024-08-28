@@ -29,7 +29,7 @@
                 />
             </field>
             <xpath expr="//group[@name='carrier_data']" position="after">
-                <group name="external_delivery_data"/>
+                <group name="external_delivery_data" invisible="1"/>
             </xpath>
         </field>
     </record>

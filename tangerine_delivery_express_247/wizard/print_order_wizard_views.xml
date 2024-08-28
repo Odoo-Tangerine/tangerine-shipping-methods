@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="print_order_wizard_form_view_viettelpost" model="ir.ui.view">
+        <field name="name">print.order.wizard.form.view.viettelpost</field>
+        <field name="model">print.order.wizard</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.print_order_wizard_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='carrier_form']" position="inside">
+                <field name="viettelpost_paper_size"
+                       widget="radio"
+                       invisible="delivery_type != 'viettelpost'"
+                       required="delivery_type == 'viettelpost'"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

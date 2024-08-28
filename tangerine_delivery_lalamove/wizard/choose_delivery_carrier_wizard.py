@@ -2,27 +2,28 @@ from odoo import fields, models, api
 from ..settings.constants import settings
 
 
-class ChooseDeliveryCarrier(models.TransientModel):
+class ChooseDeliveryCarrierLalamove(models.TransientModel):
     _inherit = 'choose.delivery.carrier'
 
-    lalamove_service_id = fields.Many2one('lalamove.service', string='Service Type')
+    lalamove_service_id = fields.Many2one('lalamove.service', string='Vehicle Type')
     lalamove_special_service_domain = fields.Binary(default=[], store=False)
     lalamove_special_service_ids = fields.Many2many(
         'lalamove.special.service',
         'lalamove_estimate_request_rel',
         'choose_id',
         'special_id',
-        string='Special Request'
+        string='Service Type'
     )
     lalamove_quotation_data = fields.Json(string='Lalamove Quotation Data')
 
     @api.onchange('carrier_id', 'total_weight')
     def _onchange_lalamove_provider(self):
-        res = super(ChooseDeliveryCarrier, self)._onchange_carrier_id()
+        res = super(ChooseDeliveryCarrierLalamove, self)._onchange_carrier_id()
         for rec in self:
             if rec.carrier_id and rec.carrier_id.delivery_type == settings.lalamove_code.value:
                 rec.lalamove_service_id = rec.carrier_id.default_lalamove_service_id
                 rec.lalamove_special_service_ids = rec.carrier_id.default_lalamove_special_service_ids
+                rec.lalamove_special_service_domain = [('service_id', '=', rec.carrier_id.default_lalamove_service_id.id)]
         return res
 
     @api.onchange('lalamove_service_id')
@@ -39,14 +40,10 @@ class ChooseDeliveryCarrier(models.TransientModel):
                 'llm_special_service': [spec.code for spec in self.lalamove_special_service_ids],
             })
             self.env.context = context
-        vals = self.carrier_id.with_context(order_weight=self.total_weight).rate_shipment(self.order_id)
-        if vals.get('success'):
-            self.delivery_message = vals.get('warning_message', False)
-            self.delivery_price = vals['price']
-            self.display_price = vals['carrier_price']
-            self.lalamove_quotation_data = vals.get('llm_quotation_data')
-            return {}
-        return {'error_message': vals['error_message']}
+        result = super(ChooseDeliveryCarrierLalamove, self)._get_shipment_rate()
+        if self.env.context.get('llm_quotation_data'):
+            self.write({'lalamove_quotation_data': self.env.context.get('llm_quotation_data')})
+        return result
 
     def button_confirm(self):
         if self.lalamove_quotation_data and self.carrier_id.delivery_type == settings.lalamove_code.value:

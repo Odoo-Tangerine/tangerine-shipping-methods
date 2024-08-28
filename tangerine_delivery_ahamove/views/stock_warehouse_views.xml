@@ -3,17 +3,15 @@
     <record id="view_warehouse_inherit_ahamove" model="ir.ui.view">
         <field name="name">view.warehouse.inherit.ahamove</field>
         <field name="model">stock.warehouse</field>
-        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_warehouse_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//form/sheet" position="before">
-                <header>
-                    <button
-                            name="ahamove_service_sync"
-                            type="object"
-                            string="Ahamove Service Sync"
-                            icon="fa-refresh"
-                    />
-                </header>
+            <xpath expr="//header" position="inside">
+                <button
+                        name="ahamove_service_sync"
+                        type="object"
+                        string="Ahamove Service Sync"
+                        icon="fa-refresh"
+                />
             </xpath>
             <xpath expr="//notebook[last()]" position="inside">
                 <page string="Services">
