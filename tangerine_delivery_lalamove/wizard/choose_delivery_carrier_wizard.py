@@ -5,14 +5,14 @@ from ..settings.constants import settings
 class ChooseDeliveryCarrierLalamove(models.TransientModel):
     _inherit = 'choose.delivery.carrier'
 
-    lalamove_service_id = fields.Many2one('lalamove.service', string='Service Type')
+    lalamove_service_id = fields.Many2one('lalamove.service', string='Vehicle Type')
     lalamove_special_service_domain = fields.Binary(default=[], store=False)
     lalamove_special_service_ids = fields.Many2many(
         'lalamove.special.service',
         'lalamove_estimate_request_rel',
         'choose_id',
         'special_id',
-        string='Special Request'
+        string='Service Type'
     )
     lalamove_quotation_data = fields.Json(string='Lalamove Quotation Data')
 
