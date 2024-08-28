@@ -34,3 +34,4 @@ class StockPicking(models.Model):
             if rec.carrier_id and rec.carrier_id.delivery_type == settings.lalamove_code.value:
                 rec.lalamove_service_id = rec.carrier_id.default_lalamove_service_id
                 rec.lalamove_special_service_ids = rec.carrier_id.default_lalamove_special_service_ids
+                rec.lalamove_special_service_domain = [('service_id', '=', rec.carrier_id.default_lalamove_service_id.id)]

@@ -3,16 +3,15 @@
     <record id="view_warehouse_inherit_express_247" model="ir.ui.view">
         <field name="name">view.warehouse.inherit.express.247</field>
         <field name="model">stock.warehouse</field>
-        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_warehouse_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//form/sheet" position="before">
-                <header>
-                    <button name="express_247_register_warehouse"
-                            type="object"
-                            string="Register Warehouse"
-                            icon="fa-refresh"
-                    />
-                </header>
+            <xpath expr="//header" position="inside">
+                <button name="express_247_register_warehouse"
+                        type="object"
+                        string="Register Warehouse"
+                        icon="fa-refresh"
+                        help="Register shipping address to carrier 247 Express"
+                />
             </xpath>
         </field>
     </record>

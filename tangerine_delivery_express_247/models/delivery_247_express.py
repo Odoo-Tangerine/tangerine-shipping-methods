@@ -8,9 +8,9 @@ from odoo import fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import ustr
 from odoo.addons.tangerine_delivery_base.settings.utils import (
-    standardization_e164,
     get_route_api,
-    notification
+    notification,
+    convert_e164_to_classic
 )
 from odoo.addons.tangerine_delivery_base.api.connection import Connection
 from ..settings.constants import settings
@@ -33,7 +33,6 @@ class ProviderViettelpost(models.Model):
         string='Special Service Type'
     )
     default_express_247_product_type = fields.Selection(settings.product_type.value, string='Product Type')
-    default_express_247_is_inspection_goods_allowed = fields.Boolean(string='Inspection Goods  Allowed', default=False)
 
     def _express_247_get_service_types(self):
         with self.pool.cursor() as new_cr:
@@ -96,7 +95,7 @@ class ProviderViettelpost(models.Model):
         warehouse_id = order.warehouse_id
         if not warehouse_id:
             raise ValidationError(_('The warehouse is required on sale order'))
-        if order.env.context.get('express_247_service_type'):
+        if not order.env.context.get('express_247_service_type'):
             raise ValidationError(_('The field service type is required'))
         return {
             'ToProvinceName': order.partner_shipping_id.state_id.name,
@@ -121,21 +120,79 @@ class ProviderViettelpost(models.Model):
         }
 
     def _express_247_payload_create_order(self, picking):
+        warehouse_id = picking.picking_type_id.warehouse_id
+        payload = {
+            'ClientHubID': warehouse_id.express_247_hub_id,
+            'ContactName': warehouse_id.partner_id.name,
+            'ContactPhone': convert_e164_to_classic(warehouse_id.partner_id.phone or warehouse_id.partner_id.mobile),
+            'SenderAddress': warehouse_id.partner_id.shipping_address,
+            'ReceiverPhone': convert_e164_to_classic(picking.partner_id.phone or picking.partner_id.mobile),
+            'ReceiverName': picking.partner_id.name,
+            'ReceiverAddress': picking.partner_id.shipping_address,
+            'ReceiverProvinceName': picking.partner_id.state_id.name,
+            'ReceiverDistrictName': picking.partner_id.district_id.name,
+            'ReceiverWardName': picking.partner_id.ward_id.name,
+            'Length': 0,
+            'Width': 0,
+            'Height': 0,
+            'RealWeight': math.ceil(self.convert_weight(picking._get_estimated_weight(), self.base_weight_unit)),
+            'Quantity': 1,
+            'Note': picking.remarks or '',
+            'ServiceTypeID': picking.express_247_service_type_id.code,
+            'MailerType': picking.express_247_product_type,
+            'ExternalCode': picking.name,
+            'ReferenceCode': picking.sale_id.name,
+            'InformFee': str(int(picking.sale_id.amount_total)),
+            'Items': [{
+                'ItemID': rec.product_id.default_code or rec.product_id.name,
+                'ItemName': rec.product_id.name,
+                'UnitName': 'Unit',
+                'Qty': int(rec.quantity),
+                'UnitPrice': int(rec.product_id.lst_price),
+                'Amount': int(rec.product_id.lst_price * rec.quantity)
+                # 'UnitPrice': rec.product_id.price_list
+            } for rec in picking.move_line_ids],
+            "Packages": [
+                {
+                    "PackageID": f'{picking.sale_id.name}/1',
+                    "Length": 0,
+                    "Width": 0,
+                    "Height": 0,
+                    "RealWeight": 5
+                }
+            ],
+        }
+        if picking.cash_on_delivery:
+            payload['CODAmount'] = picking.cash_on_delivery.amount
+            payload['SpecialInstructionId'] = picking.express_247_is_inspection_goods_allowed
+        if picking.express_247_special_service_type_ids:
+            payload['ExtraServices'] = [rec.code for rec in picking.express_247_special_service_type_ids]
+        return payload
+
+    @staticmethod
+    def _express_247_payload_carrier_ref_order(picking):
         return {
-            'ClientHubID': '',
-            'ContactName': '',
-            'ContactPhone': '',
-            
+            'express_247_is_inspection_goods_allowed': picking.express_247_is_inspection_goods_allowed,
+            'express_247_service_type_id': picking.express_247_service_type_id.id,
+            'express_247_special_service_type_ids': picking.express_247_special_service_type_ids.ids,
+            'express_247_product_type': picking.express_247_product_type,
         }
 
     def express_247_send_shipping(self, pickings):
-        data = {}
         for picking in pickings:
             client = Client(Connection(self, get_route_api(self, settings.create_order_route_code.value)))
             result = client.create_order(self._express_247_payload_create_order(picking))
             status_id = self.env.ref('tangerine_delivery_ghtk.ghtk_status_2')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
-            self.env['carrier.ref.order'].sudo().create({'picking_id': picking.id})
+            self.env['carrier.ref.order'].create({
+                **self.common_payload_carrier_ref_order(
+                    picking,
+                    status_id,
+                    result.get('OrderInfo', {}).get('TotalServiceCost'),
+                    result.get('OrderInfo', {}).get('OrderCode')
+                ),
+                **self._express_247_payload_carrier_ref_order(picking)
+            })
             return [{
                 'exact_price': result.get('order').get('fee'),
                 'tracking_number': result.get('order').get('label')
@@ -158,8 +215,6 @@ class ProviderViettelpost(models.Model):
 
     def express_247_cancel_shipment(self, picking):
         client = Client(Connection(self, get_route_api(self, settings.cancel_order_code.value)))
-        client.cancel_order({
-          'OrderCode': picking.carrier_tracking_ref,
-        })
+        client.cancel_order({'OrderCode': picking.carrier_tracking_ref,})
         picking.write({'carrier_tracking_ref': False, 'carrier_price': 0.0, 'delivery_status_id': False})
         return notification('success', f'Cancel tracking reference successfully')

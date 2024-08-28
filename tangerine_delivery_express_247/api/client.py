@@ -23,7 +23,7 @@ class Client:
 
     @staticmethod
     def _validate_response(response):
-        if response.get('IsError'):
+        if response.get('IsError') or response.get('ErrorMessage'):
             raise UserError(response.get('ErrorMessage'))
         return response
 

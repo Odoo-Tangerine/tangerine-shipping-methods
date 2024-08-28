@@ -44,7 +44,6 @@
                        string="Default Shipment Parameter"
                 >
                     <field name="base_weight_unit" readonly="1"/>
-                    <field name="default_express_247_is_inspection_goods_allowed"/>
                     <field name="default_express_247_service_type_id"/>
                     <field name="default_express_247_special_service_type_ids"
                            widget="many2many_tags"

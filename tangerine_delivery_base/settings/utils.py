@@ -92,6 +92,15 @@ def standardization_e164(phone_number):
     return phone_number
 
 
+def convert_e164_to_classic(phone_number):
+    phone_number = phone_number.replace(" ", "")
+    if re.match(r"^\+84\d{9,10}$", phone_number):
+        phone_number = f'0{phone_number[3:]}'
+    elif re.match(r"^84\d{9,10}$", phone_number):
+        phone_number = f'0{phone_number[2:]}'
+    return phone_number
+
+
 class URLBuilder(NamedTuple):
     host: str
     routes: str

@@ -41,7 +41,7 @@
                     <div class="o_row">
                         <field name="default_lalamove_service_id"/>
                         <button name="action_lalamove_sync_cities"
-                                string="Cities Synchronous"
+                                string="Service Synchronous"
                                 icon="fa-arrow-right"
                                 type="object"
                         />
@@ -50,6 +50,7 @@
                            domain="lalamove_special_service_domain"
                            widget="many2many_tags"
                     />
+                    <field name="default_lalamove_use_coordinates" widget="boolean_toggle"/>
                     <field name="lalamove_special_service_domain" invisible="1"/>
                 </group>
             </xpath>

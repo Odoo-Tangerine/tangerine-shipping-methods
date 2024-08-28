@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import re
 import json
 import math
 from datetime import datetime
-from odoo import fields, models, _
-from odoo.exceptions import UserError
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError, ValidationError
 from odoo.addons.tangerine_delivery_base.settings.utils import (
     standardization_e164,
     get_route_api,
@@ -27,6 +28,7 @@ class ProviderGrab(models.Model):
     lalamove_spec_service_ids = fields.One2many('lalamove.special.service', 'carrier_id')
     default_lalamove_regional_id = fields.Many2one('lalamove.regional', string='Regional', required=True)
     default_lalamove_service_id = fields.Many2one('lalamove.service', string='Service Type')
+    default_lalamove_use_coordinates = fields.Boolean(string='Coordinates Use', default=False)
     lalamove_special_service_domain = fields.Binary(default=[], store=False)
     default_lalamove_special_service_ids = fields.Many2many(
         'lalamove.special.service',
@@ -35,6 +37,12 @@ class ProviderGrab(models.Model):
         'special_id',
         string='Special Service'
     )
+
+    @api.onchange('default_lalamove_service_id')
+    def _onchange_default_lalamove_service_id(self):
+        for rec in self:
+            if rec.default_lalamove_service_id:
+                rec.lalamove_special_service_domain = [('service_id', '=', rec.default_lalamove_service_id.id)]
 
     def action_lalamove_sync_cities(self):
         self.env['lalamove.service'].llm_service_synchronous()
@@ -49,6 +57,28 @@ class ProviderGrab(models.Model):
             weight_enum = settings.weight_bw_30_50.value
         return weight_enum
 
+    @staticmethod
+    def _llm_validate_coordinates(contact):
+        lat_pattern = re.compile(r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$")
+        lng_pattern = re.compile(r"^[-+]?((1[0-7]\d(\.\d+)?|180(\.0+)?)|([1-9]?\d(\.\d+)?))$")
+        if not bool(lat_pattern.match(str(contact.partner_latitude))):
+            raise ValidationError(
+                _(f'The Latitude of contact: {contact.name} incorrect - Value: {contact.partner_latitude}'))
+        if not bool(lng_pattern.match(str(contact.partner_longitude))):
+            raise ValidationError(
+                _(f'The Longitude of contact: {contact.name} incorrect - Value: {contact.partner_longitude}'))
+
+    def _llm_get_coordinates(self, contact):
+        if hasattr(contact, 'partner_latitude') and hasattr(contact, 'partner_longitude') and self.default_lalamove_use_coordinates:
+            self._llm_validate_coordinates(contact)
+            return {
+                'coordinates': {
+                    'lat': str(contact.partner_latitude),
+                    'lng': str(contact.partner_longitude),
+                }
+            }
+        return {}
+
     def _llm_payload_get_quotation_mode_order(self, order):
         warehouse_id = order.warehouse_id
         llm_service = order.env.context.get('llm_service')
@@ -62,8 +92,14 @@ class ProviderGrab(models.Model):
                 'serviceType': llm_service,
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
-                    {'address': warehouse_id.partner_id.shipping_address},
-                    {'address': order.partner_shipping_id.shipping_address}
+                    {
+                        'address': warehouse_id.partner_id.contact_address_complete,
+                        **self._llm_get_coordinates(warehouse_id.partner_id)
+                    },
+                    {
+                        'address': order.partner_shipping_id.contact_address_complete,
+                        **self._llm_get_coordinates(order.partner_shipping_id)
+                    }
                 ],
                 'item': {
                     'quantity': str(int(self._compute_quantity(order.order_line))),
@@ -80,12 +116,14 @@ class ProviderGrab(models.Model):
         client = Client(Connection(self, get_route_api(self, settings.llm_get_quotation_code.value)))
         result = client.get_quotation(self._llm_payload_get_quotation_mode_order(order))
         if result.get('priceBreakdown') and result.get('priceBreakdown').get('total'):
+            context = dict(order.env.context)
+            context.update({'llm_quotation_data': json.dumps(result)})
+            order.env.context = context
             return {
                 'success': True,
                 'price': result.get('priceBreakdown').get('total'),
                 'error_message': False,
                 'warning_message': False,
-                'llm_quotation_data': json.dumps(result)
             }
         return {
             'success': False,
@@ -108,8 +146,14 @@ class ProviderGrab(models.Model):
                 'serviceType': picking.lalamove_service_id.code,
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
-                    {'address': sender_id.shipping_address},
-                    {'address': recipient_id.shipping_address}
+                    {
+                        'address': sender_id.contact_address_complete,
+                        **self._llm_get_coordinates(sender_id)
+                    },
+                    {
+                        'address': recipient_id.contact_address_complete,
+                        **self._llm_get_coordinates(recipient_id)
+                    }
                 ],
                 'item': {
                     'quantity': str(int(self._compute_quantity(picking.move_ids_without_package))),

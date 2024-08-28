@@ -50,55 +50,6 @@ class DeliveryBase(models.Model):
     webhook_access_token = fields.Char(string='Access Token')
     webhook_url = fields.Char(string='URL')
 
-    @staticmethod
-    def validate_human_information(human_ids):
-        for human_id in human_ids:
-            if not human_id.phone and not human_id.mobile:
-                raise ValidationError(_(f'The phone number of {human_id.name} is required'))
-            elif not human_id.state_id:
-                raise ValidationError(_(f'The province of {human_id.name} is required'))
-            elif not human_id.district_id:
-                raise ValidationError(_(f'The district of {human_id.name} is required'))
-            elif not human_id.ward_id:
-                raise ValidationError(_(f'The ward of {human_id.name} is required'))
-            elif not human_id.street:
-                raise ValidationError(_(f'The street of {human_id.name} is required'))
-
-    def send_shipping(self, pickings):
-        self.ensure_one()
-        if hasattr(self, f'{self.delivery_type}_send_shipping'):
-            if self.is_locally_delivery:
-                self.validate_human_information([pickings.picking_type_id.warehouse_id.partner_id, pickings.partner_id])
-            return getattr(self, f'{self.delivery_type}_send_shipping')(pickings)
-
-    def rate_shipment(self, order):
-        self.ensure_one()
-        if hasattr(self, f'{self.delivery_type}_rate_shipment'):
-            if self.is_locally_delivery:
-                self.validate_human_information([order.warehouse_id.partner_id, order.partner_shipping_id])
-            res = getattr(self, f'{self.delivery_type}_rate_shipment')(order)
-            # apply fiscal position
-            company = self.company_id or order.company_id or self.env.company
-            res['price'] = self.product_id._get_tax_included_unit_price(
-                company,
-                company.currency_id,
-                order.date_order,
-                'sale',
-                fiscal_position=order.fiscal_position_id,
-                product_price_unit=res['price'],
-                product_currency=company.currency_id
-            )
-            # apply margin on computed price
-            res['price'] = float(res['price']) * (1.0 + self.margin) + self.fixed_margin
-            # save the real price in case a free_over rule overide it to 0
-            res['carrier_price'] = res['price']
-            # free when order is large enough
-            amount_without_delivery = order._compute_amount_total_without_delivery()
-            if res['success'] and self.free_over and self._compute_currency(order, amount_without_delivery, 'pricelist_to_company') >= self.amount:
-                res['warning_message'] = _('The shipping is free since the order amount exceeds %.2f.', self.amount)
-                res['price'] = 0.0
-            return res
-
     def convert_weight(self, weight, unit):
         if unit == 'KG':
             convert_to = 'uom.product_uom_kgm'
