@@ -97,14 +97,16 @@ class ProviderGrab(models.Model):
                 raise UserError(_('Please install the module Partners Geolocation'))
             lat, lng = self._grab_validate_coordinates(contact)
             return {
-                'address': contact.contact_address_complete,
+                'address': contact.shipping_address_international,
                 'coordinates': {
                     'latitude': lat,
                     'longitude': lng
                 }
             }
+        if not contact.state_id.grab_city_code:
+            raise ValidationError(_(f'The Grab city code field of contact {contact.name} is required'))
         return {
-            'address': contact.contact_address_complete,
+            'address': contact.shipping_address_international,
             'cityCode': contact.state_id.grab_city_code,
             'coordinates': {}
         }
@@ -178,6 +180,7 @@ class ProviderGrab(models.Model):
 
     def _grab_payload_create_delivery_request(self, picking):
         self._validate_picking(picking)
+        sender_id = picking.picking_type_id.warehouse_id.partner_id
         payload = {
             'merchantOrderID': picking.origin,
             'serviceType': picking.grab_service_type,
@@ -188,17 +191,15 @@ class ProviderGrab(models.Model):
             'highValue': picking.grab_high_value,
             'packages': self._grab_get_packages(picking.move_ids_without_package),
             'sender': {
-                'firstName': picking.picking_type_id.warehouse_id.partner_id.name,
-                'phone': standardization_e164(
-                    picking.picking_type_id.warehouse_id.partner_id.phone or picking.picking_type_id.warehouse_id.partner_id.mobile
-                )
+                'firstName': sender_id.name,
+                'phone': standardization_e164(sender_id.phone or sender_id.mobile)
             },
             'recipient': {
                 'firstName': picking.partner_id.name,
                 'phone': standardization_e164(picking.partner_id.phone or picking.partner_id.mobile)
             },
-            'origin': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
-            'destination': self._grab_building_address(picking.picking_type_id.warehouse_id.partner_id),
+            'origin': self._grab_building_address(sender_id),
+            'destination': self._grab_building_address(picking.partner_id),
         }
         if picking.cash_on_delivery:
             payload.update({'cashOnDelivery': {'amount': picking.cash_on_delivery_amount}})

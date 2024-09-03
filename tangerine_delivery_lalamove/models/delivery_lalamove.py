@@ -93,11 +93,11 @@ class ProviderGrab(models.Model):
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
                     {
-                        'address': warehouse_id.partner_id.contact_address_complete,
+                        'address': warehouse_id.partner_id.shipping_address_international,
                         **self._llm_get_coordinates(warehouse_id.partner_id)
                     },
                     {
-                        'address': order.partner_shipping_id.contact_address_complete,
+                        'address': order.partner_shipping_id.shipping_address_international,
                         **self._llm_get_coordinates(order.partner_shipping_id)
                     }
                 ],
@@ -147,11 +147,11 @@ class ProviderGrab(models.Model):
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
                     {
-                        'address': sender_id.contact_address_complete,
+                        'address': sender_id.shipping_address_international,
                         **self._llm_get_coordinates(sender_id)
                     },
                     {
-                        'address': recipient_id.contact_address_complete,
+                        'address': recipient_id.shipping_address_international,
                         **self._llm_get_coordinates(recipient_id)
                     }
                 ],
