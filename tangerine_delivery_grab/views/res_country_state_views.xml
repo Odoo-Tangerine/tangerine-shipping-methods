@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="res_country_state_inherit_grab" model="ir.ui.view">
+        <field name="name">res.country.state.inherit.grab</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_tree"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="grab_city_code"/>
+            </field>
+        </field>
+    </record>
+</odoo>

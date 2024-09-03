@@ -18,6 +18,7 @@
         'views/delivery_grab_views.xml',
         'views/stock_picking_views.xml',
         'views/carrier_ref_order_views.xml',
+        'views/res_country_state_views.xml',
     ],
     'images': ['static/description/thumbnail.png'],
     'license': 'OPL-1',
