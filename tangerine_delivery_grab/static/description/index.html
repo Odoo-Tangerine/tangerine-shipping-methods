@@ -51,19 +51,9 @@
                    aria-selected="false"
                    style="color: #FFBD59">Releases</a>
             </li>
-            <li class="nav-item rounded mx-1" style="font-size: 17px; font-weight: 500;">
-                <a class="nav-link"
-                   id="contact-tab"
-                   data-bs-toggle="tab"
-                   role="tab"
-                   href="#contact"
-                   aria-controls="contact"
-                   aria-selected="false"
-                   style="color: #FFBD59">Contact</a>
-            </li>
         </ul>
         <div class="tab-content mt-3">
-            <div id="features" class="tab-pane fade show active" role="tabpanel" aria-labelledby="features-tab" tabindex="0">
+            <div id="features" class="tab-pane fade show" role="tabpanel" aria-labelledby="features-tab" tabindex="0">
                 <!-- feature -->
                 <section class="mb-5">
                    <div class="container">
@@ -91,7 +81,7 @@
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
                                         <h5 style="color: #FFBD59; margin-bottom: 5px;">Schedule Deliveries</h5>
-                                        <i>Schedule deliveries for a future date and time</i>
+                                        <i>Schedule delivery orders for a future date and time</i>
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +154,77 @@
                         </div>
                    </div>
                 </section>
+                <section class="mb-5">
+                   <div class="container">
+                       <div class="d-flex flex-row justify-content-center align-items-center">
+                           <span class="d-none d-sm-inline-block" style="width: 10%; margin:32px 20px;opacity: 0.5;border-top: solid 1px #FFBD59;"></span>
+                           <h3 style="color: #FFBD59;">Available Regions</h3>
+                           <span class="d-none d-sm-inline-block" style="width: 10%; margin:32px 20px;opacity: 0.5;border-top: solid 1px #FFBD59;"></span>
+                       </div>
+                       <div class="row">
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfvn.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Vietnam</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfth.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Thailand</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfin.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Indonesia</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfsi.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Singapore</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfma.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Malaysia</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4" style="background-color: #f5f5f5">
+                                    <div class="me-3" style="max-width: 25%">
+                                        <img class="w-100" src="./images/nfph.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5>Philippines</h5>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+                </section>
                 <section class="mb-4">
                     <div class="container">
                         <div class="d-flex flex-row justify-content-center align-items-center mb-4">
@@ -216,7 +277,7 @@
                     </div>
                 </section>
             </div>
-            <div id="guidelines" class="tab-pane fade show" role="tabpanel" tabindex="0" aria-labelledby="guidelines-tab">
+            <div id="guidelines" class="tab-pane fade show active" role="tabpanel" tabindex="0" aria-labelledby="guidelines-tab">
                 <section class="mb-5">
                     <div class="container">
                         <div class="mb-4">
@@ -224,7 +285,6 @@
                             <div class="px-3">
                                 <p>- Download dependency modules if they do not exist</p>
                                 <ul>
-                                    <li>Download <span style="font-weight: 700;">Vietnam Address Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_address_base" title="Base Vietnam Address module" target="_blank">here</a></li>
                                     <li>Download <span style="font-weight: 700;">Shipping Methods Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_base" title="Shipping Methods Base module" target="_blank">here</a></li>
                                 </ul>
                                 <p>- Install module Grab Express Integration</p>
@@ -241,8 +301,6 @@
                                 <ul>
                                     <li>ClientID</li>
                                     <li>Client Secret</li>
-                                    <li>Grant Type: will be automatically added when you install the module</li>
-                                    <li>Scope: will be automatically added when you install the module</li>
                                 </ul>
                                 <div class="alert alert-primary" role="alert">
                                     <h4 class="alert-heading">
@@ -284,6 +342,20 @@
                                     <li>Cash: Cash payment</li>
                                     <li>Cashless: No cash payment</li>
                                 </ul>
+                                <p><span style="font-weight: 700;">- Location mode:</span> Grab uses one of two ways to decompose addresses in quote requests and order creation</p>
+                                <ul>
+                                    <li>Address Map: Use city code to decompose addresses</li>
+                                    <li>Coordinates: Use coordinates to decompose addresses</li>
+                                </ul>
+                                <div class="alert alert-warning" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                        <span style="font-weight: 700;">Warning</span>
+                                    </h4>
+                                    <p>
+                                        <span style="font-weight: 700;">Coordinates Mode:</span> If you use this mode, please install <span style="font-weight: 700;">Partners Geolocation</span> module (provided by Odoo) and get the corresponding coordinates for each contact.
+                                    </p>
+                                </div>
                                 <p><span style="font-weight: 700;">Step 5:</span> Configure a webhook to track orders called from the Grab Express system</p>
                                 <p>- Activate "Authentication Use". Then click the <img alt="Button Get Token" src="./images/button_gen_access_token.png" style="height: auto; width: 10%" /> button to get the access token code. If you do not want to use protection for your Odoo system. You can skip this step.</p>
                                 <p>- Go to Grab Portal at <a href="https://developer.grab.com/dashboard" title="See Details" target="_blank">Grab Dashboard</a></p>
@@ -302,17 +374,15 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h4>III. Create your first customer</h4>
+                            <h4>III. Create/Update your first customer (<i>If your system is not contact or contact missing information</i>)</h4>
                             <div class="px-3">
-                                <p><span style="font-weight: 700;">Step 1: </span>Go to: Contacts/Create</p>
-                                <p>This information is required</p>
+                                <p><span style="font-weight: 700;">Step 1: </span>Go to: Contacts/Create (Update)</p>
                                 <ul>
-                                    <li>Name: The name of customer</li>
-                                    <li>Street: The street name</li>
-                                    <li>State: The province name</li>
-                                    <li>District: The district name</li>
-                                    <li>Ward: The ward name</li>
-                                    <li>Phone: The number phone</li>
+                                    <li>Name</li>
+                                    <li>Street</li>
+                                    <li>State</li>
+                                    <li>Country</li>
+                                    <li>Phone/Mobile</li>
                                 </ul>
                                 <img alt="Config Contacts" class="rounded shadow-lg bg-body mb-3" src="./images/contacts_config.png" style="height: auto; width: 100%" />
                                 <div class="alert alert-warning" role="alert">
@@ -321,16 +391,16 @@
                                         <span style="font-weight: 700;">Other countries</span>
                                     </h4>
                                     <p>
-                                        <i>For countries where Grab Express has other support. Please follow the convention between your country and the grab provider.</i>
+                                        <i>For countries where Grab Express has other support. Please follow the convention between your country and the Grab carrier.</i>
                                     </p>
                                 </div>
-                                <p><span style="font-weight: 700;">Finally, </span>Congrats, you've created your first customer.</p>
+                                <p><span style="font-weight: 700;">Finally, </span>Congrats, you've created/updated your first customer.</p>
                             </div>
                         </div>
                         <div class="mb-4">
                             <h4>IV. Estimate cost delivery</h4>
                             <div class="px-3">
-                                <p>- After creating your first customer. In this section, we will estimate the shipping costs for your sales order.</p>
+                                <p>- After created your first customer. In this section, we will estimate the shipping costs for your sales order.</p>
                                 <p><span style="font-weight: 700;">Step 1: </span>Go to: Sales, Create a new sale order</p>
                                 <p><span style="font-weight: 700;">Step 2: </span>Click on button <img alt="Button Add Shipping" src="./images/button_add_shipping.png" style="height: auto; max-width: 5%" /> to open pop up <span style="font-weight: 700;">Add a shipping method</span></p>
                                 <img alt="Sale Order" class="rounded shadow-lg bg-body mb-3" src="./images/sale_order.png" style="height: auto; width: 100%" />
@@ -361,6 +431,20 @@
                                     </p>
                                     <img alt="Booking Order Successfully" class="rounded shadow-lg bg-body mb-3" src="./images/carrier_ref_order.png" style="height: auto; width: 100%">
                                 </div>
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-lightbulb-o"></i>
+                                        <span style="font-weight: 700;">Tips</span>
+                                    </h4>
+                                    <p>
+                                        <span style="font-weight: 700;">If you want to Schedule a Delivery</span>
+                                        <br>
+                                        <span>Enable the Schedule field. Then select the <span style="font-weight: 700;">"From"</span> and <span style="font-weight: 700;">"To"</span> periods. The <span style="font-weight: 700;">"From"</span> and <span style="font-weight: 700;">"To"</span> fields are when you want the driver to pick up and deliver the package.</span>
+                                    </p>
+                                    <img alt="Schedule" class="rounded shadow-lg bg-body mb-3" src="./images/schedule_order.png" style="height: auto; width: 100%">
+                                    <p>If the order is successful, the delivery order status will be <span style="font-weight: 700;">Queue</span></p>
+                                    <img alt="Schedule Success" class="rounded shadow-lg bg-body mb-3" src="./images/order_queue.png" style="height: auto; width: 100%">
+                                </div>
                                 <p><span style="font-weight: 700;">Finally</span>, Congrats, You have successfully booked the shipping for your sales order.</p>
                             </div>
                         </div>
@@ -377,9 +461,37 @@
                             <h4>VII. View real-time delivery process</h4>
                             <div class="px-3">
                                 <p>
-                                    <span style="font-weight: 700;">Click on button</span> <img alt="Button Tracking" src="./images/button_tracking.png" style="height: auto; width: 10%" /> You can directly track your order in real time
+                                    <span style="font-weight: 700;">Click on button</span> <img alt="Button Tracking" src="./images/button_tracking.png" style="height: auto; width: 10%" /> to open a new page where you can see the delivery progress in real-time.
                                 </p>
                                 <img alt="Tracking View" class="rounded shadow-lg bg-body mb-3" src="./images/tracking_view.png" style="height: auto; width: 100%">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4>VIII. Website Activities</h4>
+                            <div class="px-3">
+                                <p>
+                                    <span style="font-weight: 700;">Click on button</span> <img alt="Button Public Carrier" src="./images/button_public_carrier.png" style="height: auto; width: 10%" /> to publish Grab Express on the website
+                                </p>
+                                <p><span style="font-weight: 700;">- Estimated shipping costs</span></p>
+                                <img alt="Estimated shipping costs" class="rounded shadow-lg bg-body mb-3" src="./images/web_quote.png" style="height: auto; width: 100%">
+                                <p><span style="font-weight: 700;">- Choose Grab Express as the shipping and payment for the sale order</span></p>
+                                <img alt="Choose Grab Express" class="rounded shadow-lg bg-body mb-3" src="./images/web_quote_success.png" style="height: auto; width: 100%">
+                                <p><span style="font-weight: 700;">- View real-time delivery process</span></p>
+                                <p>Your customers can click on the carrier tracking ref (example: IN-SB-2-C6VWLNV3AN3YJA-AZ) to open a new page where they can see the delivery progress in real time.</p>
+                                <img alt="Tracking View" class="rounded shadow-lg bg-body mb-3" src="./images/tracking_view.png" style="height: auto; width: 100%">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4>IX. API request logs</h4>
+                            <div class="px-3">
+                                <p>
+                                    <span style="font-weight: 700;">Click on button</span> <img alt="Button Debug" src="./images/button_active_debug.png" style="height: auto; width: 10%" /> to publish Grab Express on the website
+                                </p>
+                                <img alt="Grab Express" class="rounded shadow-lg bg-body mb-3" src="./images/configuration_grab.png" style="height: auto; width: 100%">
+                                <p><span style="font-weight: 700;">- After enabling the debug requests feature. All requests to Grab servers are logged.</span></p>
+                                <p><span style="font-weight: 700;">- Go to: Settings/Technical/Logging</span> To review the request logs (Administrator only)</p>
+                                <img alt="List log" class="rounded shadow-lg bg-body mb-3" src="./images/list_logs.png" style="height: auto; width: 100%">
+                                <img alt="List log" class="rounded shadow-lg bg-body mb-3" src="./images/form_log.png" style="height: auto; width: 100%">
                             </div>
                         </div>
                     </div>
@@ -394,41 +506,6 @@
                         <li style="list-style:none;font-weight: normal;">Initial release.</li>
                     </ul>
                 </div>
-            </div>
-            <div id="contact" class="tab-pane fade show" role="tabpanel" aria-labelledby="contact-tab">
-                <section class="mb-5">
-                    <div class="container">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <p style="color: #777;font-size: 18px;letter-spacing: 1px; margin-bottom: 20px;">
-                                Suppose you have problems installing and using the app. Don't hesitate to get in touch with me via Mail or Zalo using the link below. Best regards!
-                            </p>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
-                                        <div class="me-3" style="max-width: 10%">
-                                            <img class="w-100" src="./images/outlook_icon.png" alt="Icon real time"/>
-                                        </div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h5 style="margin-bottom: 5px;">Outlook Mail</h5>
-                                            <a href="mailto:admin@onsheep.com" target="_blank">admin@onsheep.com</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
-                                        <div class="me-3" style="max-width: 10%">
-                                            <img class="w-100" src="./images/zalo_icon.png" alt="Icon real time"/>
-                                        </div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h5 style="margin-bottom: 5px;">Zalo</h5>
-                                            <a href="https://zalo.me/84812212228" target="_blank">+84 812 212 228</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
         </div>
     </div>
