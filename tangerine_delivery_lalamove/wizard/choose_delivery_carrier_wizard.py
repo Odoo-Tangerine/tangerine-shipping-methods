@@ -38,6 +38,7 @@ class ChooseDeliveryCarrierLalamove(models.TransientModel):
             context.update({
                 'llm_service': self.lalamove_service_id.code,
                 'llm_special_service': [spec.code for spec in self.lalamove_special_service_ids],
+                'llm_package_weight': self.total_weight
             })
             self.env.context = context
         result = super(ChooseDeliveryCarrierLalamove, self)._get_shipment_rate()

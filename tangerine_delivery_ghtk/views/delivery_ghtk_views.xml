@@ -5,12 +5,21 @@
         <field name="model">delivery.carrier</field>
         <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='delivery_token']" position="before">
-                <group name="delivery_ghtk_token"
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
                        invisible="delivery_type != 'ghtk'"
-                       string="Security Key"
+                       name="delivery_ghtk_api_connect_information"
                 >
-                    <field name="api_key" required="delivery_type == 'ghtk'" widget="CopyClipboardChar"/>
+                    <label for="domain"/>
+                    <div class="o_row">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                    </div>
+                    <field name="api_key" widget="CopyClipboardChar" required="delivery_type == 'ghtk'"/>
                 </group>
             </xpath>
             <xpath expr="//group[@name='delivery_token']" position="before">
