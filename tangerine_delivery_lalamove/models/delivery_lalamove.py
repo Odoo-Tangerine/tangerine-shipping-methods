@@ -47,8 +47,9 @@ class ProviderGrab(models.Model):
     def action_lalamove_sync_cities(self):
         self.env['lalamove.service'].llm_service_synchronous()
 
-    def _llm_get_enum_weight(self, instance):
-        total_weight = math.ceil(self.convert_weight(instance._get_estimated_weight(), self.base_weight_unit))
+    def _llm_get_enum_weight(self, instance, total_weight=None):
+        if not total_weight or total_weight == 0.0:
+            total_weight = math.ceil(self.convert_weight(instance._get_estimated_weight(), self.base_weight_unit))
         if total_weight < 10:
             weight_enum = settings.weight_lt_10.value
         elif 10 <= total_weight < 30:
@@ -83,6 +84,7 @@ class ProviderGrab(models.Model):
         warehouse_id = order.warehouse_id
         llm_service = order.env.context.get('llm_service')
         llm_special_service = order.env.context.get('llm_special_service')
+        llm_package_weight = order.env.context.get('llm_package_weight')
         if not warehouse_id:
             raise UserError(_('The warehouse is required on sale order'))
         elif not llm_service:
@@ -103,7 +105,7 @@ class ProviderGrab(models.Model):
                 ],
                 'item': {
                     'quantity': str(int(self._compute_quantity(order.order_line))),
-                    'weight': self._llm_get_enum_weight(order)
+                    'weight': self._llm_get_enum_weight(order, llm_package_weight)
                 },
                 'isRouteOptimized': False,
                 }
