@@ -46,6 +46,7 @@ class DeliveriesController(Controller):
             shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
             shipment_id.sudo().write({
                 'real_delivery_charge': body.get('fee'),
+                'delivery_status_id': status_id.id,
                 'real_weight': math.ceil(shipment_id.carrier_id.convert_weight(body.get('weight'), shipment_id.weight_unit))
             })
             _logger.info(f'WEBHOOK GHTK SUCCESS: Receive order callback {body.get("label_id")} successfully.')
