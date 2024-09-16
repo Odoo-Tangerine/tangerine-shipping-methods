@@ -77,8 +77,8 @@ class ProviderGHTK(models.Model):
                 'pick_province': sender_id.state_id.name,
                 'pick_district': sender_id.district_id.name,
                 'pick_ward': sender_id.ward_id.name,
-                'pick_tel': standardization_e164(sender_id.mobile or sender_id.phone),
-                'tel': standardization_e164(picking.partner_id.mobile or picking.partner_id.phone),
+                'pick_tel': standardization_e164(sender_id.mobile or sender_id.phone, sender_id.country_id.phone_code),
+                'tel': standardization_e164(picking.partner_id.mobile or picking.partner_id.phone, picking.partner_id.country_id.phone_code),
                 'name': picking.partner_id.name,
                 'address': picking.partner_id.street,
                 'province': picking.partner_id.state_id.name,
@@ -102,7 +102,7 @@ class ProviderGHTK(models.Model):
             } for line in picking.move_ids_without_package]
         }
         if picking.ghtk_special_service_type_ids:
-            payload['order']['tags[]'] = [int(rec.code) for rec in picking.ghtk_special_service_type_ids]
+            payload['order']['tags'] = [int(rec.code) for rec in picking.ghtk_special_service_type_ids]
         if picking.ghtk_service_type and picking.ghtk_service_type == 'xfast':
             payload['order']['deliver_option'] = 'xteam'
             payload['order']['pick_session'] = list(data.get('data', {}).keys())[0]
