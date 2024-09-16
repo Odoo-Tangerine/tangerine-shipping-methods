@@ -102,7 +102,7 @@ class ProviderGHTK(models.Model):
             } for line in picking.move_ids_without_package]
         }
         if picking.ghtk_special_service_type_ids:
-            payload['order']['tags[]'] = [int(rec.code) for rec in picking.ghtk_special_service_type_ids]
+            payload['order']['tags'] = [int(rec.code) for rec in picking.ghtk_special_service_type_ids]
         if picking.ghtk_service_type and picking.ghtk_service_type == 'xfast':
             payload['order']['deliver_option'] = 'xteam'
             payload['order']['pick_session'] = list(data.get('data', {}).keys())[0]
