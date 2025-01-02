@@ -1,7 +1,9 @@
 import json
-
+import logging
 from odoo import fields, models, api
 from ..settings.constants import settings
+
+_logger = logging.getLogger(__name__)
 
 
 class ChooseDeliveryCarrier(models.TransientModel):
@@ -47,6 +49,9 @@ class ChooseDeliveryCarrier(models.TransientModel):
         return super(ChooseDeliveryCarrier, self)._get_shipment_rate()
 
     def button_confirm(self):
+        _logger.debug('ChooseDeliveryCarrier.button_confirm')
+        _logger.debug('delivery_type', self.carrier_id.delivery_type)
+        _logger.debug('ahamove_code', settings.ahamove_code.value)
         if self.carrier_id.delivery_type == settings.ahamove_code.value:
             context = dict(self.env.context)
             context.update({'ahamove_quotation_data': json.dumps({
@@ -57,6 +62,7 @@ class ChooseDeliveryCarrier(models.TransientModel):
                 'ahamove_cod_amount': self.ahamove_cod_amount
             })})
             self.env.context = context
+            _logger.debug('context', context)
         self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
         self.order_id.write({
             'recompute_delivery_price': False,
