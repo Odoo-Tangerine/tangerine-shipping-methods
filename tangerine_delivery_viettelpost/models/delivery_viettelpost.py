@@ -47,21 +47,41 @@ class ProviderViettelpost(models.Model):
                 raise UserError(_('The field Password is required'))
             client = Client(Connection(self, get_route_api(self, settings.get_short_term_token_route.value)))
             result = client.get_short_term_access_token(self._viettelpost_payload_get_token())
+            if result.get('error'):
+                raise UserError(result.get('message', 'Error'))
             client = Client(Connection(self, get_route_api(self, settings.get_long_term_token_route.value)))
             result = client.get_long_term_access_token(self._viettelpost_payload_get_token(), result.get('token'))
+            if result.get('error'):
+                raise UserError(result.get('message', 'Error'))
             self.write({'access_token': result.get('token')})
             return notification('success', 'Get access token successfully')
         except Exception as e:
             raise UserError(ustr(e))
 
     def _viettelpost_payload_estimate_cost(self, order):
+        service_code = order.env.context.get(
+            'viettelpost_service_code',
+            self.default_viettelpost_service_id.code if self.default_viettelpost_service_id else None
+        )
+        service_extend_code = order.env.context.get(
+            'viettelpost_service_extend_code',
+            self.default_viettelpost_service_extend_id.code if self.default_viettelpost_service_extend_id else None
+        )
+        product_type = order.env.context.get(
+            'viettelpost_product_type',
+            self.default_viettelpost_product_type or settings.default_product_type.value
+        )
+        national_type = order.env.context.get(
+            'viettelpost_national_type',
+            self.default_viettelpost_national_type or settings.default_national_type.value
+        )
         return {
             'PRODUCT_WEIGHT': math.ceil(self.convert_weight(order._get_estimated_weight(), self.base_weight_unit)),
             'PRODUCT_PRICE': order.amount_total,
-            'ORDER_SERVICE_ADD': order.env.context.get('viettelpost_service_extend_code'),
-            'ORDER_SERVICE': order.env.context.get('viettelpost_service_code'),
-            'PRODUCT_TYPE': order.env.context.get('viettelpost_product_type'),
-            'NATIONAL_TYPE': order.env.context.get('viettelpost_national_type'),
+            'ORDER_SERVICE_ADD': service_extend_code,
+            'ORDER_SERVICE': service_code,
+            'PRODUCT_TYPE': product_type,
+            'NATIONAL_TYPE': national_type,
             'SENDER_ADDRESS': f'{order.warehouse_id.partner_id.shipping_address}',
             'RECEIVER_ADDRESS': f'{order.partner_shipping_id.shipping_address}',
         }
@@ -69,6 +89,13 @@ class ProviderViettelpost(models.Model):
     def viettelpost_rate_shipment(self, order):
         client = Client(Connection(self, get_route_api(self, settings.estimate_cost_route.value)))
         result = client.estimate_cost(self._viettelpost_payload_estimate_cost(order))
+        if result.get('error'):
+            return {
+                'success': False,
+                'price': 0.0,
+                'error_message': result.get('message', 'Error'),
+                'warning_message': False
+            }
         return {
             'success': True,
             'price': result.get('MONEY_TOTAL'),
@@ -127,6 +154,8 @@ class ProviderViettelpost(models.Model):
             if ref_id and ref_id.delivery_status_id.code not in settings.allow_booking_status.value:
                 raise UserError(_(f'This delivery note has already been placed. Please do not place a new order.'))
             result = client.create_order(self._viettelpost_payload_create_order(picking))
+            if result.get('error'):
+                raise UserError(result.get('message', 'Error'))
             status_id = self.env.ref('tangerine_delivery_viettelpost.viettelpost_status_1')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
             self.env['carrier.ref.order'].create({

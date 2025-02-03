@@ -19,8 +19,6 @@ class ChooseDeliveryCarrier(models.TransientModel):
         string='Request Type'
     )
     promo_code = fields.Char(string='Promotion Code')
-    ahamove_cod = fields.Boolean(string='COD', default=False)
-    ahamove_cod_amount = fields.Monetary(string='COD Money')
 
     @api.onchange('carrier_id', 'total_weight')
     def _onchange_ahamove_provider(self):
@@ -49,17 +47,14 @@ class ChooseDeliveryCarrier(models.TransientModel):
         return super(ChooseDeliveryCarrier, self)._get_shipment_rate()
 
     def button_confirm(self):
-        _logger.debug('ChooseDeliveryCarrier.button_confirm')
-        _logger.debug('delivery_type', self.carrier_id.delivery_type)
-        _logger.debug('ahamove_code', settings.ahamove_code.value)
         if self.carrier_id.delivery_type == settings.ahamove_code.value:
             context = dict(self.env.context)
             context.update({'ahamove_quotation_data': json.dumps({
                 'ahamove_service_id': self.ahamove_service_id.id,
                 'ahamove_service_request_ids': self.ahamove_service_request_ids.ids,
                 'promo_code': self.promo_code,
-                'ahamove_cod': self.ahamove_cod,
-                'ahamove_cod_amount': self.ahamove_cod_amount
+                'ahamove_cod': self.is_cod,
+                'ahamove_cod_amount': self.cod_amount
             })})
             self.env.context = context
             _logger.debug('context', context)

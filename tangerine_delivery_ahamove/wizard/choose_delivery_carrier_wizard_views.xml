@@ -14,10 +14,10 @@
                        domain="ahamove_service_request_domain"
                 />
                 <field name="ahamove_service_request_domain" invisible="1"/>
-                <label for="ahamove_cod" invisible="delivery_type != 'ahamove'"/>
+                <label for="is_cod" invisible="delivery_type != 'ahamove'"/>
                 <div class="o_row" invisible="delivery_type != 'ahamove'">
-                    <field name="ahamove_cod" style="max-width: 15%;" widget="boolean_toggle"/>
-                    <field name="ahamove_cod_amount" invisible="not ahamove_cod"/>
+                    <field name="is_cod" style="max-width: 15%;" widget="boolean_toggle"/>
+                    <field name="cod_amount" invisible="not is_cod"/>
                 </div>
                 <field name="promo_code" invisible="delivery_type != 'ahamove'"/>
             </field>

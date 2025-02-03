@@ -1,5 +1,5 @@
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+import json
+from odoo import fields, models, api
 from ..settings.constants import settings
 
 
@@ -40,3 +40,21 @@ class ChooseDeliveryCarrier(models.TransientModel):
             })
             self.env.context = context
         return super(ChooseDeliveryCarrier, self)._get_shipment_rate()
+
+    def button_confirm(self):
+        if self.carrier_id.delivery_type == settings.code.value:
+            context = dict(self.env.context)
+            context.update({'viettelpost_quotation_data': json.dumps({
+                'viettelpost_service_id': self.viettelpost_service_id.id,
+                'viettelpost_service_extend_id': self.viettelpost_service_extend_id.id if self.viettelpost_service_extend_id else None,
+                'viettelpost_national_type': self.viettelpost_national_type,
+                'viettelpost_product_type': self.viettelpost_product_type,
+                'viettelpost_cod': self.is_cod,
+                'viettelpost_cod_amount': self.cod_amount
+            })})
+            self.env.context = context
+        self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
+        self.order_id.write({
+            'recompute_delivery_price': False,
+            'delivery_message': self.delivery_message,
+        })

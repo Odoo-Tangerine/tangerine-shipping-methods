@@ -22,7 +22,7 @@ class Client:
 
     def _validate_response(self, response):
         if response.get('error'):
-            raise UserError(response.get('message'))
+            return response
         if self.conn.endpoint.code == settings.viettelpost_print_order_route.value:
             return response.get('message')
         return response.get('data')

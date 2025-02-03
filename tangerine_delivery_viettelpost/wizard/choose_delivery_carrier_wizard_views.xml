@@ -17,6 +17,11 @@
                 <field name="viettelpost_national_type" invisible="delivery_type != 'viettelpost'"/>
                 <field name="viettelpost_product_type" invisible="delivery_type != 'viettelpost'"/>
                 <field name="viettelpost_service_request_domain" invisible="1"/>
+                <label for="is_cod" invisible="delivery_type != 'viettelpost'"/>
+                <div class="o_row" invisible="delivery_type != 'viettelpost'">
+                    <field name="is_cod" style="max-width: 15%;" widget="boolean_toggle"/>
+                    <field name="cod_amount" invisible="not is_cod"/>
+                </div>
             </field>
         </field>
     </record>
