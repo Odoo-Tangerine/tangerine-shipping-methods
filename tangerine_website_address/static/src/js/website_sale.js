@@ -1,6 +1,6 @@
 /** @odoo-module **/
+import { _t } from "@web/core/l10n/translation";
 import { WebsiteSale } from '@website_sale/js/website_sale';
-import { debounce } from "@web/core/utils/timing";
 
 WebsiteSale.include({
     events: Object.assign({}, WebsiteSale.prototype.events, {
@@ -21,7 +21,7 @@ WebsiteSale.include({
             if (selectStates.data('init')===0 || selectStates.find('option').length===1) {
                 if (data.states.length || data.state_required) {
                     selectStates.html('');
-                    selectStates.append($('<option>').text('State / Province').attr('value', ''));
+                    selectStates.append($('<option>').text('Tỉnh/TP ...').attr('value', ''));
                     data.states.forEach((x) => {
                         var opt = $('<option>').text(x[1])
                             .attr('value', x[0])
@@ -74,7 +74,7 @@ WebsiteSale.include({
                     if (selectDistricts.data('init') === 0 || selectDistricts.find('option').length === 1) {
                         if (data.districts.length) {
                             selectDistricts.html('');
-                            selectDistricts.append($('<option>').text('District').attr('value', ''));
+                            selectDistricts.append($('<option>').text(_t('Quận/Huyện ...')).attr('value', ''));
                             data.districts.forEach((d) => {
                                 var opt = $('<option>').text(d[1])
                                     .attr('value', d[0])
@@ -103,7 +103,7 @@ WebsiteSale.include({
                 if (selectWards.data('init') === 0 || selectWards.find('option').length === 1) {
                     if (data.wards.length) {
                         selectWards.html('');
-                        selectWards.append($('<option>').text('Ward').attr('value', ''));
+                        selectWards.append($('<option>').text('Phường/Xã ...').attr('value', ''));
                         data.wards.forEach((w) => {
                             var opt = $('<option>').text(w[1])
                                 .attr('value', w[0])

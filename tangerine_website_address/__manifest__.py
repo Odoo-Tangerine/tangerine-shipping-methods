@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Vietnam Address On Website',
-    'summary': """""",
+    'name': 'Vietnam Districts/Wards On Website',
+    'summary': """The Vietnam Districts/Wards On Website Module enhances address selection by dynamically filtering districts and wards based on the selected country and state/province on website""",
     'author': 'Long Duong Nhat',
     'license': 'LGPL-3',
     'category': 'Extra Tools',
@@ -21,4 +21,6 @@
     },
     'application': False,
     'installable': True,
+    'currency': 'USD',
+    'price': 25.00
 }
