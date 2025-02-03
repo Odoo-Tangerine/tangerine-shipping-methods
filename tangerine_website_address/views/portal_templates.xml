@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="portal_my_details_fields" name="portal_my_details_fields" inherit_id="portal.portal_my_details_fields">
+        <xpath expr="//select[@name='state_id']/.." position="after">
+            <t t-if="res_company.country_code == 'VN'">
+                <div t-attf-class="mb-3 #{error.get('district_id') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label label-optional" for="district_id">District</label>
+                    <select name="district_id" t-attf-class="form-select #{error.get('district_id') and 'is-invalid' or ''}">
+                        <option value="">select...</option>
+                        <t t-foreach="districts or []" t-as="district">
+                            <option t-att-value="district.id" style="display:none;" t-att-data-state_id="district.state_id.id" t-att-selected="district.id == int(district_id) if district_id else district.id == partner.district_id.id">
+                                <t t-esc="district.name" />
+                            </option>
+                        </t>
+                    </select>
+                </div>
+
+                <div t-attf-class="mb-3 #{error.get('ward_id') and 'o_has_error' or ''} col-xl-6">
+                    <label class="col-form-label label-optional" for="ward_id">Ward</label>
+                    <select name="ward_id" t-attf-class="form-select #{error.get('ward_id') and 'is-invalid' or ''}">
+                        <option value="">select...</option>
+                        <t t-foreach="wards or []" t-as="ward">
+                            <option t-att-value="ward.id" style="display:none;" t-att-data-district_id="ward.district_id.id" t-att-selected="ward.id == int(ward_id) if ward_id else ward.id == partner.ward_id.id">
+                                <t t-esc="ward.name" />
+                            </option>
+                        </t>
+                    </select>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
