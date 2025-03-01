@@ -22,6 +22,4 @@
     },
     'application': False,
     'installable': True,
-    'currency': 'USD',
-    'price': 25.00
 }

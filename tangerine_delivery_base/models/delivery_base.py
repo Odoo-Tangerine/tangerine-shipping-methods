@@ -40,7 +40,7 @@ class DeliveryBase(models.Model):
         ('L', 'Pounds'),
         ('KG', 'Kilograms'),
         ('G', 'Grams')
-    ], string='Weight Unit', required=True)
+    ], string='Weight Unit')
     default_promo_code = fields.Char(string='Promo Code')
     is_locally_delivery = fields.Boolean(string='Locally Delivery', default=False)
     is_support_multi_stop_delivery = fields.Boolean(string='Have Support for Multi-stop Delivery', default=False)
