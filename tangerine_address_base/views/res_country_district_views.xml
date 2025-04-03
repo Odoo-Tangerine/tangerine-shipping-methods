@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="res_country_district_tree_view" model="ir.ui.view">
-        <field name="name">res.country.district.tree.view</field>
+        <field name="name">res.country.district.list.view</field>
         <field name="model">res.country.district</field>
         <field name="arch" type="xml">
-            <tree string="District" editable="top">
+            <list string="District" editable="top">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="slug"/>
                 <field name="state_id" context="{'default_country_id': country_id}"/>
                 <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -31,7 +31,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.country.district</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('res_country_district_tree_view')})]"
+            (0, 0, {'view_mode': 'list', 'view_id': ref('res_country_district_tree_view')})]"
         />
         <field name="search_view_id" ref="res_country_district_search_view"/>
     </record>

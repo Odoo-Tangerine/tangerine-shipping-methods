@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="delivery_status_tree_view" model="ir.ui.view">
-        <field name="name">delivery.status.tree.view</field>
+        <field name="name">delivery.status.list.view</field>
         <field name="model">delivery.status</field>
         <field name="arch" type="xml">
-            <tree string="Status" editable="top">
+            <list string="Status" editable="top">
                 <field name="provider_id"/>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="description"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -34,7 +34,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">delivery.status</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('delivery_status_tree_view')})]"
+            (0, 0, {'view_mode': 'list', 'view_id': ref('delivery_status_tree_view')})]"
         />
         <field name="context">{'search_default_provider': True}</field>
         <field name="search_view_id" ref="delivery_status_search_view"/>

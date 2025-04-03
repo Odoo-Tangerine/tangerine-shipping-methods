@@ -5,7 +5,7 @@
     'author': 'Long Duong Nhat',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',
-    'version': '17.0.1.0',
+    'version': '18.0.1.0',
     'depends': ['tangerine_delivery_base'],
     'data': [
         'security/ir.model.access.csv',

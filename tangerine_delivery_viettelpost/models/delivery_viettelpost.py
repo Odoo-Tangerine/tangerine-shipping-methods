@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import math
-from typing import Any
 from odoo import fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools import ustr
@@ -56,7 +55,19 @@ class ProviderViettelpost(models.Model):
 
     def _viettelpost_payload_estimate_cost(self, order):
         return {
-            'PRODUCT_WEIGHT': math.ceil(self.convert_weight(order._get_estimated_weight(), self.base_weight_unit)),
+            'PRODUCT_WEIGHT': max(
+                math.ceil(
+                    order.carrier_id.convert_weight(
+                        order._get_estimated_weight(),
+                        self.base_weight_unit
+                )),
+                math.ceil(
+                    order.carrier_id.convert_weight(
+                        order.env.context.get('viettelpost_total_weight', 0),
+                        self.base_weight_unit
+                    )
+                )
+            ),
             'PRODUCT_PRICE': order.amount_total,
             'ORDER_SERVICE_ADD': order.env.context.get('viettelpost_service_extend_code'),
             'ORDER_SERVICE': order.env.context.get('viettelpost_service_code'),

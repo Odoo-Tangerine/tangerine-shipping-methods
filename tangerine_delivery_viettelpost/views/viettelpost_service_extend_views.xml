@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="viettelpost_service_extend_tree_view" model="ir.ui.view">
-        <field name="name">viettelpost.service.extend.tree.view</field>
+        <field name="name">viettelpost.service.extend.list.view</field>
         <field name="model">viettelpost.service.extend</field>
         <field name="arch" type="xml">
-            <tree editable="top">
+            <list editable="top">
                 <field name="service_id"/>
                 <field name="name"/>
                 <field name="code"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -29,7 +29,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">viettelpost.service.extend</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('viettelpost_service_extend_tree_view')})]"
+            (0, 0, {'view_mode': 'list', 'view_id': ref('viettelpost_service_extend_tree_view')})]"
         />
         <field name="search_view_id" ref="viettelpost_service_extend_search_view"/>
     </record>

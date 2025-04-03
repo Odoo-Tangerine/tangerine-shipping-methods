@@ -29,10 +29,10 @@
     </record>
 
     <record id="carrier_ref_order_tree_view" model="ir.ui.view">
-        <field name="name">carrier.ref.order.tree.view</field>
+        <field name="name">carrier.ref.order.list.view</field>
         <field name="model">carrier.ref.order</field>
         <field name="arch" type="xml">
-            <tree create="0" edit="0" delete="0">
+            <list create="0" edit="0" delete="0">
                 <field name="picking_id"/>
                 <field name="sale_id"/>
                 <field name="carrier_id"/>
@@ -42,7 +42,7 @@
                 <field name="cash_on_delivery"/>
                 <field name="delivery_status_id" widget="badge"/>
                 <field name="currency_id" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -66,7 +66,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">carrier.ref.order</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('carrier_ref_order_tree_view')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('carrier_ref_order_tree_view')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('carrier_ref_order_form_view')})]"
         />
         <field name="search_view_id" ref="carrier_ref_order_search_view"/>

@@ -5,7 +5,7 @@
     'author': 'Long Duong Nhat',
     'license': 'LGPL-3',
     'category': 'Extra Tools',
-    'version': '17.0.1.0',
+    'version': '18.0.1.0',
     'support': 'odoo.tangerine@gmail.com',
     'depends': ['base', 'contacts'],
     'data': [
