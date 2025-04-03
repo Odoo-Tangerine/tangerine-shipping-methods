@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_llm_service,access_llm_service,model_lalamove_service,,1,1,1,1
+access_llm_special_service,access_llm_special_service,model_lalamove_special_service,,1,1,1,1
+access_llm_regional,access_llm_regional,model_lalamove_regional,,1,1,1,1

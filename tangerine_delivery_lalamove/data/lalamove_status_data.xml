@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="lalamove_status_assigning_driver" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Assigning Driver</field>
+            <field name="code">ASSIGNING_DRIVER</field>
+            <field name="description">Trying to match the delivery with a driver.</field>
+        </record>
+
+        <record id="lalamove_status_on_going" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">On Going</field>
+            <field name="code">ON_GOING</field>
+            <field name="description">A driver has accepted the order.</field>
+        </record>
+
+        <record id="lalamove_status_picked_up" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Picked Up</field>
+            <field name="code">PICKED_UP</field>
+            <field name="description">The driver has picked up the order.</field>
+        </record>
+
+
+        <record id="lalamove_status_canceled" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Canceled</field>
+            <field name="code">CANCELED</field>
+            <field name="description">User has canceled the order.</field>
+        </record>
+
+        <record id="lalamove_status_completed" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Completed</field>
+            <field name="code">COMPLETED</field>
+            <field name="description">The order has been delivered successfully and transaction has concluded.</field>
+        </record>
+
+        <record id="lalamove_status_rejected" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Rejected</field>
+            <field name="code">REJECTED</field>
+            <field name="description">The order was matched and rejected twice by two drivers in a row.</field>
+        </record>
+
+        <record id="lalamove_status_expired" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Expired</field>
+            <field name="code">EXPIRED</field>
+            <field name="description">The order expired as no drivers accepted the order.</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="lalamove_get_quotation" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Get Quotation</field>
+            <field name="code">llm_get_quotation</field>
+            <field name="route">/v3/quotations</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+        </record>
+
+        <record id="lalamove_place_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Place Order</field>
+            <field name="code">llm_place_order</field>
+            <field name="route">/v3/orders</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+        </record>
+
+        <record id="lalamove_cancel_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Cancel Order</field>
+            <field name="code">llm_cancel_order</field>
+            <field name="route">/v3/orders</field>
+            <field name="method">DELETE</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+        </record>
+
+        <record id="lalamove_get_cities" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Get Cities</field>
+            <field name="code">llm_get_cities</field>
+            <field name="route">/v3/cities</field>
+            <field name="method">GET</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+        </record>
+        <record id="lalamove_register_webhook" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_lalamove.tangerine_delivery_lalamove_provider" />
+            <field name="name">Register Webhook</field>
+            <field name="code">llm_register_webhook</field>
+            <field name="route">/v3/webhook</field>
+            <field name="method">PATCH</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+        </record>
+    </data>
+</odoo>

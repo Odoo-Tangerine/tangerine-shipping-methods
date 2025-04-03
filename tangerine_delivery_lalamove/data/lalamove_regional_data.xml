@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="regional_BR" model="lalamove.regional">
+            <field name="name">Brasil</field>
+            <field name="code">BR</field>
+            <field name="lang">en_BR</field>
+        </record>
+
+        <record id="regional_HK" model="lalamove.regional">
+            <field name="name">Hong Kong, China</field>
+            <field name="code">HK</field>
+            <field name="lang">en_HK</field>
+        </record>
+
+        <record id="regional_ID" model="lalamove.regional">
+            <field name="name">Indonesia</field>
+            <field name="code">ID</field>
+            <field name="lang">en_ID</field>
+        </record>
+
+        <record id="regional_MY" model="lalamove.regional">
+            <field name="name">Malaysia</field>
+            <field name="code">MY</field>
+            <field name="lang">en_MY</field>
+        </record>
+
+        <record id="regional_MX" model="lalamove.regional">
+            <field name="name">Mexico</field>
+            <field name="code">MX</field>
+            <field name="lang">en_MX</field>
+        </record>
+
+        <record id="regional_PH" model="lalamove.regional">
+            <field name="name">Philippines</field>
+            <field name="code">PH</field>
+            <field name="lang">en_PH</field>
+        </record>
+
+        <record id="regional_SG" model="lalamove.regional">
+            <field name="name">Singapore</field>
+            <field name="code">SG</field>
+            <field name="lang">en_SG</field>
+        </record>
+
+        <record id="regional_TW" model="lalamove.regional">
+            <field name="name">Taiwan, China</field>
+            <field name="code">TW</field>
+            <field name="lang">zh_TW</field>
+        </record>
+
+        <record id="regional_TH" model="lalamove.regional">
+            <field name="name">Thailand</field>
+            <field name="code">TH</field>
+            <field name="lang">th_TH</field>
+        </record>
+
+        <record id="regional_VN" model="lalamove.regional">
+            <field name="name">Vietnam</field>
+            <field name="code">VN</field>
+            <field name="lang">en_VN</field>
+        </record>
+    </data>
+</odoo>
