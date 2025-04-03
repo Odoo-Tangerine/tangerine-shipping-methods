@@ -40,7 +40,7 @@ class DeliveryBase(models.Model):
         ('L', 'Pounds'),
         ('KG', 'Kilograms'),
         ('G', 'Grams')
-    ], string='Weight Unit', required=True)
+    ], string='Weight Unit')
     default_promo_code = fields.Char(string='Promo Code')
     is_locally_delivery = fields.Boolean(string='Locally Delivery', default=False)
     is_support_multi_stop_delivery = fields.Boolean(string='Have Support for Multi-stop Delivery', default=False)
@@ -119,14 +119,14 @@ class DeliveryBase(models.Model):
         self.write({'webhook_url': f'{web_base_url}/webhook/v1/delivery/{self.delivery_type}'})
 
     def create_pdf_delivery_label(self, picking, content):
-        return self.env['ir.attachment'].sudo().create({
+        return self.env['ir.attachment'].sudo().create([{
             'name': f'[{self.name}] - Delivery Label: {picking.carrier_tracking_ref}.pdf',
             'datas': content,
             'type': 'binary',
             'res_model': picking._name,
             'res_id': picking.id,
             'mimetype': 'application/pdf'
-        })
+        }])
 
     @staticmethod
     def common_payload_carrier_ref_order(picking, status, shipping_cost, carrier_tracking_ref):

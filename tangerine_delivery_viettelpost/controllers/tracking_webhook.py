@@ -40,7 +40,8 @@ class DeliveriesController(Controller):
             shipment_id.picking_id.sudo().write({'delivery_status_id': status_id.id})
             shipment_id.sudo().write({
                 'real_delivery_charge': body.get('MONEY_TOTAL'),
-                'real_weight': body.get('PRODUCT_WEIGHT', 0)
+                'real_weight': body.get('PRODUCT_WEIGHT', 0),
+                'delivery_status_id': status_id.id
             })
             _logger.info(f'WEBHOOK VIETTELPOST SUCCESS: Receive order callback {body.get("deliveryID")} successfully.')
             return response(
