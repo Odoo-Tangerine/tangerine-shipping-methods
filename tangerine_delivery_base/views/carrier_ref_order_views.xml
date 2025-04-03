@@ -62,7 +62,7 @@
     </record>
 
     <record id="carrier_ref_order_action" model="ir.actions.act_window">
-        <field name="name">Carrier Ref Order Details</field>
+        <field name="name">Carrier Ref Order</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">carrier.ref.order</field>
         <field name="view_ids" eval="[(5, 0, 0),

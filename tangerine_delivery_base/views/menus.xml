@@ -2,7 +2,7 @@
 <odoo>
     <menuitem id="menu_carrier_ref_order_details"
           parent="stock.menu_delivery"
-          name="Carrier Ref Order Details"
+          name="Carrier Ref Order"
           sequence="70"
           action="carrier_ref_order_action"
     />
