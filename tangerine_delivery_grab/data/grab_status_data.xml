@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="grab_status_queueing" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Queueing</field>
+            <field name="code">QUEUEING</field>
+            <field name="description">Initial state of scheduled orders</field>
+        </record>
+
+        <record id="grab_status_allocating" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Allocating</field>
+            <field name="code">ALLOCATING</field>
+            <field name="description">Initial state of non-scheduled order/ Allocating a driver</field>
+        </record>
+
+        <record id="grab_status_pending_pickUp" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Pending PickUp</field>
+            <field name="code">PENDING_PICKUP</field>
+            <field name="description">Driver has been assigned the job, but haven't started the job</field>
+        </record>
+
+        <record id="grab_status_picking_up" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Picking Up</field>
+            <field name="code">PICKING_UP</field>
+            <field name="description">Driver has picked up the job, and on the way to pick up the parcel</field>
+        </record>
+
+        <record id="grab_status_pending_drop_off" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Pending Drop off</field>
+            <field name="code">PENDING_DROP_OFF</field>
+            <field name="description">Driver has picked up the parcel, and on the way to the receiver</field>
+        </record>
+
+        <record id="grab_status_in_delivery" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">In Delivery</field>
+            <field name="code">IN_DELIVERY</field>
+            <field name="description">Driver has arrived to receiver's place</field>
+        </record>
+
+        <record id="grab_status_failed" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Failed</field>
+            <field name="code">FAILED</field>
+            <field name="description">Canceled by Grab ops</field>
+        </record>
+
+        <record id="grab_status_canceled" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Canceled</field>
+            <field name="code">CANCELED</field>
+            <field name="description">Canceled by Sender</field>
+        </record>
+
+        <record id="grab_status_completed" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Completed</field>
+            <field name="code">COMPLETED</field>
+            <field name="description">Order successfully delivered</field>
+        </record>
+
+        <record id="grab_status_returned" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Returned</field>
+            <field name="code">RETURNED</field>
+            <field name="description">Driver returned the parcel</field>
+        </record>
+    </data>
+</odoo>

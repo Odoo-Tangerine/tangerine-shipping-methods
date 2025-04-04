@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="grab_delivery_carrier_partner" model="res.partner">
+            <field name="name">Grab Express</field>
+            <field name="company_type">company</field>
+            <field name="website">https://grab.com</field>
+            <field name="category_id" eval="[Command.set([ref('tangerine_delivery_base.delivery_carrier_partner_category')])]"/>
+            <field name="vat">0312650437</field>
+            <field name="street">Tòa nhà Mapletree Business Centre, 1060 Nguyễn Văn Linh, Phường Tân Phong, Quận 7</field>
+        </record>
+    </data>
+</odoo>

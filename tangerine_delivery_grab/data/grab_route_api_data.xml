@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="authentication_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Authentication</field>
+            <field name="code">oauth_route</field>
+            <field name="route">/grabid/v1/oauth2/token</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="description">GrabExpress API requests must have authentication, or they fail with a 401 Unauthorized error response.</field>
+        </record>
+
+        <record id="get_delivery_quotes_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Get Delivery Quotes</field>
+            <field name="code">get_delivery_quotes</field>
+            <field name="route">/grab-express-sandbox/v1/deliveries/quotes</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="description">Get Delivery Quotes before you place an order.</field>
+        </record>
+
+        <record id="create_delivery_request_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Create Delivery Request</field>
+            <field name="code">create_delivery_request</field>
+            <field name="route">/grab-express-sandbox/v1/deliveries</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="description">Once you get the quotes, use this API to place a booking request.</field>
+        </record>
+
+        <record id="cancel_delivery_request_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Cancel Delivery</field>
+            <field name="code">cancel_delivery</field>
+            <field name="route">/grab-express-sandbox/v1/deliveries</field>
+            <field name="method">DELETE</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="description">Allows partner to cancel a delivery request.</field>
+        </record>
+
+        <record id="get_detail_delivery_request_route" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_grab.tangerine_delivery_grab_provider" />
+            <field name="name">Get Detail Delivery</field>
+            <field name="code">get_detail_delivery</field>
+            <field name="route">/grab-express-sandbox/v1/deliveries</field>
+            <field name="method">GET</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+            <field name="is_need_access_token" eval="True"/>
+            <field name="description">Partner can call this API anytime after the delivery has been created. i.e. Create Delivery API request was successful.</field>
+        </record>
+    </data>
+</odoo>
