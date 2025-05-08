@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="address" inherit_id="website_sale.address">
+        <xpath expr="//div[@id='div_state']" position="after">
+            <div id="div_district" class="col-lg-6 mb-2" t-att-style="not state_districts and 'display: none'">
+                <label class="col-form-label" for="o_district_id">District</label>
+                <select id="o_district_id" name="district_id" class="form-select">
+                    <option value="">District ...</option>
+                    <t t-foreach="state_districts" t-as="d">
+                        <option t-att-value="d.id" t-att-selected="d.id == district_id">
+                            <t t-esc="d.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+
+            <div id="div_ward" class="col-lg-6 mb-2" t-att-style="not district_wards and 'display: none'">
+                <label class="col-form-label" for="o_ward_id">Ward</label>
+                <select id="o_ward_id" name="ward_id" class="form-select">
+                    <option value="">Ward ...</option>
+                    <t t-foreach="district_wards" t-as="w">
+                        <option t-att-value="w.id" t-att-selected="w.id == ward_id">
+                            <t t-esc="w.name" />
+                        </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+    </template>
+</odoo>
