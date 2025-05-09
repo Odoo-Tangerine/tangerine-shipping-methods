@@ -4,11 +4,6 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 
 class CustomerPortalModesk(CustomerPortal):
 
-    def _get_mandatory_fields(self):
-        res = super(CustomerPortalModesk, self)._get_mandatory_fields()
-        res.extend(['district_id', 'ward_id'])
-        return res
-
     @route(['/my/account'], type='http', auth='user', website=True)
     def account(self, redirect=None, **post):
         values = self._prepare_portal_layout_values()
