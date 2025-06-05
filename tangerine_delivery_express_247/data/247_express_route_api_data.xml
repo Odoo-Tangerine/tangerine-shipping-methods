@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="express_247_get_access_token" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Get Access Token</field>
+            <field name="code">express_247_get_access_token</field>
+            <field name="route">/api/Client/ClientLogin</field>
+            <field name="method">POST</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_get_service_type" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Get Service Types</field>
+            <field name="code">express_247_get_service_type</field>
+            <field name="route">/Api/Customer/GetServiceTypes</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_get_special_service_type" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Get Special Service Types</field>
+            <field name="code">express_247_get_special_service_type</field>
+            <field name="route">/api/Customer/Services</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_get_hubs" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Get Hubs</field>
+            <field name="code">express_247_get_hubs</field>
+            <field name="route">/Api/Customer/CustomerGetClientHubs</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_create_hub" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Create Hub</field>
+            <field name="code">express_247_create_hub</field>
+            <field name="route">/Api/Customer/CustomerInsertClientHub</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_update_hub" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Update Hub</field>
+            <field name="code">express_247_update_hub</field>
+            <field name="route">/api/Customer/CustomerUpdateClientHub</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_get_price" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Get Price</field>
+            <field name="code">express_247_get_price</field>
+            <field name="route">/Api/Customer/GetPriceForCustomerAPI</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_create_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Create Order</field>
+            <field name="code">express_247_create_order</field>
+            <field name="route">/Api/Customer/CustomerAPICreateOrder</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_cancel_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Cancel Order</field>
+            <field name="code">express_247_cancel_order</field>
+            <field name="route">/Api/Customer/CancelOrder</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_print_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Print Order</field>
+            <field name="code">express_247_print_order</field>
+            <field name="route">/Api/Customer/GetOrderImages</field>
+            <field name="method">POST</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+
+        <record id="express_247_tracking_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_express_247.tangerine_delivery_express_247_provider" />
+            <field name="name">Tracking Order</field>
+            <field name="code">express_247_tracking_order</field>
+            <field name="route">/api/Order/v1/Tracking</field>
+            <field name="method">GET</field>
+            <field name="is_need_access_token">True</field>
+            <field name="headers">'{"Cache-Control": "no-cache", "Content-Type": "application/json"}'</field>
+        </record>
+    </data>
+</odoo>

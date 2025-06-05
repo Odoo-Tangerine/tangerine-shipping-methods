@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="service_type_247_express_tree_view" model="ir.ui.view">
+        <field name="name">service.type.247.express.tree.view</field>
+        <field name="model">service.type.247.express</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="carrier_id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="service_type_247_express_search_view" model="ir.ui.view">
+        <field name="name">service.type.247.express.search.view</field>
+        <field name="model">service.type.247.express</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="carrier_id"/>
+                <field name="name"/>
+                <field name="code"/>
+           </search>
+        </field>
+    </record>
+
+    <record id="service_type_247_express_action" model="ir.actions.act_window">
+        <field name="name">Service Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">service.type.247.express</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('service_type_247_express_tree_view')})]"
+        />
+        <field name="search_view_id" ref="service_type_247_express_search_view"/>
+    </record>
+
+<!--    Special Service Views-->
+
+    <record id="special_service_type_247_express_tree_view" model="ir.ui.view">
+        <field name="name">special.service.type.247.express.tree.view</field>
+        <field name="model">special.service.type.247.express</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="carrier_id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="special_service_type_247_express_search_view" model="ir.ui.view">
+        <field name="name">special.service.type.247.express.search.view</field>
+        <field name="model">special.service.type.247.express</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="carrier_id"/>
+                <field name="name"/>
+                <field name="code"/>
+           </search>
+        </field>
+    </record>
+
+    <record id="special_service_type_247_express_action" model="ir.actions.act_window">
+        <field name="name">Special Service Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">special.service.type.247.express</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('special_service_type_247_express_tree_view')})]"
+        />
+        <field name="search_view_id" ref="special_service_type_247_express_search_view"/>
+    </record>
+</odoo>

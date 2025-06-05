@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_delivery_carrier_form_with_provider_express_247" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.provider.express.247</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
+                       invisible="delivery_type != 'express_247'"
+                       name="delivery_express_247_api_connect_information"
+                >
+                    <label for="domain"/>
+                    <div class="o_row api_config_group">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                        <button name="get_access_token"
+                                string="Get Access Token"
+                                icon="fa-refresh"
+                                type="object"
+                        />
+                    </div>
+                    <field name="username" required="delivery_type == 'express_247'"/>
+                    <field name="password" required="delivery_type == 'express_247'" password="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_token']" position="before">
+                <group name="delivery_express_247_token"
+                       invisible="delivery_type != 'express_247'"
+                       string="Security Key"
+                >
+                    <field name="api_key" widget="CopyClipboardChar"/>
+                    <field name="access_token" widget="CopyClipboardChar"/>
+                    <field name="expire_token_date"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_default_shipment']" position='before'>
+                <group name="delivery_express_247_default_shipment"
+                       invisible="delivery_type != 'express_247'"
+                       string="Default Shipment Parameter"
+                >
+                    <field name="base_weight_unit" readonly="1"/>
+                    <field name="default_express_247_service_type_id"/>
+                    <field name="default_express_247_special_service_type_ids"
+                           widget="many2many_tags"
+                           options="{'no_create_edit': True}"
+                    />
+                    <field name="default_express_247_product_type"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='delivery_webhook']" position="before">
+                <group name="delivery_express_247_webhook"
+                       invisible="delivery_type != 'express_247'"
+                       string="Webhook"
+                >
+                    <field name="is_webhook_registered" invisible="1"/>
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                    </div>
+                    <field name="webhook_access_token" invisible="not is_use_authentication" widget="CopyClipboardChar" readonly="True"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
