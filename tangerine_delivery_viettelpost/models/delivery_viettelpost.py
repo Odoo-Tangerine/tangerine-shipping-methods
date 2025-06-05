@@ -18,7 +18,7 @@ class ProviderViettelpost(models.Model):
     _inherit = 'delivery.carrier'
 
     delivery_type = fields.Selection(selection_add=[
-        ('viettelpost', 'Viettel Post')
+        ('viettelpost', 'ViettelPost')
     ], ondelete={'viettelpost': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
 
     default_viettelpost_order_payment = fields.Selection(selection=settings.order_payment.value, string='Payment Type')

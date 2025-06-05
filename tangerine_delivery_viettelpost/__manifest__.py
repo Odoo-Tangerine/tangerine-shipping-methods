@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Viettel Post Integration',
-    'summary': """Viettel Post Integration module will allow shippers to easily place, cancel, get quotes, and track orders via simple integration for delivery in Odoo.""",
+    'name': 'ViettelPost Integration',
+    'summary': """ViettelPost Integration module will allow shippers to easily place, cancel, get quotes, and track orders via simple integration for delivery in Odoo.""",
     'author': 'Long Duong Nhat',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',

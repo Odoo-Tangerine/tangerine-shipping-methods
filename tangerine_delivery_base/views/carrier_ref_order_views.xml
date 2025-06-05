@@ -41,7 +41,7 @@
                 <field name="real_delivery_charge" sum="Real Delivery Charge" widget="monetary"/>
                 <field name="cash_on_delivery"/>
                 <field name="delivery_status_id" widget="badge"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
             </tree>
         </field>
     </record>
@@ -62,7 +62,7 @@
     </record>
 
     <record id="carrier_ref_order_action" model="ir.actions.act_window">
-        <field name="name">Carrier Ref Order Details</field>
+        <field name="name">Carrier Ref Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">carrier.ref.order</field>
         <field name="view_ids" eval="[(5, 0, 0),

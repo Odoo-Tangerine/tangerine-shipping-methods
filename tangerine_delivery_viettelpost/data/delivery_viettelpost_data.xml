@@ -3,7 +3,7 @@
     <data noupdate="1">
         <record id="product_product_delivery_viettelpost" model="product.product">
             <field name="name">Delivery charges</field>
-            <field name="default_code">Viettel Post</field>
+            <field name="default_code">ViettelPost</field>
             <field name="type">service</field>
             <field name="categ_id" ref="delivery.product_category_deliveries"/>
             <field name="sale_ok" eval="False"/>
@@ -13,7 +13,7 @@
         </record>
 
         <record id="tangerine_delivery_viettelpost_provider" model="delivery.carrier">
-            <field name="name">Viettel Post</field>
+            <field name="name">ViettelPost</field>
             <field name="fixed_price">0.0</field>
             <field name="free_over" eval="False"/>
             <field name="invoice_policy">real</field>
@@ -28,7 +28,7 @@
             <field name="default_viettelpost_product_type">HH</field>
             <field name="default_viettelpost_national_type">1</field>
             <field name="default_viettelpost_paper_size">a5</field>
-            <field name="carrier_description">Viettel Post APIs will allow shipper to easily place, cancel, get quotes and track the order via simple integration</field>
+            <field name="carrier_description">ViettelPost APIs will allow shipper to easily place, cancel, get quotes and track the order via simple integration</field>
         </record>
 
         <function model="delivery.carrier" name="set_webhook_url">

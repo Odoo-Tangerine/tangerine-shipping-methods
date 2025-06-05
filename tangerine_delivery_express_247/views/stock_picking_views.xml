@@ -30,6 +30,9 @@
                     <field name="remarks"/>
                 </group>
             </xpath>
+            <xpath expr="//button[@name='action_print_order']" position="attributes">
+                <attribute name="invisible">delivery_type == 'express_247'</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>

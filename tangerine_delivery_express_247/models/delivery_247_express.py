@@ -23,7 +23,6 @@ class ProviderViettelpost(models.Model):
     delivery_type = fields.Selection(selection_add=[
         ('express_247', '247 Express')
     ], ondelete={'express_247': lambda recs: recs.write({'delivery_type': 'fixed', 'fixed_price': 0})})
-    express_247_tracking_domain = fields.Char(string='Tracking Domain')
     default_express_247_service_type_id = fields.Many2one(
         'service.type.247.express',
         string='Service Type'
@@ -33,27 +32,6 @@ class ProviderViettelpost(models.Model):
         string='Special Service Type'
     )
     default_express_247_product_type = fields.Selection(settings.product_type.value, string='Product Type')
-
-    def _express_247_get_service_types(self):
-        with self.pool.cursor() as new_cr:
-            self = self.with_env(self.env(cr=new_cr))
-            self.env['service.type.247.express'].express_247_service_type_synchronous()
-
-    def _express_247_get_special_service_types(self):
-        with self.pool.cursor() as new_cr:
-            self = self.with_env(self.env(cr=new_cr))
-            self.env['special.service.type.247.express'].express_247_special_service_type_synchronous()
-
-    def _express_247_update_cron_refresh_token(self, expires_times):
-        time.sleep(10)
-        with self.pool.cursor() as new_cr:
-            self = self.with_env(self.env(cr=new_cr))
-            cron = self.env.ref('tangerine_delivery_express_247.ir_cron_refresh_access_token_247_express', raise_if_not_found=False)
-            if cron:
-                cron.sudo().write({
-                    'nextcall': expires_times,
-                    'active': True
-                })
 
     @staticmethod
     def _express_247_calculate_expire_date(expire_date):
@@ -78,15 +56,8 @@ class ProviderViettelpost(models.Model):
                 'api_key': result.get('TrackingApiKey'),
                 'expire_token_date': expire_date
             })
-            threaded_update_cron = threading.Thread(target=lambda: self._express_247_update_cron_refresh_token(expire_date))
-            threaded_update_cron.start()
-
-            threaded_get_service = threading.Thread(target=lambda: self._express_247_get_service_types())
-            threaded_get_service.start()
-
-            threaded_get_spec_service = threading.Thread(target=lambda: self._express_247_get_special_service_types())
-            threaded_get_spec_service.start()
-
+            self.env['service.type.247.express'].express_247_service_type_synchronous()
+            self.env['special.service.type.247.express'].express_247_special_service_type_synchronous()
             return notification('success', 'Get access token successfully')
         except Exception as e:
             raise UserError(ustr(e))
@@ -122,48 +93,41 @@ class ProviderViettelpost(models.Model):
     def _express_247_payload_create_order(self, picking):
         warehouse_id = picking.picking_type_id.warehouse_id
         payload = {
-            'ClientHubID': warehouse_id.express_247_hub_id,
-            'ContactName': warehouse_id.partner_id.name,
-            'ContactPhone': convert_e164_to_classic(warehouse_id.partner_id.phone or warehouse_id.partner_id.mobile),
-            'SenderAddress': warehouse_id.partner_id.shipping_address,
-            'ReceiverPhone': convert_e164_to_classic(picking.partner_id.phone or picking.partner_id.mobile),
-            'ReceiverName': picking.partner_id.name,
-            'ReceiverAddress': picking.partner_id.shipping_address,
-            'ReceiverProvinceName': picking.partner_id.state_id.name,
-            'ReceiverDistrictName': picking.partner_id.district_id.name,
-            'ReceiverWardName': picking.partner_id.ward_id.name,
-            'Length': 0,
-            'Width': 0,
-            'Height': 0,
-            'RealWeight': math.ceil(self.convert_weight(picking._get_estimated_weight(), self.base_weight_unit)),
-            'Quantity': 1,
-            'Note': picking.remarks or '',
-            'ServiceTypeID': picking.express_247_service_type_id.code,
-            'MailerType': picking.express_247_product_type,
-            'ExternalCode': picking.name,
-            'ReferenceCode': picking.sale_id.name,
-            'InformFee': str(int(picking.sale_id.amount_total)),
-            'Items': [{
-                'ItemID': rec.product_id.default_code or rec.product_id.name,
-                'ItemName': rec.product_id.name,
-                'UnitName': 'Unit',
-                'Qty': int(rec.quantity),
-                'UnitPrice': int(rec.product_id.lst_price),
-                'Amount': int(rec.product_id.lst_price * rec.quantity)
-                # 'UnitPrice': rec.product_id.price_list
-            } for rec in picking.move_line_ids],
-            "Packages": [
-                {
-                    "PackageID": f'{picking.sale_id.name}/1',
-                    "Length": 0,
-                    "Width": 0,
-                    "Height": 0,
-                    "RealWeight": 5
-                }
-            ],
+            'OrderInfo': {
+                'ClientHubID': warehouse_id.express_247_hub_id,
+                'ContactName': warehouse_id.partner_id.name,
+                'ContactPhone': convert_e164_to_classic(warehouse_id.partner_id.phone or warehouse_id.partner_id.mobile),
+                'SenderAddress': warehouse_id.partner_id.shipping_address,
+                'ReceiverPhone': convert_e164_to_classic(picking.partner_id.phone or picking.partner_id.mobile),
+                'ReceiverName': picking.partner_id.name,
+                'ReceiverAddress': picking.partner_id.shipping_address,
+                'ReceiverProvinceName': picking.partner_id.state_id.name,
+                'ReceiverDistrictName': picking.partner_id.district_id.name,
+                'ReceiverWardName': picking.partner_id.ward_id.name,
+                'Length': 0,
+                'Width': 0,
+                'Height': 0,
+                'RealWeight': math.ceil(self.convert_weight(picking._get_estimated_weight(), self.base_weight_unit)),
+                'Quantity': 1,
+                'Note': picking.remarks or '',
+                'ServiceTypeID': picking.express_247_service_type_id.code,
+                'MailerType': picking.express_247_product_type,
+                'ExternalCode': picking.name,
+                'ReferenceCode': picking.sale_id.name,
+                'InformFee': str(int(picking.sale_id.amount_total)),
+                'Items': [{
+                    'No': i,
+                    'ItemID': rec.product_id.default_code or rec.product_id.name,
+                    'ItemName': rec.product_id.name,
+                    'UnitName': 'Unit',
+                    'Qty': int(rec.quantity),
+                    'UnitPrice': int(rec.product_id.lst_price),
+                    'Amount': int(rec.product_id.lst_price * rec.quantity)
+                } for i, rec in enumerate(picking.move_line_ids, start=1)],
+            }
         }
         if picking.cash_on_delivery:
-            payload['CODAmount'] = picking.cash_on_delivery.amount
+            payload['CODAmount'] = picking.cash_on_delivery_amount
             payload['SpecialInstructionId'] = picking.express_247_is_inspection_goods_allowed
         if picking.express_247_special_service_type_ids:
             payload['ExtraServices'] = [rec.code for rec in picking.express_247_special_service_type_ids]
@@ -182,39 +146,37 @@ class ProviderViettelpost(models.Model):
         for picking in pickings:
             client = Client(Connection(self, get_route_api(self, settings.create_order_route_code.value)))
             result = client.create_order(self._express_247_payload_create_order(picking))
-            status_id = self.env.ref('tangerine_delivery_ghtk.ghtk_status_2')
+            if not result.get('OrderInfo'):
+                raise UserError(_(f'Failed to create order'))
+            order_info = result.get('OrderInfo')
+            status_id = self.env.ref('tangerine_delivery_express_247.247_express_status_datiepnhan')
             picking.write({'delivery_status_id': status_id.id if status_id else False})
             self.env['carrier.ref.order'].create({
                 **self.common_payload_carrier_ref_order(
                     picking,
                     status_id,
-                    result.get('OrderInfo', {}).get('TotalServiceCost'),
-                    result.get('OrderInfo', {}).get('OrderCode')
+                    order_info.get('TotalServiceCost'),
+                    order_info.get('OrderCode')
                 ),
                 **self._express_247_payload_carrier_ref_order(picking)
             })
             return [{
-                'exact_price': result.get('order').get('fee'),
-                'tracking_number': result.get('order').get('label')
+                'exact_price': order_info.get('TotalServiceCost'),
+                'tracking_number': order_info.get('OrderCode')
             }]
 
     def express_247_get_tracking_link(self, picking):
-        if not self.api_key:
-            raise ValidationError(_('The field API Key is required'))
-        route_id = self.route_api_ids.search([('code', '=', settings.tracking_order_route_code.value)])
-        return f'{self.express_247_tracking_domain}{route_id.route}?ordercode={picking.carrier_tracking_ref}&apikey={self.api_key}'
+        raise UserError(_('247 Express does not support tracking link. Please use the tracking number instead.'))
 
     def express_247_toggle_prod_environment(self):
         self.ensure_one()
         if self.prod_environment:
             self.domain = settings.domain_production.value
-            self.express_247_tracking_domain = settings.tracking_domain_production.value
         else:
             self.domain = settings.domain_staging.value
-            self.express_247_tracking_domain = settings.tracking_domain_staging.value
 
     def express_247_cancel_shipment(self, picking):
         client = Client(Connection(self, get_route_api(self, settings.cancel_order_code.value)))
         client.cancel_order({'OrderCode': picking.carrier_tracking_ref,})
         picking.write({'carrier_tracking_ref': False, 'carrier_price': 0.0, 'delivery_status_id': False})
-        return notification('success', f'Cancel tracking reference successfully')
+        return notification('success', 'Cancel tracking reference successfully')

@@ -8,7 +8,7 @@
             <xpath expr="//group[@name='external_delivery_data']" position="before">
                 <group name='delivery_viettelpost_data'
                        invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'viettelpost'"
-                       string="Viettel Post Shipping Information"
+                       string="ViettelPost Shipping Information"
                 >
                     <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
                     <div class="o_row" name="o_div_cash_on_delivery">

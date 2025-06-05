@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class ViettelPostService(models.Model):
     _name = 'viettelpost.service'
-    _description = 'Viettel Post Service'
+    _description = 'ViettelPost Service'
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
@@ -51,7 +51,7 @@ class ViettelPostService(models.Model):
 
 class ViettelPostServiceExtend(models.Model):
     _name = 'viettelpost.service.extend'
-    _description = 'Viettel Post Service Extend'
+    _description = 'ViettelPost Service Extend'
 
     service_id = fields.Many2one('viettelpost.service', ondelete = 'cascade', required=True, string='Service')
     name = fields.Char(string='Name', required=True)

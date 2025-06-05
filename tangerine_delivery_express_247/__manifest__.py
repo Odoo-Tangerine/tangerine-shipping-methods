@@ -20,6 +20,7 @@
         'views/stock_picking_views.xml',
         'views/service_247_express_views.xml',
         'views/stock_warehouse_views.xml',
+        'views/carrier_ref_order_views.xml'
     ],
     'images': ['static/description/thumbnail.png'],
     'license': 'OPL-1',
