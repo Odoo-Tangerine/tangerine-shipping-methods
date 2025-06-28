@@ -6,7 +6,7 @@
     'category': 'Extra Tools',
     'version': '18.0.1.0',
     'support': 'odoo.tangerine@gmail.com',
-    'depends': ['web', 'portal', 'website', 'tangerine_address_base'],
+    'depends': ['web', 'portal', 'website_sale', 'tangerine_address_base'],
     'data': [
         'security/ir.model.access.csv',
         'data/ir_model_data.xml',
