@@ -17,7 +17,7 @@
         'views/stock_picking_views.xml',
         'views/carrier_ref_order_views.xml',
     ],
-    'images': ['static/description/thumbnail.png'],
+    'images': ['static/description/thumbnail.gif'],
     'license': 'OPL-1',
     'installable': True,
     'auto_install': False,
