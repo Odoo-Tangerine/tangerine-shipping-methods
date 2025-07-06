@@ -1,0 +1,394 @@
+<section class="mb-5">
+   <div class="container">
+       <div class="d-flex flex-column">
+           <img src='./images/logo.png' alt='logo' style="width: 10%;">
+       </div>
+   </div>
+</section>
+<section class="mb-5">
+   <div class="container">
+       <div class="d-flex flex-column justify-content-center align-items-center">
+           <h3 class="mb-3" style="font-size: 32px; color: #714B67;">
+               <span style="font-weight: 700;">Nhat Tin Logistics Integration</span>
+           </h3>
+           <p style="color: #777; font-size: 18px; letter-spacing: 1px;" class="text-center">
+                 The Nhat Tin Logistics Integration module for Odoo is designed to connect the Odoo ERP system seamlessly with Nhat Tin Logistics (NTL). This module provides features like placing orders, getting quotes, printing shipping labels, and tracking shipments directly from the Odoo interface.
+           </p>
+       </div>
+   </div>
+</section>
+
+<section class="mb-5">
+    <div class="container">
+        <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+            <li class="nav-item rounded mx-1" style="font-size: 17px; font-weight: 500;">
+                <a class="nav-link active"
+                   id="features-tab"
+                   role="tab"
+                   href="#features"
+                   aria-controls="features"
+                   data-bs-toggle="tab"
+                   aria-selected="true"
+                   style="color: #714B67">Features</a>
+            </li>
+            <li class="nav-item rounded mx-1" style="font-size: 17px; font-weight: 500;">
+                <a class="nav-link"
+                   id="guidelines-tab"
+                   role="tab"
+                   href="#guidelines"
+                   aria-controls="guidelines"
+                   data-bs-toggle="tab"
+                   aria-selected="true"
+                   style="color: #714B67">User Guides</a>
+            </li>
+            <li class="nav-item rounded mx-1" style="font-size: 17px; font-weight: 500;">
+                <a class="nav-link"
+                   id="release-tab"
+                   data-bs-toggle="tab"
+                   role="tab"
+                   href="#release"
+                   aria-controls="release"
+                   aria-selected="false"
+                   style="color: #714B67">Releases</a>
+            </li>
+            <li class="nav-item rounded mx-1" style="font-size: 17px; font-weight: 500;">
+                <a class="nav-link"
+                   id="contact-tab"
+                   data-bs-toggle="tab"
+                   role="tab"
+                   href="#contact"
+                   aria-controls="contact"
+                   aria-selected="false"
+                   style="color: #714B67">Contact</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <div id="features" class="tab-pane fade show active" role="tabpanel" aria-labelledby="features-tab" tabindex="0">
+                <!-- feature -->
+                <section class="mb-5">
+                   <div class="container">
+                        <div class="d-flex flex-row justify-content-center align-items-center">
+                            <span class="d-none d-sm-inline-block" style="width: 10%; margin:32px 20px;opacity: 0.5;border-top: solid 1px #714B67;"></span>
+                            <h3 style="color: #714B67;">Features</h3>
+                            <span class="d-none d-sm-inline-block" style="width: 10%; margin:32px 20px;opacity: 0.5;border-top: solid 1px #714B67;"></span>
+                        </div>
+                       <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_booking.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Booking delivery order</h5>
+                                        <i>Booking delivery orders directly from the Odoo system.</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_estimate_cost.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Estimate cost delivery</h5>
+                                        <i>Retrieve delivery quotations for orders from Nhat Tin Logistics.</i>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_delivery_label.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Print Shipping Labels</h5>
+                                        <i>Print shipping labels when orders are confirmed in Odoo.</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_cancel_delivery.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Cancel Order</h5>
+                                        <i>Cancel existing orders in Nhat Tin Logistics directly from Odoo.</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_tracking_order.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Delivery Tracking via Webhook</h5>
+                                        <i>Receive updates progress delivery of Nhat Tin Logistics through webhooks.</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-row rounded border shadow-lg p-3 mb-4">
+                                    <div class="me-3" style="max-width: 10%">
+                                        <img class="w-100" src="./images/icon_config_api.png" alt="Icon booking"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h5 style="color: #714B67; margin-bottom: 5px;">Dynamic APIs Configuration</h5>
+                                        <i>Configure APIs dynamically to integrate with Nhat Tin Logistics from UI Odoo.</i>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                   </div>
+                </section>
+                <section class="mb-4">
+                    <div class="container">
+                        <div class="d-flex flex-row justify-content-center align-items-center mb-4">
+                            <span class="d-none d-sm-inline-block" style="width: 10%; margin: 32px 20px; opacity: 0.5; border-top: solid 1px #714B67;"></span>
+                            <h3 class="text-center" style="color: #714B67;">The products of delivery solutions</h3>
+                            <span class="d-none d-sm-inline-block" style="width: 10%; margin: 32px 20px; opacity: 0.5; border-top: solid 1px #714B67;"></span>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/grab.png" class="card-img-top rounded-top" alt="...">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">Grab Express Integration</h4>
+                                        <p class="card-text flex-grow-1">Grab Express Integration module will allow shippers to easily place, cancel, get quotes, and track orders via simple integration for delivery in Odoo.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_grab" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/ahamove.png" class="card-img-top rounded-top" alt="...">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">Ahamove Integration</h4>
+                                        <p class="card-text flex-grow-1">Delivering the perfect solution for all your shipping needs with groundbreaking technology.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_ahamove" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/lalamove.png" class="card-img-top rounded-top" alt="...">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">Lalamove Integration</h4>
+                                        <p class="card-text flex-grow-1">Lalamove Integration will allow you place orders easier and cheaper. Retrieve any order's granular information to build a more robust and transparent system.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_lalamove" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/ghtk.png" class="card-img-top rounded-top" alt="GHTK Integration">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">GHTK Integration</h4>
+                                         <p class="card-text flex-grow-1">The GHTK Integration for Odoo is designed to connect the Odoo ERP system seamlessly with Giao Hang Tiet Kiem. This module provides features like placing orders, getting quotes, printing shipping labels, etc.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_ghtk" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/viettelpost.png" class="card-img-top rounded-top" alt="...">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">ViettelPost Integration</h4>
+                                        <p class="card-text flex-grow-1">ViettelPost Integration will allow Odooers to easily place, cancel, get quotes, and track the order via simple integration.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_viettelpost" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 mb-4 d-flex">
+                                <div class="card rounded shadow-lg d-flex flex-column">
+                                    <img src="./images/express247.png" class="card-img-top rounded-top" alt="Express 247 Integration">
+                                    <div class="card-body d-flex flex-column">
+                                        <h4 class="card-title">247 Express Integration</h4>
+                                         <p class="card-text flex-grow-1">The 247 Express Integration for Odoo is designed to connect the Odoo ERP system seamlessly with 247 Express. This module provides features like placing orders, getting quotes, etc.</p>
+                                        <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_express_247" target="_blank" class="btn btn-primary mt-auto">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="guidelines" class="tab-pane fade show" role="tabpanel" tabindex="0" aria-labelledby="guidelines-tab">
+                <section class="mb-5">
+                    <div class="container">
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Getting started</h3>
+                            <div class="px-3">
+                                <p>Download dependency modules if they do not exist</p>
+                                <ul>
+                                    <li>Download <span style="font-weight: 700;">Vietnam Address Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_address_base" title="Base Vietnam Address module" target="_blank">here</a></li>
+                                    <li>Download <span style="font-weight: 700;">Shipping Methods Base</span> module in <a href="https://apps.odoo.com/apps/modules/17.0/tangerine_delivery_base" title="Shipping Methods Base module" target="_blank">here</a></li>
+                                </ul>
+                                <p>Install Nhat Tin Logistics Integration module</p>
+                                <img alt="Install module" class="rounded shadow-lg bg-body mb-3" src="./images/install_module.png" style="height: auto; width: 100%" />
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Nhat Tin Logistics shipping method configuration</h3>
+                            <div class="px-3">
+                                <p>In this section, we will proceed to set the parameters and connect to Nhat Tin Logistics Server to get the access token. This access token will help authenticate API connections with the Nhat Tin Logistics Server.</p>
+                                <p><span style="font-weight: 700;">Step 1: </span>By going to <strong>Inventory ‣ Configuration ‣ Delivery ‣ Shipping Methods</strong></p>
+                                <p>Click on a <strong>Nhat Tin Logistics</strong> record to edit your delivery method on the back end.</p>
+                                <img alt="Dashboard" class="rounded shadow-lg bg-body mb-3" src="./images/dashboard.png" style="height: auto; width: 100%" />
+                                <p>Click on an <strong>Integrated Configuration Tab.</strong></p>
+                                <p><span style="font-weight: 700;">Step 2: </span> Input:</p>
+                                <ul>
+                                    <li>Username</li>
+                                    <li>Password</li>
+                                    <li>PartnerID</li>
+                                </ul>
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-lightbulb-o"></i>
+                                        <span style="font-weight: 700;">Tips</span>
+                                    </h4>
+                                    <p>
+                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Test Connection" src="./images/button_test_connection.png" style="height: auto; width: 10%" /> to check the connection status to the Nhat Tin Logistics server
+                                    </p>
+                                    <p>
+                                        <span style="font-weight: 700;">Click on button</span> <img alt="Button Switch Env" src="./images/button_switch_env.png" style="height: auto; width: 10%" /> to switch to a production environment or vice versa (development environment)
+                                    </p>
+                                </div>
+                                <p><span style="font-weight: 700;">Step 3: </span>Click on button <img alt="Button Get Token" src="./images/button_get_token.png" style="height: auto; width: 10%" /></p>
+                                <img alt="Configuration Nhat Tin Logistics" class="rounded shadow-lg bg-body mb-3" src="./images/configuration.png" style="height: auto; width: 100%" />
+                                <p><span style="font-weight: 700;">Step 4:</span> Configure default parameters for delivery orders</p>
+                                <ul>
+                                    <li><span style="font-weight: 700;">Weight Unit:</span> The unit of measure for your shipment. You don't need to change it because NTL rules are Kilograms</li>
+                                    <li><span style="font-weight: 700;">Service Type:</span> List of available services provided by NTL</li>
+                                    <li><span style="font-weight: 700;">Cargo Type:</span> Extended list of services from available services provided by NTL</li>
+                                    <li><span style="font-weight: 700;">Payment Method:</span> Code of goods transported</li>
+                                </ul>
+                                <p><span style="font-weight: 700;">Step 5:</span> Configure a webhook to track orders called from the NTL system</p>
+                                <p>Activate "Authentication Use". Then click the <img alt="Button Get Token" src="./images/button_gen_access_token.png" style="height: auto; width: 10%" /> button to get the access token code. If you don't want to secure for your Odoo system. You can skip this step.</p>
+                                <p>
+                                    <span>After generate the access token for webhook, your webhook path will look like:</span>
+                                </p>
+                                <img alt="Route APIs" class="rounded shadow-lg bg-body mb-3" src="./images/webhook_config.png" style="height: auto; width: 100%" />
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-lightbulb-o"></i>
+                                        <span style="font-weight: 700;">Tips</span>
+                                    </h4>
+                                    <p><span>At this point, contact NTL IT and send them your webhook information. They will add it to the NTL system.</span></p>
+                                </div>
+                                <p><span style="font-weight: 700;">Step 6:</span> Configure routes for API.</p>
+                                <p>Navigate <span style="font-weight: 700;">Routes</span> Tab, Here you can edit basic information for your restful API such as methods, headers, path, etc,</p>
+                                <img alt="Route APIs" class="rounded shadow-lg bg-body mb-3" src="./images/route_apis.png" style="height: auto; width: 100%" />
+                                <p><span style="font-weight: 700;">Finally</span>, Congrats, you have successfully configured the necessary components to connect to the NTL system.</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Estimate cost delivery</h3>
+                            <div class="px-3">
+                                <p>After creating your first customer. In this section, we will estimate the shipping costs for your sales order.</p>
+                                <p><span style="font-weight: 700;">Step 1: </span>By going to <strong>Sales</strong> ‣ Create a new sale order</p>
+                                <p><span style="font-weight: 700;">Step 2: </span>Click on button <img alt="Button Add Shipping" src="./images/button_add_shipping.png" style="height: auto; max-width: 5%" /> to open pop up <span style="font-weight: 700;">Add a shipping method</span></p>
+                                <img alt="Sale Order" class="rounded shadow-lg bg-body mb-3" src="./images/sale_order.png" style="height: auto; width: 100%" />
+                                <img alt="Add Shipping Method Popup" class="rounded shadow-lg bg-body mb-3" src="./images/add_shipping_method.png" style="height: auto; width: 100%" />
+                                <p><span style="font-weight: 700;">Step 3: </span>Choose Service Type</p>
+                                <p><span style="font-weight: 700;">Step 4: </span>Click on button <img alt="Button Get Rate" src="./images/button_get_rate.png" style="height: auto; max-width: 5%" /> to get estimated cost from NTL carrier</p>
+                                <p><span style="font-weight: 700;">Step 5: </span>Click on button <img alt="Button Add Rate" src="./images/button_add_rate.png" style="height: auto; max-width: 3%" /> to confirm add cost to the sale order</p>
+                                <img alt="Result Est cost" class="rounded shadow-lg bg-body mb-3" src="./images/result_est_cost.png" style="height: auto; width: 100%" />
+                                <p><span style="font-weight: 700;">Finally</span>, You have successfully estimated the shipping costs for your sales order</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Booking delivery order</h3>
+                            <div class="px-3">
+                                <p>Once the cost has been estimated and confirmed by your customer. We will proceed to create a delivery order with the NTL carrier.</p>
+                                <p><span style="font-weight: 700;">Step 1: </span>By going to <strong>Inventory ‣ Delivery Orders ‣ Choose Delivery Order ‣ Additional Info Tab</strong></p>
+                                <p><span style="font-weight: 700;">Step 2: </span>Choose information of delivery order</p>
+                                <p><span style="font-weight: 700;">Step 3: </span>Click on button <img alt="Button Validate DO" src="./images/button_validate_do.png" style="height: auto; max-width: 5%" />.The system will validate the picking and automatically book the order</p>
+                                <img alt="Delivery Order" class="rounded shadow-lg bg-body mb-3" src="./images/delivery_order.png" style="height: auto; width: 100%">
+                                <img alt="Booking Order Successfully" class="rounded shadow-lg bg-body mb-3" src="./images/booking_success.png" style="height: auto; width: 100%">
+                                <div class="alert alert-primary" role="alert">
+                                    <h4 class="alert-heading">
+                                        <i class="fa fa-lightbulb-o"></i>
+                                        <span style="font-weight: 700;">Tips</span>
+                                    </h4>
+                                    <p>
+                                        <span style="font-weight: 700;">Click on button</span> <i class="fa fa-search fa-fw"></i> to view details of carrier reference orders.
+                                    </p>
+                                    <img alt="Booking Order Successfully" class="rounded shadow-lg bg-body mb-3" src="./images/carrier_ref_order.png" style="height: auto; width: 100%">
+                                </div>
+                                <p><span style="font-weight: 700;">Finally, </span>Congrats, You have successfully booked the shipping for your sales order.</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Printing Delivery Labels</h3>
+                            <div class="px-3">
+                                <img alt="Delivery Order" class="rounded shadow-lg bg-body mb-3" src="./images/booking_success.png" style="height: auto; width: 100%">
+                                <p>Click on button <img alt="Button Print Order" src="./images/button_print_order.png" style="height: auto; max-width: 5%" /> to print order of NTL</p>
+                                <img alt="Print Order" class="rounded shadow-lg bg-body mb-3" src="./images/print_order.png" style="height: auto; width: 100%">
+                                <p><span style="font-weight: 700;">Finally, </span>Congrats, You have successfully print the delivery order.</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h3 style="border-bottom: 1px solid #D5D5D5; color: #714B67">Cancel delivery order</h3>
+                            <div class="px-3">
+                                <img alt="Booking Order Successfully" class="rounded shadow-lg bg-body mb-3" src="./images/booking_success.png" style="height: auto; width: 100%">
+                                <p>
+                                    <span style="font-weight: 700;">Click on button</span> <img alt="Button Cancel" src="./images/button_cancel_order.png" style="height: auto; width: 10%" /> to cancel the delivery order.
+                                </p>
+                                <p><span style="font-weight: 700;">Finally, </span>Congrats, You have successfully cancel the delivery order.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="release" class="tab-pane fade show" role="tabpanel" aria-labelledby="release-tab">
+                <div class="tangerine_content" style="border: 2px solid #aaa;padding: 20px;margin-bottom: 20px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); border-radius: 8px;">
+                    <h4 style="font-size: 16px;color: #212121;text-decoration: none;font-weight: 600;letter-spacing: 1px;display: block;">
+                        <span style="color: #714B67;">Version 17.0.1.0</span> | <span style="color: #714B67;">Released on: July 6, 2025</span>
+                    </h4>
+                    <ul>
+                        <li>Initial release.</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="contact" class="tab-pane fade show" role="tabpanel" aria-labelledby="contact-tab">
+                <section class="mb-5">
+                    <div class="container">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <div class="row align-items-stretch">
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-row rounded border shadow-lg p-1 mb-4 h-100">
+                                        <div class="d-flex justify-content-center align-items-center" style="width: 50%">
+                                            <img class="w-75 rounded-circle" src="./images/avatar.png" alt="Icon real time"/>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h3>Long Duong Nhat</h3>
+                                            <i><span style="font-weight: 700;">Phone number</span>: <a href="https://zalo.me/84812212228" target="_blank">+84 812 212 228</a></i>
+                                            <i><span style="font-weight: 700;">Email</span>: <a href="mailto:odoo.tangerine@gmail.com" target="_blank">odoo.tangerine@gmail.com</a></i>
+                                            <i><span style="font-weight: 700;">Address</span>: 42a Street no 19, Ward 8, Go Vap District, Ho Chi Minh City, Vietnam</i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="d-flex flex-column justify-content-center align-items-center rounded border shadow-lg p-2 h-100">
+                                        <img style="width: 70%" src="./images/qrcode_zalo.png" alt="Icon Zalo"/>
+                                        <h4><i>Zalo</i></h4>
+                                        <i>Scan QR code to connect with me</i>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="d-flex flex-column justify-content-center align-items-center rounded border shadow-lg p-2 h-100">
+                                        <img style="width: 70%" src="./images/qrcode_whatsapp.png" alt="Icon Whatsapp"/>
+                                        <h4><i>WhatsApp</i></h4>
+                                        <i>Scan QR code to connect with me</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>

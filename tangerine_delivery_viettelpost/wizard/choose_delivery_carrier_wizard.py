@@ -53,8 +53,4 @@ class ChooseDeliveryCarrier(models.TransientModel):
                 'viettelpost_cod_amount': self.cod_amount
             })})
             self.env.context = context
-        self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
-        self.order_id.write({
-            'recompute_delivery_price': False,
-            'delivery_message': self.delivery_message,
-        })
+        return super().button_confirm()

@@ -51,8 +51,4 @@ class ChooseDeliveryCarrierLalamove(models.TransientModel):
             context = dict(self.env.context)
             context.update({'llm_quotation_data': self.lalamove_quotation_data})
             self.env.context = context
-        self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
-        self.order_id.write({
-            'recompute_delivery_price': False,
-            'delivery_message': self.delivery_message,
-        })
+        return super().button_confirm()

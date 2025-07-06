@@ -82,7 +82,7 @@
                 <field name="image" widget='image' class="oe_avatar"/>
             </xpath>
             <xpath expr="//page[@name='destination']" position='before'>
-                <page string="Integrated Configuration"
+                <page string="Integrate Configuration"
                       name="delivery_configuration"
                       invisible="not is_locally_delivery"
                 >

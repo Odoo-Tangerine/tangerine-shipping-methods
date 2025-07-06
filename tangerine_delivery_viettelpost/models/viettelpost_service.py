@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 class ViettelPostService(models.Model):
     _name = 'viettelpost.service'
     _description = 'ViettelPost Service'
+    _rec_names_search = ['name', 'code']
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)

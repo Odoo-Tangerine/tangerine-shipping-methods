@@ -58,8 +58,4 @@ class ChooseDeliveryCarrier(models.TransientModel):
             })})
             self.env.context = context
             _logger.debug('context', context)
-        self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
-        self.order_id.write({
-            'recompute_delivery_price': False,
-            'delivery_message': self.delivery_message,
-        })
+        return super().button_confirm()

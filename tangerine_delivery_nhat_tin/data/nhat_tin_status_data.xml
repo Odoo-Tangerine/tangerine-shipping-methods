@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="ntl_status_1" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Unsuccessful</field>
+            <field name="code">1</field>
+        </record>
+
+        <record id="ntl_status_2" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Waiting for pick-up</field>
+            <field name="code">2</field>
+        </record>
+
+        <record id="ntl_status_3" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Picked up</field>
+            <field name="code">3</field>
+        </record>
+
+        <record id="ntl_status_4" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Delivered</field>
+            <field name="code">4</field>
+        </record>
+
+        <record id="ntl_status_6" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Canceled</field>
+            <field name="code">6</field>
+        </record>
+
+        <record id="ntl_status_7" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Could not deliver</field>
+            <field name="code">7</field>
+        </record>
+
+        <record id="ntl_status_9" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Being returned</field>
+            <field name="code">9</field>
+        </record>
+
+        <record id="ntl_status_10" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Returned</field>
+            <field name="code">10</field>
+        </record>
+
+        <record id="ntl_status_11" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Delivery exception</field>
+            <field name="code">11</field>
+        </record>
+
+        <record id="ntl_status_12" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Draft bill of lading</field>
+            <field name="code">12</field>
+        </record>
+
+        <record id="ntl_status_13" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Delivering</field>
+            <field name="code">13</field>
+        </record>
+
+        <record id="ntl_status_15" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Transporting</field>
+            <field name="code">15</field>
+        </record>
+
+        <record id="ntl_status_16" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Delivering for returning</field>
+            <field name="code">16</field>
+        </record>
+
+        <record id="ntl_status_17" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_nhat_tin.tangerine_delivery_nhat_tin_provider" />
+            <field name="name">Could not pickup</field>
+            <field name="code">17</field>
+        </record>
+    </data>
+</odoo>
