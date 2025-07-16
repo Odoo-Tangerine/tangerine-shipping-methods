@@ -24,6 +24,7 @@ class DeliveryBase(models.Model):
     access_token = fields.Char(string='Access Token')
     token_type = fields.Char(string='Token Type')
     domain = fields.Char(string='Domain')
+    domain_printer = fields.Char(string='Domain Printer')
     route_api_ids = fields.One2many(
         'delivery.route.api',
         'provider_id',
