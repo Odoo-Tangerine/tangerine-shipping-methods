@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="ahamove_idle_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">IDLE</field>
+            <field name="code">IDLE</field>
+            <field name="description">Scheduled order confirmed, the supplier will see the order in driver app by the time specified</field>
+        </record>
+
+        <record id="ahamove_assigning_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">ASSIGNING</field>
+            <field name="code">ASSIGNING</field>
+            <field name="description">Finding a supplier</field>
+        </record>
+
+        <record id="ahamove_accepted_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">ACCEPTED</field>
+            <field name="code">ACCEPTED</field>
+            <field name="description">Once supplier accepts the order, the order status will be changed to ACCEPTED	</field>
+        </record>
+
+        <record id="ahamove_in_process_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">IN PROCESS</field>
+            <field name="code">IN PROCESS</field>
+            <field name="description">When the supplier collects the package at the pickup location, he will click “Pick up” and the order status will be changed to IN PROCESS</field>
+        </record>
+
+        <record id="ahamove_completed_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">COMPLETED</field>
+            <field name="code">COMPLETED</field>
+            <field name="description">When the supplier completes the order, the order status will be changed to COMPLETED</field>
+        </record>
+
+        <record id="ahamove_cancelled_status" model="delivery.status">
+            <field name="provider_id" ref="tangerine_delivery_ahamove.tangerine_delivery_ahamove_provider" />
+            <field name="name">CANCELLED</field>
+            <field name="code">CANCELLED</field>
+            <field name="description">The order status will be changed to CANCELLED</field>
+        </record>
+    </data>
+</odoo>

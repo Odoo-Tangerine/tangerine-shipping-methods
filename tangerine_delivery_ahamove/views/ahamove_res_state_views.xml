@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_country_state_tree_with_provider_ahamove" model="ir.ui.view">
+        <field name="name">view.country.state.tree.provider.ahamove</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_tree"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="ahamove_city_code"/>
+            </field>
+        </field>
+    </record>
+</odoo>

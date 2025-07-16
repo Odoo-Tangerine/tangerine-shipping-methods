@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ahamove_service_request_tree_view" model="ir.ui.view">
+        <field name="name">ahamove.service.request.tree.view</field>
+        <field name="model">ahamove.service.request</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="service_id"/>
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ahamove_service_request_search_view" model="ir.ui.view">
+        <field name="name">ahamove.service.request.search.view</field>
+        <field name="model">ahamove.service.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="service_id"/>
+                <field name="name"/>
+                <field name="code"/>
+           </search>
+        </field>
+    </record>
+
+    <record id="ahamove_service_request_action" model="ir.actions.act_window">
+        <field name="name">Service Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ahamove.service.request</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('ahamove_service_request_tree_view')})]"
+        />
+        <field name="search_view_id" ref="ahamove_service_request_search_view"/>
+    </record>
+</odoo>

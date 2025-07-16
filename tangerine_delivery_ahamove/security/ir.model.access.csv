@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ahamove_service,access_ahamove_service,model_ahamove_service,,1,1,1,1
+access_ahamove_service_request,access_ahamove_service_request,model_ahamove_service_request,,1,1,1,1

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="base.state_vn_VN-HN" model="res.country.state">
+            <field name="ahamove_city_code">HAN</field>
+        </record>
+
+        <record id="base.state_vn_VN-SG" model="res.country.state">
+            <field name="ahamove_city_code">SGN</field>
+        </record>
+
+        <record id="base.state_vn_VN-HP" model="res.country.state">
+            <field name="ahamove_city_code">HPH</field>
+        </record>
+
+        <record id="base.state_vn_VN-CT" model="res.country.state">
+            <field name="ahamove_city_code">VCA</field>
+        </record>
+
+        <record id="base.state_vn_VN-DN" model="res.country.state">
+            <field name="ahamove_city_code">DAD</field>
+        </record>
+
+        <record id="base.state_vn_VN-35" model="res.country.state">
+            <field name="ahamove_city_code">DLI</field>
+        </record>
+
+        <record id="base.state_vn_VN-26" model="res.country.state">
+            <field name="ahamove_city_code">HUI</field>
+        </record>
+
+        <record id="base.state_vn_VN-22" model="res.country.state">
+            <field name="ahamove_city_code">VII</field>
+        </record>
+
+        <record id="base.state_vn_VN-33" model="res.country.state">
+            <field name="ahamove_city_code">BMV</field>
+        </record>
+
+        <record id="base.state_vn_VN-34" model="res.country.state">
+            <field name="ahamove_city_code">CXR</field>
+        </record>
+
+        <record id="base.state_vn_VN-21" model="res.country.state">
+            <field name="ahamove_city_code">THD</field>
+        </record>
+
+        <record id="base.state_vn_VN-13" model="res.country.state">
+            <field name="ahamove_city_code">VDO</field>
+        </record>
+
+        <record id="base.state_vn_VN-46" model="res.country.state">
+            <field name="ahamove_city_code">TGG</field>
+        </record>
+
+        <record id="base.state_vn_VN-57" model="res.country.state">
+            <field name="ahamove_city_code">BDG</field>
+        </record>
+
+        <record id="base.state_vn_VN-39" model="res.country.state">
+            <field name="ahamove_city_code">DNI</field>
+        </record>
+
+        <record id="base.state_vn_VN-41" model="res.country.state">
+            <field name="ahamove_city_code">LAN</field>
+        </record>
+
+        <record id="base.state_vn_VN-43" model="res.country.state">
+            <field name="ahamove_city_code">VCS</field>
+        </record>
+
+        <record id="base.state_vn_VN-56" model="res.country.state">
+            <field name="ahamove_city_code">BNH</field>
+        </record>
+
+        <record id="base.state_vn_VN-50" model="res.country.state">
+            <field name="ahamove_city_code">BTR</field>
+        </record>
+
+        <record id="base.state_vn_VN-37" model="res.country.state">
+            <field name="ahamove_city_code">TNI</field>
+        </record>
+    </data>
+</odoo>
