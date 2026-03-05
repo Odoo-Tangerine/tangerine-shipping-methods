@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0+e-20241122\n"
+"Project-Id-Version: Odoo Server 19.0+e-20251118\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-03 03:26+0000\n"
-"PO-Revision-Date: 2025-02-03 03:26+0000\n"
+"POT-Creation-Date: 2026-01-09 06:12+0000\n"
+"PO-Revision-Date: 2026-01-09 06:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,47 +16,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: tangerine_website_address
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.address
-msgid "<option value=\"\">District ...</option>"
-msgstr "<option value=\"\">Quận/Huyện ...</option>"
+#: model_terms:ir.ui.view,arch_db:tangerine_website_address.l18n_vn_address_form_fields
+msgid "<option value=\"\">Ward / Commune...</option>"
+msgstr "<option value=\"\">Phường / Xã...</option>"
 
 #. module: tangerine_website_address
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.address
-msgid "<option value=\"\">Ward ...</option>"
-msgstr "<option value=\"\">Phường/Xã ...</option>"
-
-#. module: tangerine_website_address
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.portal_my_details_fields
-msgid "<option value=\"\">select...</option>"
-msgstr "Chọn..."
-
-#. module: tangerine_website_address
-#: model:ir.model,name:tangerine_website_address.model_res_country_state
-msgid "Country state"
-msgstr "Tỉnh/TP/Bang"
-
-#. module: tangerine_website_address
-#. odoo-javascript
-#: code:addons/tangerine_website_address/static/src/js/website_sale.js:0
-#: model:ir.model,name:tangerine_website_address.model_res_country_district
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.address
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.portal_my_details_fields
-#, python-format
-msgid "District"
-msgstr "Quận/Huyện"
-
-#. module: tangerine_website_address
-#. odoo-javascript
-#: code:addons/tangerine_website_address/static/src/js/website_sale.js:0
-#, python-format
-msgid "State / Province"
-msgstr ""
-
-#. module: tangerine_website_address
-#. odoo-javascript
-#: code:addons/tangerine_website_address/static/src/js/website_sale.js:0
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.address
-#: model_terms:ir.ui.view,arch_db:tangerine_website_address.portal_my_details_fields
-#, python-format
-msgid "Ward"
-msgstr "Phường/Xã"
+#: model_terms:ir.ui.view,arch_db:tangerine_website_address.l18n_vn_address_form_fields
+msgid "Ward / Commune"
+msgstr "Phường / Xã"

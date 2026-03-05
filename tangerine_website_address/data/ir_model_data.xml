@@ -3,7 +3,7 @@
     <data noupdate="1">
         <function model="ir.model.fields" name="formbuilder_whitelist">
             <value>res.partner</value>
-            <value eval="['district_id', 'ward_id']"/>
+            <value eval="['ward_id']"/>
         </function>
     </data>
 </odoo>

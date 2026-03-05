@@ -1,6 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_res_country_district_portal,access_res_country_district_portal_user,tangerine_address_base.model_res_country_district,base.group_portal,1,0,0,0
 access_res_country_ward_portal,access_res_country_ward_portal_user,tangerine_address_base.model_res_country_ward,base.group_portal,1,0,0,0
-access_res_country_district_public,access_res_country_district_public,tangerine_address_base.model_res_country_district,base.group_public,1,0,0,0
 access_res_country_ward_public,access_res_country_ward_public,tangerine_address_base.model_res_country_ward,base.group_public,1,0,0,0
 
