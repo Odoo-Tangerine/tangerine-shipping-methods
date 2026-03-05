@@ -5,13 +5,11 @@
         <field name="model">res.country.ward</field>
         <field name="arch" type="xml">
             <list string="Ward" editable="top">
+                <field name="state_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_type" />
                 <field name="name"/>
                 <field name="code"/>
-                <field name="slug"/>
-                <field name="type" />
-                <field name="district_id" options="{'no_open': True, 'no_create': True}"/>
-                <field name="state_id" />
-                <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_name_without_accent"/>
             </list>
         </field>
     </record>
@@ -21,10 +19,13 @@
         <field name="model">res.country.ward</field>
         <field name="arch" type="xml">
             <search>
+                <field name="state_id"/>
+                <field name="ward_type" />
                 <field name="name"/>
                 <field name="code"/>
-                <field name="district_id"/>
-                <field name="state_id"/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <filter name="group_by_state" string="Group by State" context="{'group_by':'state_id'}"/>
             </search>
         </field>
     </record>

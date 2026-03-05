@@ -5,7 +5,25 @@
         <field name="model">carrier.ref.order</field>
         <field name="arch" type="xml">
             <form create="0" edit="0" delete="0">
+                <header>
+                    <button name="action_create_purchase_order" type="object" string="Create / Merge PO" class="btn-primary" invisible="purchase_id"/>
+                    <button name="action_unlink_purchase_order" type="object" string="Unlink PO"
+                            class="btn-secondary"
+                            invisible="not purchase_id"
+                            confirm="Are you sure you want to unlink this Purchase Order?"/>
+
+                    <field name="mapped_status" widget="statusbar"
+                           statusbar_visible="draft,confirmed,picking_up,picked_up,in_transit,delivering,delivered"
+                    />
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_purchase_order" type="object"
+                                class="oe_stat_button" icon="fa-shopping-cart"
+                                invisible="purchase_count == 0">
+                            <field name="purchase_count" string="Purchase Order" widget="statinfo"/>
+                        </button>
+                    </div>
                     <field name="currency_id" invisible="1"/>
                     <div class="oe_title">
                         <label for="carrier_tracking_ref" string="Carrier Tracking Ref"/>
@@ -17,13 +35,45 @@
                     <group string="Shipment Information">
                         <group name="delivery_information" invisible="1"/>
                         <group name="delivery_information_service" invisible="1"/>
+                        <group name="billing_information" string="Billing">
+                            <field name="invoice_status" widget="badge"/>
+                            <field name="payment_status"
+                                   widget="badge"
+                                   decoration-success="payment_status == 'paid'"
+                                   decoration-info="payment_status == 'in_payment'"
+                                   decoration-warning="payment_status == 'partial'"
+                            />
+                            <field name="cod_reconcile_status"
+                                   widget="badge"
+                                   decoration-success="cod_reconcile_status == 'matched'"
+                                   decoration-warning="cod_reconcile_status == 'mismatched'"
+                                   decoration-muted="cod_reconcile_status == 'pending'"
+                            />
+                            <field name="cod_reconciliation_id"
+                                   invisible="not cod_reconciliation_id"/>
+                        </group>
+                    </group>
+                    <group string="Cost Information" name="cost_information">
+                        <group>
+                            <field name="delivery_charge"/>
+                            <field name="real_delivery_charge"/>
+                        </group>
+                        <group>
+                            <label for="real_weight"/>
+                            <div class="o_row">
+                                <field name="real_weight"/>
+                                <field name="weight_unit"/>
+                            </div>
+                        </group>
                     </group>
                     <group string="Driver Information" name="delivery_driver">
                         <field name="driver_name" string="Name"/>
                         <field name="driver_phone" string="Phone" widget="phone"/>
                         <field name="driver_license_plate" string="License Plate"/>
                     </group>
+
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -32,16 +82,41 @@
         <field name="name">carrier.ref.order.list.view</field>
         <field name="model">carrier.ref.order</field>
         <field name="arch" type="xml">
-            <list create="0" edit="0" delete="0">
+            <list create="0" edit="0" delete="0"
+                  decoration-success="payment_status == 'paid'"
+                  decoration-info="payment_status == 'in_payment'"
+                  decoration-warning="payment_status == 'partial'"
+                  decoration-muted="payment_status == 'no_invoice' and purchase_id"
+            >
+                <header>
+                    <button name="action_create_purchase_order" type="object" string="Create / Merge PO" class="btn-primary"/>
+                    <button name="action_unlink_purchase_order" type="object" string="Unlink PO" class="btn-secondary"/>
+                </header>
                 <field name="picking_id"/>
                 <field name="sale_id"/>
                 <field name="carrier_id"/>
                 <field name="carrier_tracking_ref"/>
-                <field name="delivery_charge" sum="Delivery Charge" widget="monetary"/>
-                <field name="real_delivery_charge" sum="Real Delivery Charge" widget="monetary"/>
+                <field name="delivery_charge" sum="Delivery Charge" widget="monetary" string="Est Cost"/>
+                <field name="real_delivery_charge" sum="Real Delivery Charge" widget="monetary" string="Real Cost"/>
                 <field name="cash_on_delivery"/>
-                <field name="delivery_status_id" widget="badge"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="delivery_status_id" widget="badge" string="Carrier Status"/>
+                <field name="mapped_status_id" widget="badge" string="Mapped Status" optional="show"/>
+                <field name="invoice_status" widget="badge" optional="hide"/>
+                <field name="payment_status"
+                       widget="badge"
+                       optional="show"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-info="payment_status == 'in_payment'"
+                       decoration-warning="payment_status == 'partial'"
+                />
+                <field name="cod_reconcile_status"
+                       widget="badge"
+                       optional="show"
+                       decoration-success="cod_reconcile_status == 'matched'"
+                       decoration-warning="cod_reconcile_status == 'mismatched'"
+                       decoration-muted="cod_reconcile_status == 'pending'"
+                />
+                <field name="currency_id" column_invisible="1"/>
             </list>
         </field>
     </record>
@@ -57,12 +132,36 @@
                 <field name="carrier_tracking_ref"/>
                 <field name="cash_on_delivery"/>
                 <field name="delivery_status_id"/>
+                <field name="purchase_id"/>
+                <separator/>
+                <filter name="filter_has_po" string="Has PO" domain="[('purchase_id', '!=', False)]"/>
+                <filter name="filter_no_po" string="No PO" domain="[('purchase_id', '=', False)]"/>
+                <separator/>
+                <filter name="filter_paid" string="Paid" domain="[('payment_status', '=', 'paid')]"/>
+                <filter name="filter_not_paid" string="Not Paid" domain="[('payment_status', 'in', ['not_paid', 'partial'])]"/>
+                <filter name="filter_no_invoice" string="No Invoice" domain="[('payment_status', '=', 'no_invoice')]"/>
+                <separator/>
+                <filter name="filter_create_date" string="Create Date" date="create_date"/>
+                <separator/>
+                <filter name="filter_cod_matched" string="COD Matched" domain="[('cod_reconcile_status', '=', 'matched')]"/>
+                <filter name="filter_cod_mismatched" string="COD Mismatched" domain="[('cod_reconcile_status', '=', 'mismatched')]"/>
+                <filter name="filter_cod_pending" string="COD Pending" domain="[('cod_reconcile_status', '=', 'pending')]"/>
+                <filter name="filter_cod_not_reconciled" string="COD Not Reconciled" domain="[('cod_reconcile_status', '=', False)]"/>
+                <group>
+                    <filter name="group_carrier" string="Carrier" context="{'group_by': 'carrier_id'}"/>
+                    <filter name="group_purchase" string="Purchase Order" context="{'group_by': 'purchase_id'}"/>
+                    <filter name="group_payment_status" string="Payment Status" context="{'group_by': 'payment_status'}"/>
+                    <filter name="group_delivery_status" string="Delivery Status" context="{'group_by': 'delivery_status_id'}"/>
+                    <filter name="group_mapped_status" string="Mapped Status" context="{'group_by': 'mapped_status_id'}"/>
+                    <filter name="group_cod_status" string="COD Status" context="{'group_by': 'cod_reconcile_status'}"/>
+                    <filter name="group_create_date" string="Create Date" context="{'group_by': 'create_date:month'}"/>
+                </group>
            </search>
         </field>
     </record>
 
     <record id="carrier_ref_order_action" model="ir.actions.act_window">
-        <field name="name">Carrier Ref Order</field>
+        <field name="name">Carrier Ref Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">carrier.ref.order</field>
         <field name="view_ids" eval="[(5, 0, 0),

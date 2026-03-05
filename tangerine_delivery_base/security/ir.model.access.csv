@@ -1,5 +1,12 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_delivery_route_api,access_delivery_route_api,model_delivery_route_api,,1,1,1,1
 access_delivery_status,access_delivery_status,model_delivery_status,,1,1,1,1
+access_delivery_standard_status,access_delivery_standard_status,model_delivery_standard_status,base.group_user,1,1,1,1
+access_delivery_status_mapping,access_delivery_status_mapping,model_delivery_status_mapping,base.group_user,1,1,1,1
 access_carrier_ref_order,access_carrier_ref_order,model_carrier_ref_order,,1,1,1,1
 access_print_order_wizard,access_print_order_wizard,model_print_order_wizard,,1,1,1,1
+access_delivery_dashboard,access_delivery_dashboard,model_delivery_dashboard,,1,0,0,0
+access_delivery_webhook_log,access_delivery_webhook_log,model_delivery_webhook_log,base.group_user,1,1,1,1
+access_cod_reconciliation,access_cod_reconciliation,model_cod_reconciliation,base.group_user,1,1,1,1
+access_cod_reconciliation_line,access_cod_reconciliation_line,model_cod_reconciliation_line,base.group_user,1,1,1,1
+access_cod_reconciliation_import_wizard,access_cod_reconciliation_import_wizard,model_cod_reconciliation_import_wizard,base.group_user,1,1,1,0

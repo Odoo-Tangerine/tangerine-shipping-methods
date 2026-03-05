@@ -9,6 +9,6 @@ class LLMRegional(models.Model):
     code = fields.Char(string='Code', required=True)
     lang = fields.Char(string='Language', required=True)
 
-    _sql_constraints = [
-        ('code_uniq', 'unique(name, code, lang)', 'Regional must be unique')
-    ]
+    _unique_regional_code = models.Constraint(
+        'unique (name, code, lang)', 'Regional must be unique'
+    )

@@ -9,6 +9,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="active" eval="False"/>
+            <field name="is_cron_delivery" eval="True"/>
         </record>
 
         <record id="ir_cron_test_sync_service_extend" model="ir.cron">
@@ -19,6 +20,7 @@
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="active" eval="False"/>
+            <field name="is_cron_delivery" eval="True"/>
         </record>
     </data>
 </odoo>

@@ -12,6 +12,7 @@
             </xpath>
             <xpath expr="//div[@name='tracking']" position="after">
                 <field name="delivery_status_id" invisible="not is_locally_delivery"/>
+                <field name="mapped_delivery_status_id" invisible="not is_locally_delivery" string="Mapped Status"/>
             </xpath>
             <field name="carrier_tracking_ref" position="after">
                 <button name="%(carrier_ref_order_action)d"

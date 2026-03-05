@@ -22,7 +22,7 @@
                 <field name="code"/>
                 <field name="provider_id"/>
                 <separator/>
-                <group expand="0" name="group_status" string="Group By">
+                <group name="group_status">
                     <filter string="Provider" name="provider" domain="[]" context="{'group_by':'provider_id'}"/>
                 </group>
            </search>

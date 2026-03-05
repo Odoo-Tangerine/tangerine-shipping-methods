@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ====== TREE VIEW ====== -->
+    <record id="delivery_webhook_log_view_list" model="ir.ui.view">
+        <field name="name">delivery.webhook.log.list</field>
+        <field name="model">delivery.webhook.log</field>
+        <field name="arch" type="xml">
+            <list string="Webhook Logs" create="0" edit="0" default_order="create_date desc" decoration-danger="response_status == 'error'" decoration-muted="response_status == 'ignored'">
+                <field name="create_date" string="Received At"/>
+                <field name="carrier_type" string="Carrier"/>
+                <field name="tracking_ref"/>
+                <field name="endpoint"/>
+                <field name="response_status" widget="badge" decoration-success="response_status == 'success'" decoration-danger="response_status == 'error'" decoration-warning="response_status == 'ignored'"/>
+                <field name="processing_time_ms" string="Time (ms)"/>
+                <field name="ip_address"/>
+                <field name="error_message" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ====== FORM VIEW ====== -->
+    <record id="delivery_webhook_log_view_form" model="ir.ui.view">
+        <field name="name">delivery.webhook.log.form</field>
+        <field name="model">delivery.webhook.log</field>
+        <field name="arch" type="xml">
+            <form string="Webhook Log" create="0" edit="0">
+                <header>
+                    <field name="response_status" widget="statusbar" statusbar_visible="success,error,ignored"/>
+                </header>
+                <sheet>
+                    <div class="oe_title mb-3">
+                        <label for="tracking_ref"/>
+                        <h1>
+                            <field name="tracking_ref" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Request Info">
+                            <field name="carrier_type"/>
+                            <field name="carrier_id"/>
+                            <field name="order_id"/>
+                            <field name="endpoint"/>
+                            <field name="http_method"/>
+                            <field name="ip_address"/>
+                            <field name="create_date" string="Received At"/>
+                        </group>
+                        <group string="Response Info">
+                            <field name="response_status"/>
+                            <field name="processing_time_ms" string="Processing Time (ms)"/>
+                            <field name="error_message"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Request Headers">
+                            <field name="request_headers" widget="json"/>
+                        </page>
+                        <page string="Request Body">
+                            <field name="request_body" widget="json"/>
+                        </page>
+                        <page string="Response Body">
+                            <field name="response_body" widget="json"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ====== SEARCH VIEW ====== -->
+    <record id="delivery_webhook_log_view_search" model="ir.ui.view">
+        <field name="name">delivery.webhook.log.search</field>
+        <field name="model">delivery.webhook.log</field>
+        <field name="arch" type="xml">
+            <search string="Webhook Logs">
+                <field name="tracking_ref"/>
+                <field name="carrier_type"/>
+                <field name="carrier_id"/>
+                <field name="error_message"/>
+                <filter name="today" string="Today" domain="[('create_date', '>=', context_today().strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <filter name="success" string="Success" domain="[('response_status', '=', 'success')]"/>
+                <filter name="error" string="Error" domain="[('response_status', '=', 'error')]"/>
+                <filter name="ignored" string="Ignored" domain="[('response_status', '=', 'ignored')]"/>
+                <separator/>
+                <group>
+                    <filter name="group_by_carrier" string="Carrier Type" context="{'group_by': 'carrier_type'}"/>
+                    <filter name="group_by_status" string="Status" context="{'group_by': 'response_status'}"/>
+                    <filter name="group_by_date" string="Date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ====== ACTION ====== -->
+    <record id="delivery_webhook_log_action" model="ir.actions.act_window">
+        <field name="name">Webhook Logs</field>
+        <field name="res_model">delivery.webhook.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="delivery_webhook_log_view_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No webhook logs yet
+            </p>
+            <p>
+                Webhook logs will appear here automatically when carriers send webhook callbacks.
+            </p>
+        </field>
+    </record>
+</odoo>

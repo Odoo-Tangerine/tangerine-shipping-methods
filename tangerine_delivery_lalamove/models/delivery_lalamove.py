@@ -38,6 +38,18 @@ class ProviderGrab(models.Model):
         string='Service Type'
     )
 
+    def _get_default_rate_context(self, order):
+        if self.delivery_type != settings.lalamove_code.value:
+            return super()._get_default_rate_context(order)
+        ctx = {
+            'llm_package_weight': order._get_estimated_weight() or 0,
+        }
+        if self.default_lalamove_service_id:
+            ctx['llm_service'] = self.default_lalamove_service_id.code
+        if self.default_lalamove_special_service_ids:
+            ctx['llm_special_service'] = [s.code for s in self.default_lalamove_special_service_ids]
+        return ctx
+
     @api.onchange('default_lalamove_service_id')
     def _onchange_default_lalamove_service_id(self):
         for rec in self:
@@ -95,11 +107,11 @@ class ProviderGrab(models.Model):
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
                     {
-                        'address': warehouse_id.partner_id.shipping_address_international,
+                        'address': warehouse_id.partner_id.shipping_address,
                         **self._llm_get_coordinates(warehouse_id.partner_id)
                     },
                     {
-                        'address': order.partner_shipping_id.shipping_address_international,
+                        'address': order.partner_shipping_id.shipping_address,
                         **self._llm_get_coordinates(order.partner_shipping_id)
                     }
                 ],
@@ -118,14 +130,12 @@ class ProviderGrab(models.Model):
         client = Client(Connection(self, get_route_api(self, settings.llm_get_quotation_code.value)))
         result = client.get_quotation(self._llm_payload_get_quotation_mode_order(order))
         if result.get('priceBreakdown') and result.get('priceBreakdown').get('total'):
-            context = dict(order.env.context)
-            context.update({'llm_quotation_data': json.dumps(result)})
-            order.env.context = context
             return {
                 'success': True,
                 'price': result.get('priceBreakdown').get('total'),
                 'error_message': False,
                 'warning_message': False,
+                'no_rate': json.dumps(result)
             }
         return {
             'success': False,
@@ -149,16 +159,16 @@ class ProviderGrab(models.Model):
                 'language': self.default_lalamove_regional_id.lang,
                 'stops': [
                     {
-                        'address': sender_id.shipping_address_international,
+                        'address': sender_id.shipping_address,
                         **self._llm_get_coordinates(sender_id)
                     },
                     {
-                        'address': recipient_id.shipping_address_international,
+                        'address': recipient_id.shipping_address,
                         **self._llm_get_coordinates(recipient_id)
                     }
                 ],
                 'item': {
-                    'quantity': str(int(self._compute_quantity(picking.move_ids_without_package))),
+                    'quantity': str(int(self._compute_quantity(picking.move_ids))),
                     'weight': self._llm_get_enum_weight(picking)
                 },
                 'isRouteOptimized': False,
@@ -182,19 +192,23 @@ class ProviderGrab(models.Model):
             if quotation_data and rfc3339_to_datetime(quotation_data.get('expiresAt')) < datetime.now():
                 quotation_data = client.get_quotation(self._llm_payload_get_quotation_mode_picking(picking))
         sender_id = picking.picking_type_id.warehouse_id.partner_id
+        if not sender_id.phone:
+            raise UserError(_('The sender phone number is required.'))
+        if not picking.partner_id.phone:
+            raise UserError(_('The recipient phone number is required.'))
         return {
             'data': {
                 'quotationId': quotation_data.get('quotationId'),
                 'sender': {
                     'stopId': quotation_data.get('stops')[0].get('stopId'),
                     'name': sender_id.name,
-                    'phone': f'+{standardization_e164(sender_id.mobile or sender_id.phone)}',
+                    'phone': f'+{standardization_e164(sender_id.phone)}',
                 },
                 'recipients': [
                     {
                         'stopId': quotation_data.get('stops')[1].get('stopId'),
                         'name': picking.partner_id.name,
-                        'phone': f'+{standardization_e164(picking.partner_id.mobile or picking.partner_id.phone)}',
+                        'phone': f'+{standardization_e164(picking.partner_id.phone)}',
                         'remarks': picking.remarks or ''
                     }
                 ],

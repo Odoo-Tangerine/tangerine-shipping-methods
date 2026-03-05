@@ -1,52 +1,40 @@
-# -*- coding: utf-8 -*-
 import requests
 import logging
 from dataclasses import dataclass
-from odoo import models, _
+from odoo import _
+from odoo.models import Model
 from odoo.exceptions import UserError
-from odoo.tools import ustr
-from odoo.addons.tangerine_delivery_base.settings.status import status
-
 _logger = logging.getLogger(__name__)
-
+_METHOD_DISPATCH = {'POST': lambda url, headers, kwargs: requests.post(url=url, headers=headers, json=kwargs), 'GET': lambda url, headers, kwargs: requests.get(url=url, headers=headers, params=kwargs), 'DELETE': lambda url, headers, kwargs: requests.delete(url=url, headers=headers, json=kwargs), 'PUT': lambda url, headers, kwargs: requests.put(url=url, headers=headers, data=kwargs), 'PATCH': lambda url, headers, kwargs: requests.patch(url=url, headers=headers, json=kwargs)}
 
 @dataclass
 class Connection:
-    provider: models
-    endpoint: models
+    provider: Model
+    endpoint: Model
 
     def __post_init__(self):
         self.debug = self.provider.log_xml
 
     def execute_restful(self, url, method, headers, **kwargs):
         try:
-            _logger.warning(f'[{self.provider.delivery_type.upper()}] - [EXECUTE API]: {method}: {url} - Header: {headers} - Body: {kwargs}')
-            if method == 'POST':
-                response = requests.post(url=url, headers=headers, json=kwargs)
-            elif method == 'GET':
-                response = requests.get(url=url, headers=headers, params=kwargs)
-            elif method == 'DELETE':
-                response = requests.delete(url=url, headers=headers, json=kwargs)
-            elif method == 'PUT':
-                response = requests.put(url=url, headers=headers, data=kwargs)
-            elif method == 'PATCH':
-                response = requests.patch(url=url, headers=headers, json=kwargs)
-            else:
+            _logger.warning('[%s] - [EXECUTE API]: %s: %s - Header: %s - Body: %s', self.provider.delivery_type.upper(), method, url, headers, kwargs)
+            OOOOOO0OOO00O0OOO = _METHOD_DISPATCH.get(method)
+            if not OOOOOO0OOO00O0OOO:
                 self.debug(f'The interface not support method: {method}', url)
                 raise UserError(_(f'The interface not support method: {method}'))
-            response.raise_for_status()
-            if response.status_code not in range(status.HTTP_200_OK.value, status.HTTP_300_MULTIPLE_CHOICES.value):
-                self.debug(response.text, url)
-                raise UserError(response.text)
-            if response.status_code == status.HTTP_204_NO_CONTENT.value:
+            OO0O0OO000OOO0O0O = OOOOOO0OOO00O0OOO(url, headers, kwargs)
+            OO0O0OO000OOO0O0O.raise_for_status()
+            if OO0O0OO000OOO0O0O.status_code == 204:
                 self.debug('Successful', url)
                 return True
-            elif not response.encoding:
-                return response
-            result = response.json()
-            _logger.info(f'RESULT EXECUTE API: {result}')
-            self.debug(result, url)
-            return result
-        except Exception as e:
-            self.debug(ustr(e), url)
-            raise UserError(ustr(e))
+            if not OO0O0OO000OOO0O0O.encoding:
+                return OO0O0OO000OOO0O0O
+            OOO0OO0OO00OOO0OO = OO0O0OO000OOO0O0O.json()
+            _logger.info('RESULT EXECUTE API: %s', OOO0OO0OO00OOO0OO)
+            self.debug(OOO0OO0OO00OOO0OO, url)
+            return OOO0OO0OO00OOO0OO
+        except UserError:
+            raise
+        except Exception as OO000O00OO00O0000:
+            self.debug(str(OO000O00OO00O0000), url)
+            raise UserError(str(OO000O00OO00O0000))

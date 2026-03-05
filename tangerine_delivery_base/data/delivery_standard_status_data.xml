@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="0">
+        <record id="standard_status_draft" model="delivery.standard.status">
+            <field name="name">Draft</field>
+            <field name="code">draft</field>
+            <field name="description">Order has been created, pending processing</field>
+            <field name="color">#8895a7</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="standard_status_confirmed" model="delivery.standard.status">
+            <field name="name">Confirmed</field>
+            <field name="code">confirmed</field>
+            <field name="description">Order has been confirmed</field>
+            <field name="color">#2cb5d6</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="standard_status_picking_up" model="delivery.standard.status">
+            <field name="name">Picking Up</field>
+            <field name="code">picking_up</field>
+            <field name="description">Carrier is picking up the package</field>
+            <field name="color">#4a8fe7</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="standard_status_picked_up" model="delivery.standard.status">
+            <field name="name">Picked Up</field>
+            <field name="code">picked_up</field>
+            <field name="description">Package has been picked up from sender</field>
+            <field name="color">#7c5cbf</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="standard_status_in_transit" model="delivery.standard.status">
+            <field name="name">In Transit</field>
+            <field name="code">in_transit</field>
+            <field name="description">Package is in transit</field>
+            <field name="color">#e88a3a</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record id="standard_status_delivering" model="delivery.standard.status">
+            <field name="name">Delivering</field>
+            <field name="code">delivering</field>
+            <field name="description">Carrier is delivering the package</field>
+            <field name="color">#e6a817</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <record id="standard_status_delivered" model="delivery.standard.status">
+            <field name="name">Delivered</field>
+            <field name="code">delivered</field>
+            <field name="description">Package has been delivered successfully</field>
+            <field name="color">#2eaa6f</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <record id="standard_status_returning" model="delivery.standard.status">
+            <field name="name">Returning</field>
+            <field name="code">returning</field>
+            <field name="description">Package is being returned to sender</field>
+            <field name="color">#d9636e</field>
+            <field name="sequence">80</field>
+        </record>
+
+        <record id="standard_status_returned" model="delivery.standard.status">
+            <field name="name">Returned</field>
+            <field name="code">returned</field>
+            <field name="description">Package has been returned to sender</field>
+            <field name="color">#c44553</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="standard_status_cancelled" model="delivery.standard.status">
+            <field name="name">Cancelled</field>
+            <field name="code">cancelled</field>
+            <field name="description">Order has been cancelled</field>
+            <field name="color">#4d5562</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="standard_status_failed" model="delivery.standard.status">
+            <field name="name">Failed</field>
+            <field name="code">failed</field>
+            <field name="description">Delivery has failed</field>
+            <field name="color">#a33240</field>
+            <field name="sequence">110</field>
+        </record>
+    </data>
+</odoo>

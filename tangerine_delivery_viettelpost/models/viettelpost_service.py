@@ -22,9 +22,10 @@ class ViettelPostService(models.Model):
         for rec in self:
             rec.display_name = f'[{rec.code}] - {rec.name}'
 
-    _sql_constraints = [
-        ('code_uniq', 'unique (code)', 'Service already exists!'),
-    ]
+
+    _unique_viettelpost_service_code = models.Constraint(
+        'unique (code)', 'Service already exists!'
+    )
 
     def service_synchronous(self):
         viettelpost_carrier_id = self.env['delivery.carrier'].search([
@@ -62,9 +63,9 @@ class ViettelPostServiceExtend(models.Model):
         for rec in self:
             rec.display_name = f'[{rec.code}] - {rec.name}'
 
-    _sql_constraints = [
-        ('service_id_code_uniq', 'unique (service_id, code)', 'Service extend already exists!'),
-    ]
+    _unique_service_id_code = models.Constraint(
+        'unique (service_id, code)', 'Service extend already exists!'
+    )
 
     def service_extend_synchronous(self):
         viettelpost_carrier_id = self.env['delivery.carrier'].search([

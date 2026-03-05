@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from enum import Enum
 from typing import Final
-
 
 class status(Enum):
     HTTP_100_CONTINUE: Final[int] = 100

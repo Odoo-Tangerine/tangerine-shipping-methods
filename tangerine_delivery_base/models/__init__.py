@@ -2,3 +2,8 @@ from . import delivery_base
 from . import stock_picking
 from . import carrier_ref_order
 from . import res_partner
+from . import delivery_dashboard
+from . import delivery_webhook_log
+from . import res_config_settings
+from . import ir_cron
+from . import cod_reconciliation

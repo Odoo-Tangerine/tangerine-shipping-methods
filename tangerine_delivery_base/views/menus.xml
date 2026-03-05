@@ -1,8 +1,127 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- ====== TOP-LEVEL MENU: Delivery Management ====== -->
+    <menuitem id="menu_delivery_root"
+              name="Delivery"
+              web_icon="tangerine_delivery_base,static/description/thumbnail.png"
+              sequence="65"
+    />
+
+    <!-- ====== Dashboard ====== -->
+    <menuitem id="menu_delivery_dashboard"
+              parent="menu_delivery_root"
+              name="Dashboard"
+              action="action_delivery_dashboard"
+              sequence="1"
+    />
+
+    <!-- ====== Operations ====== -->
+    <menuitem id="menu_delivery_operations"
+              parent="menu_delivery_root"
+              name="Operations"
+              sequence="10"
+    />
+
+    <menuitem id="menu_delivery_carrier_ref_orders"
+              parent="menu_delivery_operations"
+              name="Delivery Orders"
+              action="carrier_ref_order_action"
+              sequence="10"
+    />
+
+    <menuitem id="menu_delivery_webhook_logs"
+              parent="menu_delivery_operations"
+              name="Webhook Logs"
+              action="delivery_webhook_log_action"
+              sequence="20"
+    />
+
+    <menuitem id="menu_delivery_cod_reconciliation"
+              parent="menu_delivery_operations"
+              name="COD Reconciliation"
+              action="cod_reconciliation_action"
+              sequence="30"
+    />
+
+    <!-- ====== Configuration ====== -->
+    <menuitem id="menu_delivery_configuration"
+              parent="menu_delivery_root"
+              name="Configuration"
+              sequence="90"
+    />
+
+    <menuitem id="menu_delivery_integration_parent"
+              parent="menu_delivery_configuration"
+              name="Integration"
+              sequence="10"
+    />
+
+    <menuitem id="menu_delivery_carriers"
+              parent="menu_delivery_integration_parent"
+              name="Carriers"
+              action="delivery.action_delivery_carrier_form"
+              sequence="10"
+    />
+
+    <menuitem id="menu_delivery_route_api_config"
+              parent="menu_delivery_integration_parent"
+              name="Route APIs"
+              action="delivery_route_api_action"
+              sequence="20"
+    />
+
+    <menuitem id="menu_delivery_statuses_parent"
+              parent="menu_delivery_configuration"
+              name="Statuses"
+              sequence="30"
+    />
+
+    <menuitem id="menu_delivery_status_config"
+              parent="menu_delivery_statuses_parent"
+              name="Delivery Statuses"
+              action="delivery_status_action"
+              sequence="10"
+    />
+
+    <menuitem id="menu_delivery_standard_status_config"
+              parent="menu_delivery_statuses_parent"
+              name="Standard Statuses"
+              action="delivery_standard_status_action"
+              sequence="20"
+    />
+
+    <menuitem id="menu_delivery_status_mapping_config"
+              parent="menu_delivery_statuses_parent"
+              name="Status Mapping"
+              action="delivery_status_mapping_action"
+              sequence="30"
+    />
+
+    <menuitem id="menu_delivery_settings"
+              parent="menu_delivery_configuration"
+              name="Settings"
+              action="action_delivery_config_settings"
+              sequence="1"
+    />
+
+    <menuitem id="menu_delivery_automation_parent"
+              parent="menu_delivery_configuration"
+              name="Automation"
+              sequence="100"
+              groups="base.group_system"
+    />
+
+    <menuitem id="menu_delivery_scheduled_actions"
+              parent="menu_delivery_automation_parent"
+              name="Scheduled Actions"
+              action="action_delivery_scheduled_actions"
+              sequence="10"
+    />
+
+    <!-- ====== Keep existing menus under Inventory ====== -->
     <menuitem id="menu_carrier_ref_order_details"
-          parent="stock.menu_delivery"
-          name="Carrier Ref Order"
+          parent="stock.menu_stock_warehouse_mgmt"
+          name="Carrier Ref Orders"
           sequence="70"
           action="carrier_ref_order_action"
     />

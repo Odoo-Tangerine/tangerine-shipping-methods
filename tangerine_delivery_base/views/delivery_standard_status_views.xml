@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ====== Standard Status Views ====== -->
+    <record id="delivery_standard_status_tree_view" model="ir.ui.view">
+        <field name="name">delivery.standard.status.list.view</field>
+        <field name="model">delivery.standard.status</field>
+        <field name="arch" type="xml">
+            <list string="Standard Status" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="color" widget="color"/>
+                <field name="show_on_dashboard" widget="boolean_toggle"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="delivery_standard_status_search_view" model="ir.ui.view">
+        <field name="name">delivery.standard.status.search.view</field>
+        <field name="model">delivery.standard.status</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="delivery_standard_status_action" model="ir.actions.act_window">
+        <field name="name">Standard Statuses</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">delivery.standard.status</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('delivery_standard_status_tree_view')})]"
+        />
+        <field name="search_view_id" ref="delivery_standard_status_search_view"/>
+    </record>
+
+    <!-- ====== Status Mapping Views ====== -->
+    <record id="delivery_status_mapping_tree_view" model="ir.ui.view">
+        <field name="name">delivery.status.mapping.list.view</field>
+        <field name="model">delivery.status.mapping</field>
+        <field name="arch" type="xml">
+            <list string="Status Mapping" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="provider_id"/>
+                <field name="carrier_status_id"/>
+                <field name="carrier_status_code"/>
+                <field name="standard_status_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="delivery_status_mapping_search_view" model="ir.ui.view">
+        <field name="name">delivery.status.mapping.search.view</field>
+        <field name="model">delivery.status.mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="carrier_status_id"/>
+                <field name="standard_status_id"/>
+                <field name="provider_id"/>
+                <separator/>
+                <group name="group_mapping">
+                    <filter string="Provider" name="provider" domain="[]" context="{'group_by':'provider_id'}"/>
+                    <filter string="Standard Status" name="standard_status" domain="[]" context="{'group_by':'standard_status_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="delivery_status_mapping_action" model="ir.actions.act_window">
+        <field name="name">Status Mapping</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">delivery.status.mapping</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('delivery_status_mapping_tree_view')})]"
+        />
+        <field name="context">{'search_default_provider': True}</field>
+        <field name="search_view_id" ref="delivery_status_mapping_search_view"/>
+    </record>
+</odoo>

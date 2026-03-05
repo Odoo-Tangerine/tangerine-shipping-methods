@@ -7,8 +7,8 @@ class StockMove(models.Model):
 
     def _get_new_picking_values(self):
         vals = super(StockMove, self)._get_new_picking_values()
-        if self.group_id.sale_id and self.group_id.sale_id.carrier_id.delivery_type == settings.code.value:
-            delivery_line_ids = self.group_id.sale_id.order_line.filtered('is_delivery')
+        if self.sale_line_id.order_id and self.sale_line_id.order_id.carrier_id.delivery_type == settings.code.value:
+            delivery_line_ids = self.sale_line_id.order_id.order_line.filtered('is_delivery')
             if delivery_line_ids:
                 delivery_line_id = delivery_line_ids[-1]
                 if delivery_line_id.viettelpost_quotation_data:

@@ -60,7 +60,7 @@
                 <field name="name"/>
                 <field name="code"/>
                 <separator/>
-                <group expand="1" name="group_route_api" string="Group By">
+                <group name="group_route_api">
                     <filter string="Provider" name="provider" domain="[]" context="{'group_by':'provider_id'}"/>
                 </group>
             </search>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form_view_inherit_delivery_base" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="tangerine_address_base.res_partner_form_view_inherit_by_tangerine"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                <field name="shipping_address" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='child_ids']//form//div[@name='div_address']" position="after">
+                <field name="shipping_address" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

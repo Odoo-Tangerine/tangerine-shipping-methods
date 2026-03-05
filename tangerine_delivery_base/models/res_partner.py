@@ -1,23 +1,14 @@
 from odoo import api, fields, models
 
-
 class ResPartner(models.Model):
     _inherit = 'res.partner'
+    type = fields.Selection(selection_add=[('post_office', 'Post Office'), ('other',)], ondelete={'post_office': 'set default'})
+    shipping_address = fields.Char(compute='_compute_shipping_address')
 
-    shipping_address_international = fields.Char(compute='_compute_shipping_address_international', store=True)
-
-    @api.depends('street', 'zip', 'city', 'country_id')
-    def _compute_shipping_address_international(self):
-        for record in self:
-            record.shipping_address_international = ''
-            if record.street:
-                record.shipping_address_international += record.street + ', '
-            if record.zip:
-                record.shipping_address_international += record.zip + ' '
-            if record.city:
-                record.shipping_address_international += record.city + ', '
-            if record.state_id:
-                record.shipping_address_international += record.state_id.name + ', '
-            if record.country_id:
-                record.shipping_address_international += record.country_id.name
-            record.shipping_address_international = record.shipping_address_international.strip().strip(',')
+    @api.depends('country_id', 'state_id', 'ward_id', 'street')
+    def _compute_shipping_address(self):
+        self.shipping_address = False
+        for OOOOOO0OOO00O0OOO in self:
+            if OOOOOO0OOO00O0OOO.country_id and OOOOOO0OOO00O0OOO.country_id.code == 'VN':
+                OO0O0OO000OOO0O0O = [OOOOOO0OOO00O0OOO.street, OOOOOO0OOO00O0OOO.ward_id.name, OOOOOO0OOO00O0OOO.state_id.name, OOOOOO0OOO00O0OOO.country_id.name]
+                OOOOOO0OOO00O0OOO.shipping_address = ', '.join(filter(None, OO0O0OO000OOO0O0O))

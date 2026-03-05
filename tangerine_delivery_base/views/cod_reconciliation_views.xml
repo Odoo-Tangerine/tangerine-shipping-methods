@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ============================================================ -->
+    <!--                   COD RECONCILIATION VIEWS                    -->
+    <!-- ============================================================ -->
+
+    <!-- Form View -->
+    <record id="cod_reconciliation_form_view" model="ir.ui.view">
+        <field name="name">cod.reconciliation.form.view</field>
+        <field name="model">cod.reconciliation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_reconcile" type="object"
+                            string="Reconcile" class="btn-primary"
+                            invisible="state != 'imported'"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" class="btn-secondary"
+                            invisible="state in ('draft', 'cancelled')"
+                            confirm="This will delete all reconciliation lines. Continue?"/>
+                    <button name="action_cancel" type="object"
+                            string="Cancel" class="btn-secondary"
+                            invisible="state in ('draft', 'cancelled')"
+                            confirm="Cancel this reconciliation?"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,imported,reconciled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <div class="oe_title">
+                        <label for="name" string="Reconciliation"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="General Information" name="general_info">
+                            <field name="carrier_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="import_date"/>
+                            <field name="reconciliation_date"/>
+                            <field name="period_date"/>
+                            <field name="import_filename" invisible="not import_filename"/>
+                        </group>
+                    </group>
+
+                    <!-- Summary Cards -->
+                    <group string="Reconciliation Summary" invisible="state == 'draft'" name="reconciliation_summary">
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="carrier_total_cod"/>
+                            <field name="sys_total_cod"/>
+                            <field name="total_cod_difference"
+                                   decoration-danger="total_cod_difference != 0"
+                                   decoration-success="total_cod_difference == 0"/>
+                        </group>
+                        <group>
+                            <field name="carrier_total_shipping_fee"/>
+                            <field name="sys_total_shipping_fee"/>
+                            <field name="total_fee_difference"
+                                   decoration-danger="total_fee_difference != 0"
+                                   decoration-success="total_fee_difference == 0"/>
+                        </group>
+                        <group>
+                            <field name="carrier_net_amount"/>
+                            <field name="sys_net_amount"/>
+                            <field name="net_amount_difference"
+                                   decoration-danger="net_amount_difference != 0"
+                                   decoration-success="net_amount_difference == 0"/>
+                        </group>
+                    </group>
+
+                    <!-- Reconciliation Lines -->
+                    <notebook invisible="state == 'draft'">
+                        <page string="All Lines" name="all_lines">
+                            <field name="line_ids">
+                                <list create="0" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="carrier_bill_code" string="Bill Code"/>
+                                    <field name="carrier_send_date" string="Send Date" optional="show"/>
+                                    <field name="carrier_service" string="Service" optional="hide"/>
+                                    <field name="carrier_delivery_date" string="Delivery Date" optional="hide"/>
+                                    <field name="carrier_cod_amount" string="Carrier COD" sum="Total Carrier COD"/>
+                                    <field name="sys_cod_amount" string="System COD" sum="Total System COD"/>
+                                    <field name="cod_difference" string="COD Diff" sum="Total COD Diff"
+                                           decoration-danger="cod_difference != 0"
+                                           decoration-success="cod_difference == 0"/>
+                                    <field name="carrier_shipping_fee" string="Carrier Fee" sum="Total Carrier Fee"/>
+                                    <field name="sys_shipping_fee" string="System Fee" sum="Total System Fee"/>
+                                    <field name="fee_difference" string="Fee Diff" sum="Total Fee Diff"
+                                           decoration-danger="fee_difference != 0"
+                                           decoration-success="fee_difference == 0"/>
+                                    <field name="carrier_ref_order_id" string="Ref Order" optional="show"/>
+                                    <field name="sale_order_id" string="Sale Order" optional="show"/>
+                                    <field name="reconcile_status" widget="badge"
+                                           decoration-success="reconcile_status == 'matched'"
+                                           decoration-warning="reconcile_status == 'mismatched'"
+                                           decoration-danger="reconcile_status == 'not_found'"
+                                    />
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Add internal notes here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="cod_reconciliation_list_view" model="ir.ui.view">
+        <field name="name">cod.reconciliation.list.view</field>
+        <field name="model">cod.reconciliation</field>
+        <field name="arch" type="xml">
+            <list create="0"
+                  decoration-muted="state == 'cancelled'">
+                <header>
+                    <button name="%(tangerine_delivery_base.cod_reconciliation_import_wizard_action)d"
+                            string="Import File" type="action" display="always" class="btn-primary"/>
+                </header>
+                <field name="name"/>
+                <field name="carrier_id"/>
+                <field name="import_date"/>
+                <field name="reconciliation_date"/>
+                <field name="carrier_total_cod" sum="Total COD" widget="monetary"/>
+                <field name="carrier_total_shipping_fee" sum="Total Fees" widget="monetary"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'imported'"
+                       decoration-success="state == 'reconciled'"
+                       decoration-muted="state == 'cancelled'"
+                />
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="cod_reconciliation_search_view" model="ir.ui.view">
+        <field name="name">cod.reconciliation.search.view</field>
+        <field name="model">cod.reconciliation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="carrier_id"/>
+                <separator/>
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_imported" string="Imported" domain="[('state', '=', 'imported')]"/>
+                <filter name="filter_reconciled" string="Reconciled" domain="[('state', '=', 'reconciled')]"/>
+                <filter name="filter_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_import_date" string="Import Date" date="import_date"/>
+                <filter name="filter_reconciliation_date" string="Reconciliation Date" date="reconciliation_date"/>
+                <group>
+                    <filter name="group_carrier" string="Carrier" context="{'group_by': 'carrier_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_import_date" string="Import Date" context="{'group_by': 'import_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--                       ACTIONS                                 -->
+    <!-- ============================================================ -->
+
+    <record id="cod_reconciliation_action" model="ir.actions.act_window">
+        <field name="name">COD Reconciliation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cod.reconciliation</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('cod_reconciliation_list_view')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('cod_reconciliation_form_view')})]"
+        />
+        <field name="search_view_id" ref="cod_reconciliation_search_view"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!--                       SEQUENCE                                -->
+    <!-- ============================================================ -->
+
+    <record id="seq_cod_reconciliation" model="ir.sequence">
+        <field name="name">COD Reconciliation</field>
+        <field name="code">cod.reconciliation</field>
+        <field name="prefix">COD/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

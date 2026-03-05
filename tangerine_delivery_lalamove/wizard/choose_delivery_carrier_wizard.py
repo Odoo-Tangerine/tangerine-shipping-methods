@@ -34,23 +34,19 @@ class ChooseDeliveryCarrierLalamove(models.TransientModel):
 
     def _get_delivery_rate(self):
         if self.carrier_id.delivery_type == settings.lalamove_code.value:
-            context = dict(self.env.context)
-            context.update({
-                'llm_service': self.lalamove_service_id.code,
-                'llm_special_service': [spec.code for spec in self.lalamove_special_service_ids],
-                'llm_package_weight': self.total_weight
-            })
-            self.env.context = context
+            self = self.with_context(
+                llm_service=self.lalamove_service_id.code,
+                llm_special_service=[spec.code for spec in self.lalamove_special_service_ids],
+                llm_package_weight=self.total_weight,
+            )
         result = super(ChooseDeliveryCarrierLalamove, self)._get_delivery_rate()
-        if self.env.context.get('llm_quotation_data'):
-            self.write({'lalamove_quotation_data': self.env.context.get('llm_quotation_data')})
+        if result.get('no_rate') and self.carrier_id.delivery_type == settings.lalamove_code.value:
+            self.write({'lalamove_quotation_data': result.get('no_rate')})
         return result
 
     def button_confirm(self):
         if self.lalamove_quotation_data and self.carrier_id.delivery_type == settings.lalamove_code.value:
-            context = dict(self.env.context)
-            context.update({'llm_quotation_data': self.lalamove_quotation_data})
-            self.env.context = context
+            self = self.with_context(llm_quotation_data=self.lalamove_quotation_data)
         self.order_id.set_delivery_line(self.carrier_id, self.delivery_price)
         self.order_id.write({
             'recompute_delivery_price': False,

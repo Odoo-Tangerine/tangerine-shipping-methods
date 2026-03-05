@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cod_reconciliation_import_wizard_form_view" model="ir.ui.view">
+        <field name="name">cod.reconciliation.import.wizard.form.view</field>
+        <field name="model">cod.reconciliation.import.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="reconciliation_id" readonly="1"/>
+                    <field name="carrier_id"/>
+                    <field name="delivery_type" invisible="1"/>
+                    <field name="import_file" filename="import_filename"/>
+                    <field name="import_filename" invisible="1"/>
+                    <field name="auto_reconcile"/>
+                </group>
+                <div name="carrier_format_info"/>
+                <footer>
+                    <button name="action_import" string="Import &amp; Reconcile" type="object"
+                            class="btn-primary" invisible="not auto_reconcile"/>
+                    <button name="action_import" string="Import" type="object"
+                            class="btn-primary" invisible="auto_reconcile"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="cod_reconciliation_import_wizard_action" model="ir.actions.act_window">
+        <field name="name">Import COD Reconciliation File</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cod.reconciliation.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

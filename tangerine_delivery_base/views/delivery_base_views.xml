@@ -14,59 +14,49 @@
                 <field name="is_locally_delivery"/>
                 <field name="carrier_description"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <div class="oe_module_vignette">
-                                <div class="oe_module_icon">
-                                    <t t-if="record.image.raw_value">
-                                        <img t-att-src="kanban_image('delivery.carrier','image',record.id.raw_value)" alt="Image"/>
-                                    </t>
-                                    <t t-elif="record.is_locally_delivery.raw_value">
-                                        <img t-attf-src="/tangerine_delivery_#{record.delivery_type.raw_value}/static/description/icon.png" class="w-100" alt="Image"/>
+                    <t t-name="card" class="flex-row">
+                        <aside class="o_kanban_aside_full o_kanban_aside_full">
+                            <t t-if="record.is_locally_delivery.raw_value">
+                                <field name="image" class="o_kanban_image_fill w-100" widget="image" options="{'img_class': 'object-fit-contain p-2'}" alt="Carrier logo"/>
+                            </t>
+                            <t t-else="">
+                                <img t-attf-src="/tangerine_delivery_base/static/description/images/white.png" class="w-100" alt="Image"/>
+                            </t>
+                        </aside>
+                        <main class="d-flex flex-column justify-content-between">
+                            <field name="name" class="fw-bold"/>
+                            <div t-if="record.domain.raw_value">
+                                <code>
+                                    <field name="domain"/>
+                                </code>
+                            </div>
+                            <footer class="pt-1">
+                                <div class="oe_kanban_bottom_right">
+                                    <t t-if="!record.prod_environment.raw_value">
+                                        <button name="toggle_prod_environment"
+                                           type="object"
+                                           invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
+                                           icon="fa-stop"
+                                        >
+                                            <span class="text-warning">
+                                                Test Environment
+                                            </span>
+                                        </button>
                                     </t>
                                     <t t-else="">
-                                        <img t-attf-src="/tangerine_delivery_base/static/description/images/white.png" class="w-100" alt="Image"/>
+                                        <button name="toggle_prod_environment"
+                                           type="object"
+                                           invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
+                                           icon="fa-play"
+                                        >
+                                            <span class="text-success">
+                                                Production Environment
+                                            </span>
+                                        </button>
                                     </t>
                                 </div>
-                                <div class="oe_module_desc">
-                                    <h4 class="o_kanban_record_title">
-                                        <field name="name"/>
-                                    </h4>
-                                    <p class="oe_module_name text-nowrap overflow-hidden" style="text-overflow: ellipsis; color: #d2317b;">
-                                        <code>
-                                            <field name="domain"/>
-                                        </code>
-                                    </p>
-                                    <div class="o_kanban_record_bottom">
-                                        <div class="oe_kanban_bottom_left"/>
-                                        <div class="oe_kanban_bottom_right">
-                                            <t t-if="!record.prod_environment.raw_value">
-                                                <button name="toggle_prod_environment"
-                                                   type="object"
-                                                   invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
-                                                   icon="fa-stop"
-                                                >
-                                                    <span class="text-warning">
-                                                        Test Environment
-                                                    </span>
-                                                </button>
-                                            </t>
-                                            <t t-else="">
-                                                <button name="toggle_prod_environment"
-                                                   type="object"
-                                                   invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule'"
-                                                   icon="fa-play"
-                                                >
-                                                    <span class="text-success">
-                                                        Production Environment
-                                                    </span>
-                                                </button>
-                                            </t>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </footer>
+                        </main>
                     </t>
                   </templates>
             </kanban>
@@ -139,6 +129,7 @@
                         <list editable="bottom">
                             <field name="name"/>
                             <field name="code"/>
+                            <field name="standard_status_id" optional="show"/>
                         </list>
                         <form>
                             <group>
@@ -148,6 +139,34 @@
                         </form>
                     </field>
                 </page>
+                <page name="status_mapping"
+                      string="Status Mapping"
+                      invisible="delivery_type == 'fixed' or delivery_type == 'base_on_rule' or not is_locally_delivery"
+                >
+                    <field name="status_mapping_ids" mode="list">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="carrier_status_id" domain="[('provider_id', '=', parent.id)]"/>
+                            <field name="carrier_status_code"/>
+                            <field name="standard_status_id"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <field name="product_id" position="before">
+                <field name="external_carrier_id" invisible="not is_locally_delivery"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="delivery_carrier_search_view_inherit" model="ir.ui.view">
+        <field name="name">delivery.carrier.search.inherit.tangerine</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter string="Locally Delivery" name="filter_locally_delivery" domain="[('is_locally_delivery', '=', True)]"/>
+                <separator/>
             </xpath>
         </field>
     </record>
@@ -160,7 +179,7 @@
             (0, 0, {'view_mode': 'list', 'view_id': ref('delivery.view_delivery_carrier_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_delivery_carrier_form_with_provider_delivery_base')})]"
         />
-        <field name="context">{'search_default_group_by_provider': True}</field>
+        <field name="context">{'search_default_group_by_provider': True, 'search_default_filter_locally_delivery': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
             Define a new delivery method

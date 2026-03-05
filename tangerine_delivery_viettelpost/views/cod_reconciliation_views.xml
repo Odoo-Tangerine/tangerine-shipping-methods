@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="cod_reconciliation_import_wizard_form_view_viettelpost" model="ir.ui.view">
+        <field name="name">cod.reconciliation.import.wizard.form.view.viettelpost</field>
+        <field name="model">cod.reconciliation.import.wizard</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.cod_reconciliation_import_wizard_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='carrier_format_info']" position="inside">
+                <div class="alert alert-info" role="alert"
+                     invisible="delivery_type != 'viettelpost'">
+                    <strong>Supported Format:</strong>
+                    ViettelPost COD Reconciliation Excel file (BangKeChiCod).
+                    <br/>
+                    The file should contain two sections:
+                    <ul>
+                        <li><strong>Section I:</strong> CHI TIẾT SỐ TIỀN COD (COD Amount Details)</li>
+                        <li><strong>Section II:</strong> CHI TIẾT TIỀN CƯỚC CHUYỂN PHÁT VÀ PHÍ COD (Shipping Fee Details)</li>
+                    </ul>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

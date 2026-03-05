@@ -2,7 +2,7 @@
 import math
 from odoo import fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import ustr
+
 from odoo.addons.tangerine_delivery_base.settings.utils import (
     standardization_e164,
     get_route_api,
@@ -31,6 +31,17 @@ class ProviderViettelpost(models.Model):
     default_viettelpost_service_extend_id = fields.Many2one('viettelpost.service.extend', string='Service Extend')
     default_viettelpost_paper_size = fields.Selection(settings.paper_size.value, string='Print Paper Size')
 
+    def _get_default_rate_context(self, order):
+        if self.delivery_type != settings.code.value:
+            return super()._get_default_rate_context(order)
+        return {
+            'viettelpost_total_weight': order._get_estimated_weight() or 0,
+            'viettelpost_service_code': self.default_viettelpost_service_id.code if self.default_viettelpost_service_id else settings.default_service_type.value,
+            'viettelpost_service_extend_code': self.default_viettelpost_service_extend_id.code if self.default_viettelpost_service_extend_id else None,
+            'viettelpost_national_type': self.default_viettelpost_national_type or settings.default_national_type.value,
+            'viettelpost_product_type': self.default_viettelpost_product_type or settings.default_product_type.value,
+        }
+
     def _viettelpost_payload_get_token(self):
         return {
             'USERNAME': self.username,
@@ -55,7 +66,7 @@ class ProviderViettelpost(models.Model):
             self.write({'access_token': result.get('token')})
             return notification('success', 'Get access token successfully')
         except Exception as e:
-            raise UserError(ustr(e))
+            raise UserError(str(e))
 
     def _viettelpost_payload_estimate_cost(self, order):
         return {
@@ -113,6 +124,10 @@ class ProviderViettelpost(models.Model):
     def _viettelpost_payload_create_order(self, picking):
         sender_id = picking.picking_type_id.warehouse_id.partner_id
         recipient_id = picking.partner_id
+        if not sender_id.phone:
+            raise UserError(_('The sender %s does not have a phone number.') % sender_id.name)
+        if not recipient_id.phone:
+            raise UserError(_('The recipient %s does not have a phone number.') % recipient_id.name)
         payload = {
             'ORDER_NUMBER': picking.sale_id.name,
             'ORDER_PAYMENT': picking.viettelpost_order_payment,
@@ -122,13 +137,13 @@ class ProviderViettelpost(models.Model):
             'ORDER_NOTE': picking.remarks or '',
             'NATIONAL_TYPE': picking.viettelpost_national_type,
             'SENDER_FULLNAME': sender_id.name,
-            'SENDER_PHONE': standardization_e164(sender_id.mobile or sender_id.phone),
+            'SENDER_PHONE': standardization_e164(sender_id.phone),
             'SENDER_ADDRESS': f'{sender_id.shipping_address}',
             'RECEIVER_FULLNAME': recipient_id.name,
-            'RECEIVER_PHONE': standardization_e164(recipient_id.mobile or recipient_id.phone),
+            'RECEIVER_PHONE': standardization_e164(recipient_id.phone),
             'RECEIVER_ADDRESS': f'{recipient_id.shipping_address}',
             'PRODUCT_WEIGHT': math.ceil(self.convert_weight(picking._get_estimated_weight(), self.base_weight_unit)),
-            'PRODUCT_QUANTITY': self._compute_quantity(picking.move_ids_without_package),
+            'PRODUCT_QUANTITY': self._compute_quantity(picking.move_ids),
             'PRODUCT_PRICE': picking.sale_id.amount_total,
             'PRODUCT_TYPE': picking.viettelpost_product_type,
             'MONEY_COLLECTION': 0,
@@ -138,7 +153,7 @@ class ProviderViettelpost(models.Model):
                 'PRODUCT_PRICE': line.product_id.list_price,
                 'PRODUCT_WEIGHT': math.ceil(self.convert_weight(line.product_id.weight, self.base_weight_unit)),
                 'PRODUCT_QUANTITY': line.quantity
-            } for line in picking.move_ids_without_package]
+            } for line in picking.move_ids]
         }
         if picking.cash_on_delivery and picking.cash_on_delivery_amount > 0.0:
             payload['MONEY_COLLECTION'] = picking.cash_on_delivery_amount

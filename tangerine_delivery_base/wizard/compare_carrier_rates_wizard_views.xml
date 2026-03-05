@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="compare_carrier_rates_wizard_form" model="ir.ui.view">
+        <field name="name">compare.carrier.rates.wizard.form</field>
+        <field name="model">compare.carrier.rates.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Compare Carrier Rates">
+                <header>
+                    <button name="action_select_carrier"
+                            string="Apply Selected Carrier"
+                            type="object"
+                            class="btn-primary"
+                            invisible="is_loading"
+                            icon="fa-check"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_title mb-3">
+                        <h2>
+                            <span>Rate Comparison for: </span>
+                            <field name="order_id" readonly="1" class="d-inline"/>
+                        </h2>
+                    </div>
+                    <field name="is_loading" invisible="1"/>
+                    <div invisible="not is_loading" class="alert alert-info text-center" role="status">
+                        <i class="fa fa-spinner fa-spin me-2"/>
+                        Click <b>Fetch Rates</b> to get quotes from all carriers using their default configurations.
+                    </div>
+                    <field name="line_ids" mode="list" invisible="is_loading" nolabel="1">
+                        <list editable="bottom" decoration-muted="not success" decoration-danger="not success">
+                            <field name="is_selected" widget="boolean_toggle"/>
+                            <field name="carrier_image" widget="image" options="{'size': [32, 32]}" string=" "/>
+                            <field name="carrier_id" readonly="1"/>
+                            <field name="delivery_type" readonly="1"/>
+                            <field name="price" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="success" readonly="1" widget="boolean"/>
+                            <field name="error_message" readonly="1" optional="show"/>
+                            <field name="warning_message" readonly="1" optional="hide"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <footer invisible="not is_loading">
+                        <button name="action_fetch_rates" string="Fetch Rates"
+                                type="object" class="btn-primary" icon="fa-bolt"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Server Action for binding to sale.order -->
+    <record id="action_compare_carrier_rates" model="ir.actions.server">
+        <field name="name">Compare Carrier Rates</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    wizard = env['compare.carrier.rates.wizard'].create({'order_id': records[0].id})
+    action = wizard.action_fetch_rates()
+</field>
+    </record>
+</odoo>

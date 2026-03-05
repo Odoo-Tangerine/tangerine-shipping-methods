@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="tangerine_delivery_base.DeliveryDashboard">
+        <div class="o_action o_delivery_dashboard overflow-auto h-100">
+            <!-- ========== HEADER BANNER ========== -->
+            <div class="o_delivery_dashboard_header container-fluid py-3 border-bottom bg-view">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        <Dropdown>
+                            <button class="btn btn-light border d-flex align-items-center gap-2">
+                                <h2 class="mb-0 text-900 fs-4" t-esc="modeLabel"/>
+                                <i class="fa fa-caret-down small ms-1"/>
+                            </button>
+                            <t t-set-slot="content">
+                                <DropdownItem class="{ 'selected fw-bold': state.mode === 'delivery' }"
+                                              onSelected="() => this.selectMode('delivery')">
+                                    Delivery Analytics
+                                </DropdownItem>
+                                <DropdownItem class="{ 'selected fw-bold': state.mode === 'webhook' }"
+                                              onSelected="() => this.selectMode('webhook')">
+                                    Webhook Monitoring
+                                </DropdownItem>
+                                <DropdownItem class="{ 'selected fw-bold': state.mode === 'performance' }"
+                                              onSelected="() => this.selectMode('performance')">
+                                    Performance Analytics
+                                </DropdownItem>
+                            </t>
+                        </Dropdown>
+                    </div>
+                    <div class="col-auto ms-auto d-flex gap-2 align-items-center flex-wrap">
+                        <!-- ===== DATE FILTER DROPDOWN (Odoo-style) ===== -->
+                        <div class="d-flex align-items-center gap-1">
+                            <Dropdown>
+                                <button class="btn btn-sm btn-light border d-flex align-items-center gap-2">
+                                    <i class="fa fa-calendar"/>
+                                    <span t-esc="periodLabel"/>
+                                </button>
+                                <t t-set-slot="content">
+                                    <t t-foreach="dateOptions" t-as="option" t-key="option.id">
+                                        <DropdownItem
+                                            class="{ 'selected fw-bold': isSelected(option), 'o-date-filter-dropdown d-flex justify-content-between': true }"
+                                            closingMode="option.id === 'custom_range' ? 'none' : 'closest'"
+                                            onSelected="() => this.selectPeriod(option)">
+                                            <div t-esc="option.label"/>
+                                            <!-- Custom Range: inline date pickers -->
+                                            <t t-if="option.id === 'custom_range'">
+                                                <div class="d-flex flex-row gap-1 ms-2" t-on-click.stop="">
+                                                    <DateTimeInput type="'date'" value="customDateFrom" onChange.bind="setCustomFrom"/>
+                                                    <span class="d-flex align-items-center small text-muted px-1">to</span>
+                                                    <DateTimeInput type="'date'" value="customDateTo" onChange.bind="setCustomTo"/>
+                                                </div>
+                                            </t>
+                                        </DropdownItem>
+                                        <div t-if="option.separator" class="dropdown-divider"/>
+                                    </t>
+                                </t>
+                            </Dropdown>
+                            <!-- Prev / Next navigation arrows -->
+                            <button class="btn btn-sm btn-light border px-2" t-on-click="onNavigatePrevious" title="Previous period">
+                                <i class="fa fa-caret-left"/>
+                            </button>
+                            <button class="btn btn-sm btn-light border px-2" t-on-click="onNavigateNext" title="Next period">
+                                <i class="fa fa-caret-right"/>
+                            </button>
+                        </div>
+
+                        <!-- ===== CARRIER FILTER ===== -->
+                        <Dropdown>
+                            <button class="btn btn-sm btn-light border d-flex align-items-center gap-2">
+                                <i class="fa fa-truck"/>
+                                <span t-esc="carrierLabel"/>
+                            </button>
+                            <t t-set-slot="content">
+                                <DropdownItem class="{ 'selected fw-bold': !state.carrierId }"
+                                              onSelected="() => this.selectCarrier(null)">
+                                    All Carriers
+                                </DropdownItem>
+                                <div class="dropdown-divider"/>
+                                <t t-if="state.data and state.data.carriers">
+                                    <t t-foreach="state.data.carriers" t-as="carrier" t-key="carrier.id">
+                                        <DropdownItem class="{ 'selected fw-bold': state.carrierId === carrier.id }"
+                                                      onSelected="() => this.selectCarrier(carrier.id)">
+                                            <t t-esc="carrier.name"/>
+                                        </DropdownItem>
+                                    </t>
+                                </t>
+                            </t>
+                        </Dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== LOADING ========== -->
+            <div t-if="state.loading" class="d-flex flex-column align-items-center justify-content-center py-5 text-muted">
+                <div class="spinner-border text-primary mb-3" role="status"/>
+                <span>Loading dashboard data...</span>
+            </div>
+
+            <!-- ========== DASHBOARD CONTENT ========== -->
+            <div t-if="!state.loading and state.data" class="container-fluid py-4 bg-view">
+
+                <!-- ==================== DELIVERY ANALYTICS MODE ==================== -->
+                <t t-if="state.mode === 'delivery'">
+                <!-- ===== STATUS OVERVIEW + TOTAL ===== -->
+                <div class="row g-2 mb-4">
+                    <!-- Total Orders card -->
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <a href="#" class="text-decoration-none" t-on-click.prevent="openAllOrders">
+                            <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.kpi.total_orders > 0 ? 'bg-primary-subtle text-primary-emphasis' : 'bg-100 text-muted' }}"
+                                 style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;"
+                                 onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,.08)'"
+                                 onmouseleave="this.style.transform=''; this.style.boxShadow=''">
+                                <div class="fs-2 fw-bold"><t t-esc="formatNumber(state.data.kpi.total_orders)"/></div>
+                                <div class="small fw-semibold">Total Orders</div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Status cards -->
+                    <t t-if="state.data.standard_status_cards">
+                        <t t-foreach="state.data.standard_status_cards" t-as="card" t-key="card.code">
+                            <div class="col-6 col-md-4 col-lg-2">
+                                <a href="#" class="text-decoration-none"
+                                   t-on-click.prevent="() => this.openStatusOrders(card.code)">
+                                    <div class="rounded-3 p-3 h-100 text-center"
+                                         t-att-style="card.count > 0
+                                            ? 'background: linear-gradient(135deg, ' + card.color + '40 0%, ' + card.color + '20 100%); color:#212529; cursor:pointer; transition:all 0.2s ease; border: 1px solid ' + card.color + '50;'
+                                            : 'background: linear-gradient(135deg, ' + card.color + '18 0%, ' + card.color + '08 100%); color:#212529; cursor:pointer; transition:all 0.2s ease; border: 1px solid ' + card.color + '30;'"
+                                         onmouseenter="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,.12)'"
+                                         onmouseleave="this.style.transform=''; this.style.boxShadow=this.dataset.shadow || ''">
+                                        <div class="fs-2 fw-bold">
+                                            <t t-esc="formatNumber(card.count)"/>
+                                        </div>
+                                        <div class="small fw-semibold text-truncate" t-att-title="card.name">
+                                            <t t-esc="card.name"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+
+                <!-- ===== ROW: Carrier Breakdown + Status Distribution ===== -->
+                <div class="row g-3 mb-4">
+                    <!-- Carrier Breakdown Table -->
+                    <div class="col-12 col-lg-9">
+                        <div class="card border rounded-1 h-100">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h6 class="mb-0 fw-bold"><i class="fa fa-building me-2 text-secondary"/>Carrier Breakdown</h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="bg-100">
+                                            <tr>
+                                                <th class="ps-3">Carrier</th>
+                                                <th class="text-center">Orders</th>
+                                                <th class="text-end">Avg Cost</th>
+                                                <th class="text-end">Total Cost</th>
+                                                <th class="text-end text-success">Paid</th>
+                                                <th class="text-end text-warning">Unpaid</th>
+
+                                                <th class="text-end">COD Amount</th>
+                                                <th class="text-end pe-3">Rate</th>
+                                                <th/>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="state.data.carrier_breakdown" t-as="carrier" t-key="carrier.id">
+                                                <tr>
+                                                    <td class="ps-3">
+                                                        <strong><t t-esc="carrier.name"/></strong>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge rounded-pill text-bg-primary"><t t-esc="formatNumber(carrier.total_orders)"/></span>
+                                                    </td>
+                                                    <td class="text-end"><t t-esc="formatCurrency(carrier.avg_cost)"/></td>
+                                                    <td class="text-end fw-semibold"><t t-esc="formatCurrency(carrier.real_cost)"/></td>
+                                                    <td class="text-end text-success"><t t-esc="formatCurrency(carrier.paid_amount)"/></td>
+                                                    <td class="text-end text-warning"><t t-esc="formatCurrency(carrier.unpaid_amount)"/></td>
+
+                                                    <td class="text-end"><t t-esc="formatCurrency(carrier.cod_amount)"/></td>
+                                                    <td class="text-end pe-3">
+                                                        <span t-attf-class="fw-bold small {{ carrier.success_rate >= 90 ? 'text-success' : carrier.success_rate >= 70 ? 'text-warning' : 'text-danger' }}">
+                                                            <t t-esc="carrier.success_rate"/>%
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-link btn-sm p-0" t-on-click="() => this.openCarrierOrders(carrier.id)" title="View orders">
+                                                            <i class="fa fa-external-link"/>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div t-if="!state.data.carrier_breakdown.length" class="text-center text-muted py-5">
+                                    <i class="fa fa-inbox fa-3x d-block mb-2 opacity-25"/>
+                                    <p>No data for the selected period</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Status Distribution -->
+                    <div class="col-12 col-lg-3">
+                        <div class="card border rounded-1 h-100">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h6 class="mb-0 fw-bold"><i class="fa fa-pie-chart me-2 text-info"/>Status Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <div t-if="state.data.status_distribution.length" style="position:relative; height:220px;">
+                                    <canvas t-ref="statusChart"/>
+                                </div>
+                                <div t-if="!state.data.status_distribution.length" class="text-center text-muted py-4">
+                                    <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                    <p class="small">No status data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== ROW: Order Trends + Cost Comparison ===== -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-lg-6">
+                        <div class="card border rounded-1 h-100">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h6 class="mb-0 fw-bold"><i class="fa fa-line-chart me-2 text-info"/>Order Trends</h6>
+                            </div>
+                            <div class="card-body">
+                                <div t-if="state.data.daily_orders and state.data.daily_orders.length > 0" style="position:relative; height:240px;">
+                                    <canvas t-ref="trendChart"/>
+                                </div>
+                                <div t-if="!state.data.daily_orders or !state.data.daily_orders.length" class="text-center text-muted py-4">
+                                    <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                    <p class="small">No order data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="card border rounded-1 h-100">
+                            <div class="card-header bg-transparent border-bottom">
+                                <h6 class="mb-0 fw-bold"><i class="fa fa-bar-chart me-2 text-primary"/>Cost: Estimated vs Actual</h6>
+                            </div>
+                            <div class="card-body">
+                                <div t-if="state.data.cost_comparison.length" style="position:relative; height:240px;">
+                                    <canvas t-ref="costChart"/>
+                                </div>
+                                <div t-if="!state.data.cost_comparison.length" class="text-center text-muted py-4">
+                                    <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                    <p class="small">No cost data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </t><!-- end delivery mode -->
+
+                <!-- ==================== WEBHOOK MONITORING MODE ==================== -->
+                <t t-if="state.mode === 'webhook' and state.data.webhook_stats">
+                    <div class="mb-3 d-flex align-items-center">
+                        <button class="btn btn-sm btn-outline-primary" t-on-click="openWebhookLogs">
+                            <i class="fa fa-external-link me-1"/> View All Logs
+                        </button>
+                    </div>
+
+                    <!-- ===== WEBHOOK KPI CARDS ===== -->
+                    <div class="row g-2 mb-4">
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <a href="#" class="text-decoration-none" t-on-click.prevent="openWebhookLogs">
+                                <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.webhook_stats.total > 0 ? 'bg-info-subtle text-info-emphasis' : 'bg-100 text-muted' }}"
+                                     style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;"
+                                     onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,.08)'"
+                                     onmouseleave="this.style.transform=''; this.style.boxShadow=''">
+                                    <div class="fs-2 fw-bold"><t t-esc="formatNumber(state.data.webhook_stats.total)"/></div>
+                                    <div class="small fw-semibold">Total Webhooks</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.webhook_stats.success > 0 ? 'bg-success-subtle text-success-emphasis' : 'bg-100 text-muted' }}">
+                                <div class="fs-2 fw-bold"><t t-esc="formatNumber(state.data.webhook_stats.success)"/></div>
+                                <div class="small fw-semibold">Success</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <a href="#" class="text-decoration-none" t-on-click.prevent="openWebhookErrors">
+                                <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.webhook_stats.error > 0 ? 'bg-danger-subtle text-danger-emphasis' : 'bg-100 text-muted' }}"
+                                     style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;"
+                                     onmouseenter="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,.08)'"
+                                     onmouseleave="this.style.transform=''; this.style.boxShadow=''">
+                                    <div class="fs-2 fw-bold"><t t-esc="formatNumber(state.data.webhook_stats.error)"/></div>
+                                    <div class="small fw-semibold">Errors</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.webhook_stats.ignored > 0 ? 'bg-warning-subtle text-warning-emphasis' : 'bg-100 text-muted' }}">
+                                <div class="fs-2 fw-bold"><t t-esc="formatNumber(state.data.webhook_stats.ignored)"/></div>
+                                <div class="small fw-semibold">Ignored</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div t-attf-class="rounded-1 p-3 h-100 text-center {{ state.data.webhook_stats.success_rate >= 90 ? 'bg-success-subtle text-success-emphasis' : state.data.webhook_stats.success_rate >= 70 ? 'bg-warning-subtle text-warning-emphasis' : 'bg-danger-subtle text-danger-emphasis' }}">
+                                <div class="fs-2 fw-bold"><t t-esc="state.data.webhook_stats.success_rate"/>%</div>
+                                <div class="small fw-semibold">Success Rate</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <div class="rounded-1 p-3 h-100 text-center bg-100">
+                                <div class="fs-2 fw-bold text-body"><t t-esc="state.data.webhook_stats.avg_processing_time"/>ms</div>
+                                <div class="small fw-semibold text-muted">Avg Response</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== ROW 1: Webhook Volume + Status Distribution ===== -->
+                    <div class="row g-3 mb-4">
+                        <!-- Webhook Volume Chart (line) -->
+                        <div class="col-12 col-lg-8">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-area-chart me-2 text-info"/>Webhook Volume</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="state.data.webhook_stats.daily_data and state.data.webhook_stats.daily_data.length > 0" style="position:relative; height:240px;">
+                                        <canvas t-ref="webhookChart"/>
+                                    </div>
+                                    <div t-if="!state.data.webhook_stats.daily_data or !state.data.webhook_stats.daily_data.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No webhook data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status Distribution (doughnut) -->
+                        <div class="col-12 col-lg-4">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-pie-chart me-2 text-primary"/>Status Distribution</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="state.data.webhook_stats.total > 0" style="position:relative; height:220px;">
+                                        <canvas t-ref="webhookStatusChart"/>
+                                    </div>
+                                    <div t-if="!state.data.webhook_stats.total" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== ROW 2: Response Time by Carrier + Carrier Table ===== -->
+                    <div class="row g-3 mb-4">
+                        <!-- Response Time by Carrier (bar) -->
+                        <div class="col-12 col-lg-5">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-clock-o me-2 text-warning"/>Response Time by Carrier</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="state.data.webhook_stats.carrier_breakdown.length" style="position:relative; height:240px;">
+                                        <canvas t-ref="webhookResponseChart"/>
+                                    </div>
+                                    <div t-if="!state.data.webhook_stats.carrier_breakdown.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No carrier data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Per-Carrier Webhook Breakdown -->
+                        <div class="col-12 col-lg-7">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-server me-2 text-secondary"/>Webhook by Carrier</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div t-if="state.data.webhook_stats.carrier_breakdown.length" class="table-responsive">
+                                        <table class="table table-sm table-hover mb-0">
+                                            <thead class="bg-100">
+                                                <tr>
+                                                    <th class="ps-3">Carrier</th>
+                                                    <th class="text-center">Total</th>
+                                                    <th class="text-center text-success">OK</th>
+                                                    <th class="text-center text-danger">Err</th>
+                                                    <th class="text-end">Avg ms</th>
+                                                    <th class="text-end pe-3">Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="state.data.webhook_stats.carrier_breakdown" t-as="wc" t-key="wc.carrier_type">
+                                                    <tr>
+                                                        <td class="ps-3 fw-semibold text-capitalize"><t t-esc="wc.carrier_type"/></td>
+                                                        <td class="text-center"><span class="badge rounded-pill text-bg-primary"><t t-esc="wc.total"/></span></td>
+                                                        <td class="text-center text-success"><t t-esc="wc.success"/></td>
+                                                        <td class="text-center text-danger"><t t-esc="wc.error"/></td>
+                                                        <td class="text-end"><t t-esc="wc.avg_time"/>ms</td>
+                                                        <td class="text-end pe-3">
+                                                            <span t-attf-class="fw-bold small {{ wc.success_rate >= 90 ? 'text-success' : wc.success_rate >= 70 ? 'text-warning' : 'text-danger' }}">
+                                                                <t t-esc="wc.success_rate"/>%
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div t-if="!state.data.webhook_stats.carrier_breakdown.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No carrier data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== RECENT WEBHOOK ERRORS ===== -->
+                    <t t-if="state.data.webhook_stats.recent_errors and state.data.webhook_stats.recent_errors.length">
+                        <div class="card border rounded-1 mb-4">
+                            <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold"><i class="fa fa-exclamation-triangle me-2 text-danger"/>Recent Webhook Errors</h6>
+                                <button class="btn btn-sm btn-outline-danger" t-on-click="openWebhookErrors">View All Errors</button>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead class="bg-100">
+                                            <tr>
+                                                <th class="ps-3">Date</th>
+                                                <th>Carrier</th>
+                                                <th>Tracking Ref</th>
+                                                <th>Error</th>
+                                                <th class="text-end pe-3">Time (ms)</th>
+                                                <th/>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="state.data.webhook_stats.recent_errors" t-as="err" t-key="err.id">
+                                                <tr class="table-danger-subtle">
+                                                    <td class="ps-3 small"><t t-esc="err.date"/></td>
+                                                    <td class="fw-semibold text-capitalize"><t t-esc="err.carrier_type"/></td>
+                                                    <td><code><t t-esc="err.tracking_ref || '-'"/></code></td>
+                                                    <td class="text-truncate" style="max-width:300px;" t-att-title="err.error_message">
+                                                        <t t-esc="err.error_message"/>
+                                                    </td>
+                                                    <td class="text-end pe-3"><t t-esc="err.processing_time_ms"/>ms</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-link btn-sm p-0" t-on-click="() => this.openWebhookLogDetail(err.id)" title="View detail">
+                                                            <i class="fa fa-external-link"/>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t><!-- end webhook mode -->
+
+                <!-- ==================== PERFORMANCE ANALYTICS MODE ==================== -->
+                <t t-if="state.mode === 'performance' and state.data.performance">
+                    <t t-set="perf" t-value="state.data.performance"/>
+
+                    <!-- ===== CARRIER SCORECARD ===== -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-lg-7">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-trophy me-2 text-warning"/>Carrier Scorecard</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div t-if="perf.carrier_scorecard.length" class="table-responsive">
+                                        <table class="table table-sm table-hover mb-0 align-middle">
+                                            <thead class="bg-100">
+                                                <tr>
+                                                    <th class="ps-3">Rank</th>
+                                                    <th>Carrier</th>
+                                                    <th class="text-center">Orders</th>
+                                                    <th class="text-center" title="Success Rate Score">Success</th>
+                                                    <th class="text-center" title="Speed Score">Speed</th>
+                                                    <th class="text-center" title="Cost Efficiency Score">Cost</th>
+                                                    <th class="text-center" title="Reliability Score">Reliability</th>
+                                                    <th class="text-center pe-3" title="Weighted Final Score">Score</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="perf.carrier_scorecard" t-as="sc" t-key="sc.carrier_name">
+                                                    <tr>
+                                                        <td class="ps-3 text-center">
+                                                            <t t-if="sc_index === 0"><span class="badge text-bg-warning"><i class="fa fa-trophy"/> 1</span></t>
+                                                            <t t-elif="sc_index === 1"><span class="badge text-bg-secondary">2</span></t>
+                                                            <t t-elif="sc_index === 2"><span class="badge" style="background:#cd7f32;color:#fff;">3</span></t>
+                                                            <t t-else=""><span class="text-muted"><t t-esc="sc_index + 1"/></span></t>
+                                                        </td>
+                                                        <td class="fw-semibold"><t t-esc="sc.carrier_name"/></td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill text-bg-primary"><t t-esc="formatNumber(sc.total_orders)"/></span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="progress flex-fill" style="height:6px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                         t-att-style="'width:' + getScoreBarWidth(sc.success_score) + '%;background-color:' + getScoreBarColor(sc.success_score)"/>
+                                                                </div>
+                                                                <small t-att-class="getScoreColor(sc.success_score)" t-esc="sc.success_score"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="progress flex-fill" style="height:6px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                         t-att-style="'width:' + getScoreBarWidth(sc.speed_score) + '%;background-color:' + getScoreBarColor(sc.speed_score)"/>
+                                                                </div>
+                                                                <small t-att-class="getScoreColor(sc.speed_score)" t-esc="sc.speed_score"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="progress flex-fill" style="height:6px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                         t-att-style="'width:' + getScoreBarWidth(sc.cost_score) + '%;background-color:' + getScoreBarColor(sc.cost_score)"/>
+                                                                </div>
+                                                                <small t-att-class="getScoreColor(sc.cost_score)" t-esc="sc.cost_score"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="d-flex align-items-center gap-1">
+                                                                <div class="progress flex-fill" style="height:6px;">
+                                                                    <div class="progress-bar" role="progressbar"
+                                                                         t-att-style="'width:' + getScoreBarWidth(sc.reliability_score) + '%;background-color:' + getScoreBarColor(sc.reliability_score)"/>
+                                                                </div>
+                                                                <small t-att-class="getScoreColor(sc.reliability_score)" t-esc="sc.reliability_score"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center pe-3">
+                                                            <span t-att-class="'badge rounded-pill ' + getScoreBadgeClass(sc.final_score)"
+                                                                  style="min-width:45px; font-size:0.85rem;">
+                                                                <t t-esc="sc.final_score"/>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div t-if="!perf.carrier_scorecard.length" class="text-center text-muted py-5">
+                                        <i class="fa fa-inbox fa-3x d-block mb-2 opacity-25"/>
+                                        <p>No scorecard data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Radar Chart -->
+                        <div class="col-12 col-lg-5">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-bullseye me-2 text-info"/>Carrier Comparison</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="perf.carrier_scorecard.length" style="position:relative; height:320px;">
+                                        <canvas t-ref="scorecardChart"/>
+                                    </div>
+                                    <div t-if="!perf.carrier_scorecard.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== COST EFFICIENCY + DELIVERY SPEED ===== -->
+                    <div class="row g-3 mb-4">
+                        <!-- Cost Efficiency -->
+                        <div class="col-12 col-lg-6">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-money me-2 text-success"/>Cost Efficiency</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div t-if="perf.cost_efficiency.length" class="table-responsive">
+                                        <table class="table table-sm table-hover mb-0">
+                                            <thead class="bg-100">
+                                                <tr>
+                                                    <th class="ps-3">Carrier</th>
+                                                    <th class="text-center">Orders</th>
+                                                    <th class="text-center text-success">Delivered</th>
+                                                    <th class="text-center text-danger">Failed</th>
+                                                    <th class="text-end">Avg Cost</th>
+                                                    <th class="text-end">True Cost</th>
+                                                    <th class="text-end" title="Cost overrun percentage">Overrun</th>
+                                                    <th class="text-end pe-3">Success</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="perf.cost_efficiency" t-as="ce" t-key="ce.carrier_id">
+                                                    <tr>
+                                                        <td class="ps-3 fw-semibold"><t t-esc="ce.carrier_name"/></td>
+                                                        <td class="text-center"><t t-esc="ce.total_orders"/></td>
+                                                        <td class="text-center text-success"><t t-esc="ce.delivered"/></td>
+                                                        <td class="text-center text-danger"><t t-esc="ce.failed"/></td>
+                                                        <td class="text-end"><t t-esc="formatCurrency(ce.avg_cost_per_shipment)"/></td>
+                                                        <td class="text-end fw-bold"><t t-esc="formatCurrency(ce.true_cost_per_delivery)"/></td>
+                                                        <td class="text-end">
+                                                            <span t-attf-class="fw-bold small {{ ce.cost_overrun_pct > 5 ? 'text-danger' : ce.cost_overrun_pct > 0 ? 'text-warning' : 'text-success' }}">
+                                                                <t t-if="ce.cost_overrun_pct > 0">+</t><t t-esc="ce.cost_overrun_pct"/>%
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-end pe-3">
+                                                            <span t-attf-class="fw-bold {{ ce.success_rate >= 90 ? 'text-success' : ce.success_rate >= 70 ? 'text-warning' : 'text-danger' }}">
+                                                                <t t-esc="ce.success_rate"/>%
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div t-if="!perf.cost_efficiency.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No cost data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Speed -->
+                        <div class="col-12 col-lg-6">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-clock-o me-2 text-primary"/>Delivery Speed &amp; SLA</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div t-if="perf.delivery_speed.length" class="table-responsive">
+                                        <table class="table table-sm table-hover mb-0">
+                                            <thead class="bg-100">
+                                                <tr>
+                                                    <th class="ps-3">Carrier</th>
+                                                    <th class="text-center">Delivered</th>
+                                                    <th class="text-end" title="Average delivery time">Avg Time</th>
+                                                    <th class="text-end" title="Median delivery time">Median</th>
+                                                    <th class="text-end">Fastest</th>
+                                                    <th class="text-end">Slowest</th>
+                                                    <th class="text-end pe-3" title="Percentage delivered within 48 hours">SLA 48h</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="perf.delivery_speed" t-as="ds" t-key="ds.carrier_name">
+                                                    <tr>
+                                                        <td class="ps-3 fw-semibold"><t t-esc="ds.carrier_name"/></td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill text-bg-success"><t t-esc="ds.total_delivered"/></span>
+                                                        </td>
+                                                        <td class="text-end fw-bold"><t t-esc="formatHours(ds.avg_hours)"/></td>
+                                                        <td class="text-end"><t t-esc="formatHours(ds.median_hours)"/></td>
+                                                        <td class="text-end text-success"><t t-esc="formatHours(ds.min_hours)"/></td>
+                                                        <td class="text-end text-danger"><t t-esc="formatHours(ds.max_hours)"/></td>
+                                                        <td class="text-end pe-3">
+                                                            <span t-attf-class="fw-bold {{ ds.sla_48h_pct >= 90 ? 'text-success' : ds.sla_48h_pct >= 70 ? 'text-warning' : 'text-danger' }}">
+                                                                <t t-esc="ds.sla_48h_pct"/>%
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div t-if="!perf.delivery_speed.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-inbox fa-2x d-block mb-2 opacity-25"/>
+                                        <p class="small">No speed data (requires delivered orders)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== FAILURE TREND + FAILURE REASONS ===== -->
+                    <div class="row g-3 mb-4">
+                        <!-- Failure Trend Chart -->
+                        <div class="col-12 col-lg-7">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-line-chart me-2 text-danger"/>Failure Trend (Weekly)</h6>
+                                    <span class="badge text-bg-danger" t-if="perf.failure_analysis.total_failures">
+                                        <t t-esc="perf.failure_analysis.total_failures"/> failures
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <div t-if="perf.failure_analysis.weekly_trend and perf.failure_analysis.weekly_trend.length" style="position:relative; height:280px;">
+                                        <canvas t-ref="failureTrendChart"/>
+                                    </div>
+                                    <div t-if="!perf.failure_analysis.weekly_trend or !perf.failure_analysis.weekly_trend.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-check-circle fa-3x d-block mb-2 text-success opacity-50"/>
+                                        <p>No failures recorded — great!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Failure Reasons -->
+                        <div class="col-12 col-lg-5">
+                            <div class="card border rounded-1 h-100">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-exclamation-circle me-2 text-warning"/>Failure Reasons</h6>
+                                </div>
+                                <div class="card-body p-0" style="max-height:360px; overflow-y:auto;">
+                                    <t t-if="perf.failure_analysis.failure_reasons.length">
+                                        <t t-foreach="perf.failure_analysis.failure_reasons" t-as="fr" t-key="fr.carrier">
+                                            <div class="px-3 py-2 border-bottom">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <strong><t t-esc="fr.carrier"/></strong>
+                                                    <span class="badge text-bg-danger"><t t-esc="fr.total_failures"/></span>
+                                                </div>
+                                                <t t-foreach="fr.reasons" t-as="r" t-key="r.reason">
+                                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                                        <div class="progress flex-fill" style="height:5px;">
+                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                                 t-att-style="'width:' + r.pct + '%'"/>
+                                                        </div>
+                                                        <small class="text-muted" style="min-width:120px;">
+                                                            <t t-esc="r.reason"/> (<t t-esc="r.count"/>)
+                                                        </small>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <div t-if="!perf.failure_analysis.failure_reasons.length" class="text-center text-muted py-4">
+                                        <i class="fa fa-check-circle fa-2x d-block mb-2 text-success opacity-50"/>
+                                        <p class="small">No failures</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== GEOGRAPHIC PERFORMANCE ===== -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <div class="card border rounded-1">
+                                <div class="card-header bg-transparent border-bottom">
+                                    <h6 class="mb-0 fw-bold"><i class="fa fa-map-marker me-2 text-primary"/>Geographic Performance</h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div t-if="perf.geographic_performance.length" class="table-responsive" style="max-height:400px; overflow-y:auto;">
+                                        <table class="table table-sm table-hover mb-0">
+                                            <thead class="bg-100 sticky-top">
+                                                <tr>
+                                                    <th class="ps-3">Province</th>
+                                                    <th>Carrier</th>
+                                                    <th class="text-center">Total</th>
+                                                    <th class="text-center text-success">Delivered</th>
+                                                    <th class="text-center text-danger">Failed</th>
+                                                    <th class="text-end">Avg Cost</th>
+                                                    <th class="text-end pe-3">Success Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="perf.geographic_performance" t-as="gp" t-key="gp.province + '-' + gp.carrier">
+                                                    <tr>
+                                                        <td class="ps-3 fw-semibold"><t t-esc="gp.province"/></td>
+                                                        <td><t t-esc="gp.carrier"/></td>
+                                                        <td class="text-center"><t t-esc="gp.total"/></td>
+                                                        <td class="text-center text-success"><t t-esc="gp.delivered"/></td>
+                                                        <td class="text-center text-danger"><t t-esc="gp.failed"/></td>
+                                                        <td class="text-end"><t t-esc="formatCurrency(gp.avg_cost)"/></td>
+                                                        <td class="text-end pe-3">
+                                                            <span t-attf-class="fw-bold {{ gp.success_rate >= 90 ? 'text-success' : gp.success_rate >= 70 ? 'text-warning' : 'text-danger' }}">
+                                                                <t t-esc="gp.success_rate"/>%
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div t-if="!perf.geographic_performance.length" class="text-center text-muted py-5">
+                                        <i class="fa fa-inbox fa-3x d-block mb-2 opacity-25"/>
+                                        <p>No geographic data available</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t><!-- end performance mode -->
+
+            </div>
+        </div>
+    </t>
+</templates>

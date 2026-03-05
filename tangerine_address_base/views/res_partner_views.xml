@@ -5,22 +5,94 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('o_address_format')]/field[@name='state_id']" position="replace">
-                <field name="state_id" placeholder="Please choose a State"
-                       options="{'no_open': True, 'no_quick_create': True}"
-                       readonly="type != 'contact' and parent_id"
-                       context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
-                <field name="district_id" placeholder="Please choose a District" string="District" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
-                <field name="ward_id" placeholder="Please choose a Ward" string="Ward" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
+            <div class="o_address_format" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </div>
+            <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                <div class="o_address_format">
+                    <div invisible="country_code == 'VN'">
+                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="city" placeholder="City" class="o_address_city"/>
+                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                    </div>
+                    <div invisible="country_code != 'VN'">
+                        <field name="country_id"
+                               placeholder="Country"
+                               style="display: inline-block; width: 22%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="state_id"
+                               domain="[('country_id', '=', country_id)]"
+                               required="country_id and country_code == 'VN'"
+                               style="display: inline-block; width: 48%; margin-right: 1%;"
+                               placeholder="State"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="zip"
+                               placeholder="ZIP"
+                               style="display: inline-block; width: 25%; margin-right: 1%;"
+                               class="o_address_zip"/>
+                        <field name="ward_id"
+                               domain="[('state_id', '=', state_id)]"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Ward"
+                               style="display: inline-block; width: 40%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="street"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Street"
+                               style="display: inline-block; width: 55%; margin-right: 1%;"/>
+                        <field name="full_address"
+                               placeholder="Full Address"
+                               class="o_address_street"/>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']//form//div[@name='div_address']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
 
-            <xpath expr="//div[@name='div_address']/field[@name='state_id']" position="replace">
-                <field name="state_id" placeholder="Please choose a State"
-                       options="{'no_open': True, 'no_quick_create': True}"
-                       readonly="type != 'contact' and parent_id"
-                       context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
-                <field name="district_id" placeholder="Please choose a District" string="District" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
-                <field name="ward_id" placeholder="Please choose a Ward" string="Ward" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
+            <xpath expr="//field[@name='child_ids']//form//div[@name='div_address']" position="after">
+                <div class="o_address_format" invisible="type == 'contact'">
+                    <div invisible="country_code == 'VN'">
+                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True, "no_create": True}'/>
+                        <field name="city" placeholder="City" class="o_address_city"/>
+                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                    </div>
+                    <div invisible="country_code != 'VN'">
+                        <field name="country_id"
+                               placeholder="Country"
+                               style="display: inline-block; width: 22%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="state_id"
+                               domain="[('country_id', '=', country_id)]"
+                               required="country_id and country_code == 'VN'"
+                               style="display: inline-block; width: 48%; margin-right: 1%;"
+                               placeholder="State"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="zip"
+                               placeholder="ZIP"
+                               style="display: inline-block; width: 25%; margin-right: 1%;"
+                               class="o_address_zip"/>
+                        <field name="ward_id"
+                               domain="[('state_id', '=', state_id)]"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Ward"
+                               style="display: inline-block; width: 40%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="street"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Street"
+                               style="display: inline-block; width: 55%; margin-right: 1%;"/>
+                        <field name="full_address"
+                               placeholder="Full Address"
+                               class="o_address_street"/>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>

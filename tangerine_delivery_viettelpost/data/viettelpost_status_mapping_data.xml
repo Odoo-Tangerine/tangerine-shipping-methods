@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- ViettelPost: 100 - Tạo đơn hàng → Đã tạo đơn -->
+        <record id="vtp_mapping_100" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_1"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_draft"/>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- ViettelPost: 101 - Yêu cầu hủy → Đã hủy -->
+        <record id="vtp_mapping_101" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_2"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_cancelled"/>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- ViettelPost: 102 - Chờ xử lý → Đã xác nhận -->
+        <record id="vtp_mapping_102" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_3"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_confirmed"/>
+            <field name="sequence">30</field>
+        </record>
+
+        <!-- ViettelPost: 103 - Giao cho bưu cục → Đang lấy hàng -->
+        <record id="vtp_mapping_103" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_4"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_picking_up"/>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- ViettelPost: 104 - Giao cho Bưu tá đi nhận → Đang lấy hàng -->
+        <record id="vtp_mapping_104" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_5"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_picking_up"/>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- ViettelPost: 105 - Bưu tá đã nhận hàng → Đã lấy hàng -->
+        <record id="vtp_mapping_105" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_6"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_picked_up"/>
+            <field name="sequence">60</field>
+        </record>
+
+        <!-- ViettelPost: 106 - Đối tác yêu cầu lấy lại hàng → Đang chuyển hoàn -->
+        <record id="vtp_mapping_106" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_7"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_returning"/>
+            <field name="sequence">70</field>
+        </record>
+
+        <!-- ViettelPost: 107 - Đối tác yêu cầu hủy qua API → Đã hủy -->
+        <record id="vtp_mapping_107" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_8"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_cancelled"/>
+            <field name="sequence">80</field>
+        </record>
+
+        <!-- ViettelPost: 200 - Nhận từ bưu tá → Đã lấy hàng -->
+        <record id="vtp_mapping_200" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_9"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_picked_up"/>
+            <field name="sequence">90</field>
+        </record>
+
+        <!-- ViettelPost: 201 - Hủy nhập phiếu gửi → Đã hủy -->
+        <record id="vtp_mapping_201" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_10"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_cancelled"/>
+            <field name="sequence">100</field>
+        </record>
+
+        <!-- ViettelPost: 202 - Sửa phiếu gửi → Đã lấy hàng -->
+        <record id="vtp_mapping_202" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_11"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_picked_up"/>
+            <field name="sequence">110</field>
+        </record>
+
+        <!-- ViettelPost: 300 - Đóng bảng kê đi → Đang vận chuyển -->
+        <record id="vtp_mapping_300" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_12"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">120</field>
+        </record>
+
+        <!-- ViettelPost: 301 - Đóng túi gói → Đang vận chuyển -->
+        <record id="vtp_mapping_301" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_13"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">130</field>
+        </record>
+
+        <!-- ViettelPost: 302 - Đóng Chuyến thư → Đang vận chuyển -->
+        <record id="vtp_mapping_302" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_14"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">140</field>
+        </record>
+
+        <!-- ViettelPost: 303 - Đóng tuyến xe → Đang vận chuyển -->
+        <record id="vtp_mapping_303" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_15"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">150</field>
+        </record>
+
+        <!-- ViettelPost: 400 - Nhận bảng kê đến → Đang vận chuyển -->
+        <record id="vtp_mapping_400" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_16"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">160</field>
+        </record>
+
+        <!-- ViettelPost: 401 - Nhận Túi gói → Đang vận chuyển -->
+        <record id="vtp_mapping_401" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_17"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">170</field>
+        </record>
+
+        <!-- ViettelPost: 402 - Nhận chuyến thư → Đang vận chuyển -->
+        <record id="vtp_mapping_402" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_18"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">180</field>
+        </record>
+
+        <!-- ViettelPost: 403 - Nhận chuyến xe → Đang vận chuyển -->
+        <record id="vtp_mapping_403" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_19"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_in_transit"/>
+            <field name="sequence">190</field>
+        </record>
+
+        <!-- ViettelPost: 500 - Giao bưu tá đi phát → Đang giao hàng -->
+        <record id="vtp_mapping_500" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_20"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_delivering"/>
+            <field name="sequence">200</field>
+        </record>
+
+        <!-- ViettelPost: 501 - Phát thành công → Đã giao thành công -->
+        <record id="vtp_mapping_501" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_21"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_delivered"/>
+            <field name="sequence">210</field>
+        </record>
+
+        <!-- ViettelPost: 502 - Chuyển hoàn bưu cục gốc → Đang chuyển hoàn -->
+        <record id="vtp_mapping_502" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_22"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_returning"/>
+            <field name="sequence">220</field>
+        </record>
+
+        <!-- ViettelPost: 503 - Hủy theo yêu cầu KH → Đã hủy -->
+        <record id="vtp_mapping_503" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_23"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_cancelled"/>
+            <field name="sequence">230</field>
+        </record>
+
+        <!-- ViettelPost: 504 - Chuyển trả người gửi → Đã chuyển hoàn -->
+        <record id="vtp_mapping_504" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_24"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_returned"/>
+            <field name="sequence">240</field>
+        </record>
+
+        <!-- ViettelPost: 505 - Tồn thông báo chuyển hoàn → Đang chuyển hoàn -->
+        <record id="vtp_mapping_505" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_25"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_returning"/>
+            <field name="sequence">250</field>
+        </record>
+
+        <!-- ViettelPost: 506 - Tồn KH nghỉ → Ngoại lệ -->
+        <record id="vtp_mapping_506" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_26"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">260</field>
+        </record>
+
+        <!-- ViettelPost: 507 - KH đến bưu cục nhận → Ngoại lệ -->
+        <record id="vtp_mapping_507" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_27"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">270</field>
+        </record>
+
+        <!-- ViettelPost: 508 - Phát tiếp → Ngoại lệ -->
+        <record id="vtp_mapping_508" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_28"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">280</field>
+        </record>
+
+        <!-- ViettelPost: 509 - Chuyển tiếp bưu cục khác → Ngoại lệ -->
+        <record id="vtp_mapping_509" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_29"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">290</field>
+        </record>
+
+        <!-- ViettelPost: 510 - Hủy phân công phát → Ngoại lệ -->
+        <record id="vtp_mapping_510" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_30"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">300</field>
+        </record>
+
+        <!-- ViettelPost: 515 - Duyệt hoàn → Đang chuyển hoàn -->
+        <record id="vtp_mapping_515" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_31"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_returning"/>
+            <field name="sequence">310</field>
+        </record>
+
+        <!-- ViettelPost: 550 - Phát tiếp (KH yêu cầu) → Ngoại lệ -->
+        <record id="vtp_mapping_550" model="delivery.status.mapping">
+            <field name="provider_id" ref="tangerine_delivery_viettelpost.tangerine_delivery_viettelpost_provider"/>
+            <field name="carrier_status_id" ref="tangerine_delivery_viettelpost.viettelpost_status_32"/>
+            <field name="standard_status_id" ref="tangerine_delivery_base.standard_status_failed"/>
+            <field name="sequence">320</field>
+        </record>
+    </data>
+</odoo>
