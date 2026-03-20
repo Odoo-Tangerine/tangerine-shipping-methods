@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Placeholder cron – not active by default.
+             J&T Express status updates are primarily received via Webhook push.
+             Enable this cron only if you need polling fallback. -->
+        <record id="ir_cron_jtexpress_sync_status" model="ir.cron">
+            <field name="name">[J&amp;T Express]: Sync Delivery Status</field>
+            <field name="model_id" ref="model_delivery_carrier"/>
+            <field name="state">code</field>
+            <field name="code">
+# Polling fallback: query pending J&amp;T orders for status updates
+carrier_ids = env['delivery.carrier'].search([('delivery_type', '=', 'jtexpress')])
+for carrier in carrier_ids:
+    pending_orders = env['carrier.ref.order'].search([
+        ('carrier_id', '=', carrier.id),
+        ('delivery_status_id.code', 'not in', ['DELIVERED', 'RETURNED', 'CANCELLED']),
+    ])
+    for order in pending_orders:
+        if order.carrier_tracking_ref:
+            try:
+                from odoo.addons.tangerine_delivery_jtexpress.api.client import Client
+                from odoo.addons.tangerine_delivery_jtexpress.settings.constants import settings as jt_settings
+                client = Client(carrier)
+                result = client.track_order({
+                    'customerCode': carrier.jtexpress_customer_code,
+                    'password': carrier.jtexpress_password,
+                    'txlogisticId': '',
+                    'billCodes': order.carrier_tracking_ref,
+                })
+                # result is data[0]: {"billCode": "...", "details": [...]}
+                details = result.get('details') or []
+                if details:
+                    scan_type_code = details[0].get('scanTypeCode')
+                    scan_map = jt_settings.scan_type_code_to_status.value
+                    status_code = scan_map.get(int(scan_type_code)) if scan_type_code is not None else None
+                    if status_code:
+                        status_id = env['delivery.status'].search([
+                            ('code', '=', status_code),
+                            ('provider_id', '=', carrier.id)
+                        ], limit=1)
+                        if status_id:
+                            order.sudo().write({'delivery_status_id': status_id.id})
+                            order.picking_id.sudo().write({'delivery_status_id': status_id.id})
+            except Exception as e:
+                pass
+            </field>
+            <field name="interval_number">2</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="False"/>
+            <field name="is_cron_delivery" eval="True"/>
+        </record>
+    </data>
+</odoo>

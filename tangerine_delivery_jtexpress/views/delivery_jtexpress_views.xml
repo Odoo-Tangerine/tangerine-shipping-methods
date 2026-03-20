@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_delivery_carrier_form_with_provider_jtexpress" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.provider.jtexpress</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_delivery_carrier_form_with_provider_delivery_base"/>
+        <field name="arch" type="xml">
+
+            <!-- API Connection Block -->
+            <xpath expr="//group[@name='delivery_api_connect_information']" position="before">
+                <group string="API Connect Information"
+                       invisible="delivery_type != 'jtexpress'"
+                       name="delivery_jtexpress_api_connect_information"
+                >
+                    <label for="domain"/>
+                    <div class="o_row api_config_group">
+                        <field name="domain"/>
+                        <button name="action_test_connection"
+                                string="Test Connection"
+                                icon="fa-plug"
+                                type="object"
+                        />
+                    </div>
+                    <!-- apiAccount: used in HTTP header -->
+                    <field name="jtexpress_api_account"
+                           required="delivery_type == 'jtexpress'"
+                           placeholder="Mã tài khoản API (apiAccount) – dùng trong HTTP header"
+                    />
+                    <!-- privateKey: used in HTTP header to compute digest -->
+                    <field name="api_key"
+                           required="delivery_type == 'jtexpress'"
+                           password="1"
+                           string="Private Key"
+                           placeholder="Private Key – dùng tính digest = base64(md5(bizContent + privateKey))"
+                    />
+                    <!-- customerCode: used inside bizContent -->
+                    <field name="jtexpress_customer_code"
+                           required="delivery_type == 'jtexpress'"
+                           placeholder="Mã khách hàng (customerCode) – dùng trong bizContent"
+                    />
+                    <!-- password: used inside bizContent -->
+                    <field name="jtexpress_password"
+                           required="delivery_type == 'jtexpress'"
+                           password="1"
+                           placeholder="Mật khẩu tài khoản (password) – dùng trong bizContent"
+                    />
+                    <div class="text-muted o_row" invisible="delivery_type != 'jtexpress'">
+                        Xác thực J&amp;T: mỗi request ký bằng
+                        <code>digest = base64(md5(bizContent + privateKey))</code>
+                        và gửi trong HTTP header cùng
+                        <code>apiAccount</code> + <code>timestamp</code>.
+                    </div>
+                    <div class="o_row" invisible="delivery_type != 'jtexpress'">
+                        <button name="jtexpress_get_access_token"
+                                string="Verify Credentials"
+                                icon="fa-check-circle"
+                                type="object"
+                        />
+                    </div>
+                </group>
+            </xpath>
+
+            <!-- Default Shipment Parameters Block -->
+            <xpath expr="//group[@name='delivery_default_shipment']" position="before">
+                <group name="delivery_jtexpress_default_shipment"
+                       invisible="delivery_type != 'jtexpress'"
+                       string="Default Shipment Parameters"
+                >
+                    <field name="base_weight_unit"/>
+                    <field name="default_promo_code"/>
+                    <field name="default_jtexpress_payment_type"/>
+                    <field name="default_jtexpress_order_type"/>
+                    <field name="default_jtexpress_service_type"/>
+                    <field name="default_jtexpress_product_type"/>
+                    <field name="default_jtexpress_goods_type"/>
+                </group>
+            </xpath>
+
+            <!-- Webhook Block -->
+            <xpath expr="//group[@name='delivery_webhook']" position="before">
+                <group name="delivery_jtexpress_webhook"
+                       invisible="delivery_type != 'jtexpress'"
+                       string="Webhook"
+                >
+                    <field name="webhook_url" widget="CopyClipboardChar" readonly="True"/>
+                    <label for="is_use_authentication"/>
+                    <div class="o_row">
+                        <field name="is_use_authentication" widget="boolean_toggle"/>
+                        <button name="action_generate_access_token"
+                                string="Generate Access Token"
+                                icon="oi-arrow-right"
+                                type="object"
+                                invisible="not is_use_authentication"
+                        />
+                    </div>
+                    <field name="webhook_access_token"
+                           invisible="not is_use_authentication"
+                           widget="CopyClipboardChar"
+                           readonly="True"
+                    />
+                    <div class="text-muted" invisible="delivery_type != 'jtexpress'">
+                        Đăng ký URL webhook này trên cổng J&amp;T Express Open Platform
+                        để nhận cập nhật trạng thái theo thời gian thực.
+                    </div>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

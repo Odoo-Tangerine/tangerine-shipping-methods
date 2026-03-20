@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_picking_jtexpress_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.jtexpress</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_stock_picking_delivery_base_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='delivery_carrier_detail']" position="after">
+                <group name="delivery_jtexpress_detail"
+                       string="J&amp;T Express Details"
+                       invisible="delivery_type != 'jtexpress'"
+                       col="2"
+                >
+                    <field name="jtexpress_payment_type"/>
+                    <field name="jtexpress_order_type"/>
+                    <field name="jtexpress_service_type"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

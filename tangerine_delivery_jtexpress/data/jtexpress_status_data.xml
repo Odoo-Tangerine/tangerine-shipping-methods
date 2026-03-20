@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!--
+            J&T Express Vietnam order status codes.
+            Source: J&T Express Vietnam Open API documentation
+            https://open.jtexpress.vn/apiDoc/index
+        -->
+
+        <record model="delivery.status" id="jtexpress_status_created">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đã tạo đơn hàng</field>
+            <field name="code">CREATED</field>
+            <field name="description">Đơn hàng đã được tạo thành công trên hệ thống J&amp;T Express</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_cancelled">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đã hủy đơn hàng</field>
+            <field name="code">CANCELLED</field>
+            <field name="description">Đơn hàng đã được hủy</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_picking_up">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đang lấy hàng</field>
+            <field name="code">PICKING_UP</field>
+            <field name="description">Nhân viên J&amp;T đang trên đường đến lấy hàng</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_picked_up">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đã lấy hàng</field>
+            <field name="code">PICKED_UP</field>
+            <field name="description">Hàng đã được lấy từ người gửi</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_arrived_sorting_center">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đến trung tâm phân loại</field>
+            <field name="code">ARRIVED_AT_SORTING_CENTER</field>
+            <field name="description">Hàng đã đến trung tâm phân loại</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_departed_sorting_center">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Rời trung tâm phân loại</field>
+            <field name="code">DEPARTURE_FROM_SORTING_CENTER</field>
+            <field name="description">Hàng đã rời trung tâm phân loại, đang trên đường vận chuyển</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_arrived_dest_sorting_center">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đến trung tâm phân loại đích</field>
+            <field name="code">ARRIVED_AT_DESTINATION_SORTING_CENTER</field>
+            <field name="description">Hàng đã đến trung tâm phân loại tại địa điểm đích</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_in_delivery">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đang giao hàng</field>
+            <field name="code">IN_DELIVERY</field>
+            <field name="description">Nhân viên J&amp;T đang giao hàng đến người nhận</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_delivered">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đã giao hàng thành công</field>
+            <field name="code">DELIVERED</field>
+            <field name="description">Hàng đã được giao thành công đến người nhận</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_delivery_failed">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Giao hàng thất bại</field>
+            <field name="code">DELIVERY_FAILED</field>
+            <field name="description">Không thể giao hàng (người nhận vắng nhà, địa chỉ sai, v.v.)</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_returning">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đang hoàn hàng</field>
+            <field name="code">RETURNING</field>
+            <field name="description">Hàng đang trên đường hoàn trả về người gửi</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_returned">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Đã hoàn hàng</field>
+            <field name="code">RETURNED</field>
+            <field name="description">Hàng đã được hoàn trả về người gửi thành công</field>
+        </record>
+
+        <record model="delivery.status" id="jtexpress_status_exception">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Ngoại lệ</field>
+            <field name="code">EXCEPTION</field>
+            <field name="description">Đơn hàng gặp sự cố bất thường, cần xử lý thủ công</field>
+        </record>
+    </data>
+</odoo>

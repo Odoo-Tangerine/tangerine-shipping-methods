@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="jtexpress_delivery_carrier_partner" model="res.partner">
+            <field name="name">J&amp;T Express Vietnam</field>
+            <field name="website">https://jtexpress.vn</field>
+            <field name="email">support@jtexpress.vn</field>
+            <field name="is_company" eval="True"/>
+        </record>
+    </data>
+</odoo>

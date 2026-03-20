@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_product_delivery_jtexpress" model="product.product">
+            <field name="name">Delivery charges</field>
+            <field name="default_code">J&amp;T Express</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="delivery.product_category_deliveries"/>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="list_price">0.0</field>
+            <field name="invoice_policy">order</field>
+        </record>
+
+        <record id="tangerine_delivery_jtexpress_provider" model="delivery.carrier">
+            <field name="name">J&amp;T Express</field>
+            <field name="fixed_price">0.0</field>
+            <field name="free_over" eval="False"/>
+            <field name="invoice_policy">real</field>
+            <field name="sequence">5</field>
+            <field name="delivery_type">jtexpress</field>
+            <field name="domain">https://demoopenapi.jtexpress.vn/webopenplatformapi</field>
+            <field name="product_id" ref="tangerine_delivery_jtexpress.product_product_delivery_jtexpress"/>
+            <field name="is_locally_delivery" eval="True"/>
+            <field name="base_weight_unit">KG</field>
+            <field name="default_jtexpress_payment_type">PP_CASH</field>
+            <field name="default_jtexpress_order_type">1</field>
+            <field name="default_jtexpress_service_type">1</field>
+            <field name="default_jtexpress_product_type">EXPRESS</field>
+            <field name="default_jtexpress_goods_type">bm000010</field>
+            <field name="external_carrier_id" ref="tangerine_delivery_jtexpress.jtexpress_delivery_carrier_partner"/>
+        </record>
+
+        <function model="delivery.carrier" name="set_webhook_url">
+            <value eval="[ref('tangerine_delivery_jtexpress_provider')]"/>
+        </function>
+    </data>
+</odoo>

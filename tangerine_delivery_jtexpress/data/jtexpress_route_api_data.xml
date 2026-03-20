@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!--
+            J&T Express Vietnam Open API routes.
+            Source: https://open.jtexpress.vn/apiDoc/index
+            All requests: POST application/x-www-form-urlencoded
+            Auth: apiAccount + digest + timestamp in HTTP headers
+            Body: bizContent = JSON string
+        -->
+
+        <record id="jtexpress_create_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Create Order</field>
+            <field name="code">jtexpress_create_order</field>
+            <field name="route">/api/order/addOrder</field>
+            <field name="method">POST</field>
+            <field name="description">Tạo vận đơn mới</field>
+        </record>
+
+        <record id="jtexpress_cancel_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Cancel Order</field>
+            <field name="code">jtexpress_cancel_order</field>
+            <field name="route">/api/order/cancelOrder</field>
+            <field name="method">POST</field>
+            <field name="description">Huỷ vận đơn</field>
+        </record>
+
+        <record id="jtexpress_track_order" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Track Order</field>
+            <field name="code">jtexpress_track_order</field>
+            <field name="route">/api/logistics/trace</field>
+            <field name="method">POST</field>
+            <field name="description">Tra cứu hành trình vận đơn theo billCodes</field>
+        </record>
+
+        <record id="jtexpress_estimate_cost" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Estimate Cost</field>
+            <field name="code">jtexpress_estimate_cost</field>
+            <field name="route">/api/spmComCost/getComCost</field>
+            <field name="method">POST</field>
+            <field name="description">Tính cước phí ước tính</field>
+        </record>
+
+        <record id="jtexpress_print_label" model="delivery.route.api">
+            <field name="provider_id" ref="tangerine_delivery_jtexpress.tangerine_delivery_jtexpress_provider"/>
+            <field name="name">Print Label</field>
+            <field name="code">jtexpress_print_label</field>
+            <field name="route">/api/order/printOrder</field>
+            <field name="method">POST</field>
+            <field name="description">Lấy nội dung mẫu in vận đơn (base64)</field>
+        </record>
+
+    </data>
+</odoo>
