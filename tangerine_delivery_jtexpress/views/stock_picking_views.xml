@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="view_stock_picking_jtexpress_form" model="ir.ui.view">
-        <field name="name">stock.picking.form.jtexpress</field>
+    <record id="view_picking_withcarrier_out_form_inherit_delivery_jtexpress" model="ir.ui.view">
+        <field name="name">view.picking.withcarrier.out.form.inherit.delivery.jtexpress</field>
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="tangerine_delivery_base.view_stock_picking_delivery_base_form"/>
+        <field name="inherit_id" ref="tangerine_delivery_base.view_picking_withcarrier_out_form_inherit_delivery_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='delivery_carrier_detail']" position="after">
+            <xpath expr="//group[@name='external_delivery_data']" position="before">
                 <group name="delivery_jtexpress_detail"
                        string="J&amp;T Express Details"
-                       invisible="delivery_type != 'jtexpress'"
+                       invisible="carrier_tracking_ref or not is_locally_delivery or delivery_type != 'jtexpress'"
                        col="2"
                 >
-                    <field name="jtexpress_payment_type"/>
-                    <field name="jtexpress_order_type"/>
-                    <field name="jtexpress_service_type"/>
+                    <field name="jtexpress_goods_type" readonly="carrier_tracking_ref"/>
+                    <label for="cash_on_delivery" name="o_label_cash_on_delivery"/>
+                    <div class="o_row" name="o_div_cash_on_delivery">
+                        <field name="cash_on_delivery" style="max-width: 15%;" widget="boolean_toggle" readonly="carrier_tracking_ref"/>
+                        <field name="cash_on_delivery_amount" readonly="carrier_tracking_ref" invisible="not cash_on_delivery"/>
+                    </div>
                 </group>
             </xpath>
         </field>

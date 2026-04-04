@@ -21,36 +21,29 @@
                                 type="object"
                         />
                     </div>
-                    <!-- apiAccount: used in HTTP header -->
-                    <field name="jtexpress_api_account"
+                    <field name="api_key"
+                           string="Key"
                            required="delivery_type == 'jtexpress'"
-                           placeholder="Mã tài khoản API (apiAccount) – dùng trong HTTP header"
+                    />
+                    <!-- apiAccount: used in HTTP header -->
+                    <field name="client_id"
+                           string="API Account"
+                           required="delivery_type == 'jtexpress'"
                     />
                     <!-- privateKey: used in HTTP header to compute digest -->
-                    <field name="api_key"
+                    <field name="client_secret"
                            required="delivery_type == 'jtexpress'"
-                           password="1"
                            string="Private Key"
-                           placeholder="Private Key – dùng tính digest = base64(md5(bizContent + privateKey))"
                     />
                     <!-- customerCode: used inside bizContent -->
-                    <field name="jtexpress_customer_code"
+                    <field name="partner_id"
+                           string="Customer Code"
                            required="delivery_type == 'jtexpress'"
-                           placeholder="Mã khách hàng (customerCode) – dùng trong bizContent"
                     />
-                    <!-- password: used inside bizContent -->
-                    <field name="jtexpress_password"
-                           required="delivery_type == 'jtexpress'"
-                           password="1"
-                           placeholder="Mật khẩu tài khoản (password) – dùng trong bizContent"
-                    />
-                    <div class="text-muted o_row" invisible="delivery_type != 'jtexpress'">
-                        Xác thực J&amp;T: mỗi request ký bằng
-                        <code>digest = base64(md5(bizContent + privateKey))</code>
-                        và gửi trong HTTP header cùng
-                        <code>apiAccount</code> + <code>timestamp</code>.
-                    </div>
-                    <div class="o_row" invisible="delivery_type != 'jtexpress'">
+                    <label for="password"/>
+                    <div class="o_row api_config_group">
+                        <!-- password: used inside bizContent -->
+                        <field name="password"/>
                         <button name="jtexpress_get_access_token"
                                 string="Verify Credentials"
                                 icon="fa-check-circle"
@@ -98,10 +91,6 @@
                            widget="CopyClipboardChar"
                            readonly="True"
                     />
-                    <div class="text-muted" invisible="delivery_type != 'jtexpress'">
-                        Đăng ký URL webhook này trên cổng J&amp;T Express Open Platform
-                        để nhận cập nhật trạng thái theo thời gian thực.
-                    </div>
                 </group>
             </xpath>
 

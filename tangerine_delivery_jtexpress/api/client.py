@@ -44,17 +44,17 @@ class Client:
         return base64.b64encode(md5_bytes).decode('utf-8')
 
     def _build_headers(self, biz_content_str: str) -> dict:
-        if not self.provider.jtexpress_api_account:
+        if not self.provider.client_id:
             raise UserError('J&T Express: API Account (apiAccount) chưa được cấu hình.')
-        if not self.provider.api_key:
+        if not self.provider.client_secret:
             raise UserError('J&T Express: Private Key chưa được cấu hình.')
 
         # Timestamp in milliseconds (UTC+7 epoch ms — same numeric value as UTC)
         timestamp = int(time.time() * 1000)
-        digest = self._compute_digest(biz_content_str, self.provider.api_key)
+        digest = self._compute_digest(biz_content_str, self.provider.client_secret)
 
         return {
-            'apiAccount': str(self.provider.jtexpress_api_account),
+            'apiAccount': str(self.provider.client_id),
             'digest': digest,
             'timestamp': str(timestamp),
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -62,9 +62,9 @@ class Client:
 
     def _validate_credentials(self):
         missing = []
-        if not self.provider.jtexpress_customer_code:
+        if not self.provider.partner_id:
             missing.append('Customer Code (customerCode)')
-        if not self.provider.jtexpress_password:
+        if not self.provider.password:
             missing.append('Customer Password')
         if missing:
             raise UserError('J&T Express: Thiếu thông tin cấu hình: %s' % ', '.join(missing))
@@ -88,13 +88,13 @@ class Client:
         headers = self._build_headers(biz_content_str)
         form_data = {'bizContent': biz_content_str}
 
-        _logger.warning('[JTEXPRESS] POST %s | bizContent: %s', url, biz_content_str)
+        _logger.warning('[J&T EXPRESS] POST %s | bizContent: %s', url, biz_content_str)
 
         try:
             resp = requests.post(url=url, headers=headers, data=form_data, timeout=30)
             resp.raise_for_status()
             result = resp.json()
-            _logger.info('[JTEXPRESS] RESPONSE: %s', result)
+            _logger.info('[J&T EXPRESS] RESPONSE: %s', result)
             return result
         except Exception as e:
             raise UserError(str(e))

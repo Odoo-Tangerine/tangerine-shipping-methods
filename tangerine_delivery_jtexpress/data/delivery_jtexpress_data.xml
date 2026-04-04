@@ -20,6 +20,10 @@
             <field name="sequence">5</field>
             <field name="delivery_type">jtexpress</field>
             <field name="domain">https://demoopenapi.jtexpress.vn/webopenplatformapi</field>
+            <field name="partner_id">028LC30132</field>
+            <field name="api_key">Kugc5mD5</field>
+            <field name="client_id">669375073659916329</field>
+            <field name="client_secret">6e93e0d4344e47f0a4af7e4e75af955e</field>
             <field name="product_id" ref="tangerine_delivery_jtexpress.product_product_delivery_jtexpress"/>
             <field name="is_locally_delivery" eval="True"/>
             <field name="base_weight_unit">KG</field>

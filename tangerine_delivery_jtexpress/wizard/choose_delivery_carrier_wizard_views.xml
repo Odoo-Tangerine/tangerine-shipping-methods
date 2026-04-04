@@ -3,18 +3,19 @@
     <record id="view_choose_delivery_carrier_jtexpress" model="ir.ui.view">
         <field name="name">choose.delivery.carrier.form.jtexpress</field>
         <field name="model">choose.delivery.carrier</field>
-        <field name="inherit_id" ref="delivery.choose_delivery_carrier_form"/>
+        <field name="inherit_id" ref="delivery.choose_delivery_carrier_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='carrier_id']" position="after">
-                <group invisible="carrier_id.delivery_type != 'jtexpress'"
-                       name="jtexpress_wizard_params"
-                       string="J&amp;T Express Options"
-                >
-                    <field name="jtexpress_payment_type"/>
-                    <field name="jtexpress_order_type"/>
-                    <field name="jtexpress_service_type"/>
-                </group>
-            </xpath>
+            <field name="carrier_id" position="after">
+                <field name="jtexpress_goods_type"
+                       invisible="delivery_type != 'jtexpress'"
+                       required="delivery_type == 'jtexpress'"
+                />
+                <label for="is_cod" invisible="delivery_type != 'jtexpress'"/>
+                <div class="o_row" invisible="delivery_type != 'jtexpress'">
+                    <field name="is_cod" style="max-width: 15%;" widget="boolean_toggle"/>
+                    <field name="cod_amount" invisible="not is_cod"/>
+                </div>
+            </field>
         </field>
     </record>
 </odoo>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="view_carrier_ref_order_jtexpress_form" model="ir.ui.view">
-        <field name="name">carrier.ref.order.form.jtexpress</field>
+    <record id="carrier_ref_order_form_view_inherit_jtexpress" model="ir.ui.view">
+        <field name="name">carrier.ref.order.form.view.jtexpress</field>
         <field name="model">carrier.ref.order</field>
-        <field name="inherit_id" ref="tangerine_delivery_base.view_carrier_ref_order_form"/>
+        <field name="inherit_id" ref="tangerine_delivery_base.carrier_ref_order_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='carrier_ref_order_shipment_detail']" position="after">
+            <xpath expr="//group[@name='delivery_information_service']" position="after">
                 <group name="carrier_ref_order_jtexpress_detail"
                        string="J&amp;T Express Details"
-                       invisible="carrier_id.delivery_type != 'jtexpress'"
+                       invisible="delivery_type != 'jtexpress'"
                 >
-                    <field name="jtexpress_payment_type" readonly="1"/>
-                    <field name="jtexpress_order_type" readonly="1"/>
-                    <field name="jtexpress_service_type" readonly="1"/>
+                    <field name="jtexpress_goods_type" readonly="1"/>
                 </group>
             </xpath>
         </field>

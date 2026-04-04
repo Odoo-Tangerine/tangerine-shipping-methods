@@ -52,9 +52,9 @@ class settings(Enum):
 
     # goodsType field values
     goods_type = [
-        ('bm000001', 'Tài liệu (bm000001)'),
-        ('bm000010', 'Hàng hóa (bm000010)'),
-        ('bm000011', 'Hàng tươi sống (bm000011)'),
+        ('bm000001', 'Document'),
+        ('bm000010', 'Goods'),
+        ('bm000011', 'Fresh'),
     ]
     default_goods_type = 'bm000010'
 
