@@ -3,6 +3,7 @@
     'name': 'Vietnam Address Base',
     'summary': """The Vietnam Address Base module is an extension for the Odoo system designed to provide a comprehensive database of addresses in Vietnam.""",
     'author': 'Long Duong Nhat',
+    'website': 'https://github.com/long-dn',
     'license': 'LGPL-3',
     'category': 'Extra Tools',
     'version': '14.0.1.0',
