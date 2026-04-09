@@ -5,10 +5,45 @@
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='state_id']" position="after">
-                <div>
-                    <field name="district_id" placeholder="Please choose a District" string="District" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
-                    <field name="ward_id" placeholder="Please choose a Ward" string="Ward" options="{&quot;no_open&quot;: True}" class="oe_edit_only"/>
+            <div class="o_address_format" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </div>
+            <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                <div class="o_address_format">
+                    <div invisible="country_code == 'VN'">
+                        <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+                        <field name="city" placeholder="City" class="o_address_city"/>
+                        <field name="street" placeholder="Street..." class="o_address_street"/>
+                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                    </div>
+                    <div invisible="country_code != 'VN'">
+                        <field name="country_id"
+                               placeholder="Country"
+                               style="display: inline-block; width: 35%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_quick_create': True}"/>
+                        <field name="state_id"
+                               domain="[('country_id', '=', country_id)]"
+                               required="country_id and country_code == 'VN'"
+                               style="display: inline-block; width: 45%; margin-right: 1%;"
+                               placeholder="State"
+                               options="{'no_open': True, 'no_quick_create': True}"/>
+                        <field name="zip"
+                               placeholder="ZIP"
+                               style="display: inline-block; width: 15%; margin-right: 1%;"
+                               class="o_address_zip"/>
+                        <field name="ward_id"
+                               domain="[('state_id', '=', state_id)]"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Ward"
+                               style="display: inline-block; width: 43%; margin-right: 1%;"
+                               options="{'no_open': True, 'no_quick_create': True}"/>
+                        <field name="street"
+                               required="country_id and country_code == 'VN'"
+                               placeholder="Street"
+                               style="display: inline-block; width: 51%; margin-right: 1%;"/>
+                    </div>
                 </div>
             </xpath>
         </field>

@@ -11,9 +11,8 @@
     'data': [
         'security/ir.model.access.csv',
         'data/res_country_state_data.xml',
-        'data/res.country.district.csv',
-        'data/res.country.ward.csv',
-        'views/res_country_district_views.xml',
+        'data/res_country_ward_data.xml',
+
         'views/res_country_ward_views.xml',
         'views/res_partner_views.xml',
         'views/res_company_views.xml',
