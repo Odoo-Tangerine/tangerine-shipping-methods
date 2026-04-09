@@ -1,8 +1,10 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     is_locally_delivery = fields.Boolean(related='carrier_id.is_locally_delivery')
     is_support_feature_print_order = fields.Boolean(related='carrier_id.is_support_feature_print_order')
@@ -12,25 +14,32 @@ class StockPicking(models.Model):
     schedule_order = fields.Boolean(string='Schedule', default=False)
     schedule_pickup_time_from = fields.Datetime(string='Pickup Time From', default=fields.Datetime.now)
     schedule_pickup_time_to = fields.Datetime(string='Pickup Time To')
+
     deliver_order_date = fields.Datetime(string='Deliver Order Date')
     promo_code = fields.Char(string='Promo Code')
     delivery_status_id = fields.Many2one('delivery.status', string='Delivery Status', readonly=True)
     delivery_status_code = fields.Char(related='delivery_status_id.code')
-    mapped_delivery_status_id = fields.Many2one('delivery.standard.status', string='Mapped Status', compute='_compute_mapped_delivery_status_id')
+    mapped_delivery_status_id = fields.Many2one(
+        'delivery.standard.status',
+        string='Mapped Status',
+        compute='_compute_mapped_delivery_status_id',
+    )
 
     @api.depends('delivery_status_id')
     def _compute_mapped_delivery_status_id(self):
-        for OOOOOO0OOO00O0OOO in self:
-            OO0O0OO000OOO0O0O = OOOOOO0OOO00O0OOO.carrier_id.get_mapped_standard_status(OOOOOO0OOO00O0OOO.delivery_status_id) if OOOOOO0OOO00O0OOO.carrier_id else self.env['delivery.standard.status']
-            OOOOOO0OOO00O0OOO.mapped_delivery_status_id = OO0O0OO000OOO0O0O.id if OO0O0OO000OOO0O0O else False
+        for rec in self:
+            mapped = rec.carrier_id.get_mapped_standard_status(
+                rec.delivery_status_id
+            ) if rec.carrier_id else self.env['delivery.standard.status']
+            rec.mapped_delivery_status_id = mapped.id if mapped else False
 
     @api.onchange('cash_on_delivery')
     def _on_change_cash_on_delivery(self):
-        for OOO0OO0OO00OOO0OO in self:
-            if OOO0OO0OO00OOO0OO.cash_on_delivery:
-                OOO0OO0OO00OOO0OO.cash_on_delivery_amount = OOO0OO0OO00OOO0OO.sale_id.amount_total
+        for rec in self:
+            if rec.cash_on_delivery:
+                rec.cash_on_delivery_amount = rec.sale_id.amount_total
             else:
-                OOO0OO0OO00OOO0OO.cash_on_delivery_amount = 0.0
+                rec.cash_on_delivery_amount = 0.0
 
     def action_print_order(self):
         self.ensure_one()
