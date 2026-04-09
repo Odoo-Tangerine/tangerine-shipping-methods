@@ -3,6 +3,7 @@
     'name': 'Giao Hang Tiet Kiem Integration',
     'summary': """The GHTK Integration for Odoo is designed to connect the Odoo ERP system seamlessly with Giao Hang Tiet Kiem. This module provides features like placing orders, getting quotes, printing shipping labels, etc.""",
     'author': 'Long Duong Nhat',
+    'website': 'https://github.com/long-dn',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',
     'version': '17.0.1.0',
@@ -21,7 +22,7 @@
         'views/carrier_ref_order_views.xml'
     ],
     'images': ['static/description/thumbnail.png'],
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'installable': True,
     'auto_install': False,
     'application': True,

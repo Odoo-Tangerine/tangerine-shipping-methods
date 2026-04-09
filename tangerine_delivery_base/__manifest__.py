@@ -3,6 +3,7 @@
     'name': 'Shipping Methods Base',
     'summary': """This module handles Restful APIs between the Odoo system and third-party service carriers.""",
     'author': 'Long Duong Nhat',
+    'website': 'https://github.com/long-dn',
     'license': 'LGPL-3',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',
