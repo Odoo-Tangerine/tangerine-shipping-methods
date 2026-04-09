@@ -3,6 +3,7 @@
     'name': '247 Express Integration',
     'summary': """247 Express Integration module will allow shippers to easily place, cancel, get quotes, and track orders via simple integration for delivery in Odoo.""",
     'author': 'Long Duong Nhat',
+    'website': 'https://github.com/long-dn',
     'category': 'Inventory/Delivery',
     'support': 'odoo.tangerine@gmail.com',
     'version': '18.0.1.0',
@@ -23,7 +24,7 @@
         'views/carrier_ref_order_views.xml'
     ],
     'images': ['static/description/thumbnail.png'],
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'installable': True,
     'auto_install': False,
     'application': True,

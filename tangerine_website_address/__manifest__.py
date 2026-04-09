@@ -2,6 +2,7 @@
     'name': 'Vietnam Districts/Wards On Website',
     'summary': """The Vietnam Districts/Wards On Website Module enhances address selection by dynamically filtering districts and wards based on the selected country and state/province on website""",
     'author': 'Long Duong Nhat',
+    'website': 'https://github.com/long-dn',
     'license': 'LGPL-3',
     'category': 'Extra Tools',
     'version': '18.0.1.0',
